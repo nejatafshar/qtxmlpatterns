@@ -360,7 +360,7 @@ void QXmlSerializer::endElement()
   \reimp
  */
 void QXmlSerializer::attribute(const QXmlName &name,
-                               const QStringRef &value)
+                               QStringView value)
 {
     Q_D(QXmlSerializer);
     Q_ASSERT(!name.isNull());
@@ -500,7 +500,7 @@ void QXmlSerializer::comment(const QString &value)
 /*!
  \reimp
  */
-void QXmlSerializer::characters(const QStringRef &value)
+void QXmlSerializer::characters(QStringView value)
 {
     Q_D(QXmlSerializer);
     d->isPreviousAtomic = false;

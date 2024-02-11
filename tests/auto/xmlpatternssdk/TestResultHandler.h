@@ -73,8 +73,8 @@ namespace QPatternistSDK
         /**
          * Reads the <tt>test-case</tt> element and its attributes, everything else is ignored.
          */
-        bool startElement(const QStringRef &namespaceURI, const QStringRef &localName,
-                          const QStringRef &qName, const QXmlStreamAttributes &atts) override;
+        bool startElement(QStringView namespaceURI, QStringView localName,
+                          QStringView qName, const QXmlStreamAttributes &atts) override;
         /**
          * @note Do not reimplement this function.
          * @returns the result obtained from reading the XML file.

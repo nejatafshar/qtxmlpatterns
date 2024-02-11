@@ -52,13 +52,12 @@
 
 #include <QtGlobal>
 #include <QtCore/private/qglobal_p.h>
-#include <QtCore5Compat/QStringRef>
+#include <QStringView>
 
 QT_BEGIN_NAMESPACE
 
 class QChar;
 class QString;
-class QStringRef;
 
 namespace QPatternist
 {
@@ -97,7 +96,7 @@ namespace QPatternist
              *
              * @see decompress()
              */
-            static QString compress(const QStringRef &input);
+            static QString compress(QStringView input);
 
             /**
              * @short Decompresses @p input into a usual QString.

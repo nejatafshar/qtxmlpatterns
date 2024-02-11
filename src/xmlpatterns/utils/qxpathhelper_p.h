@@ -136,7 +136,7 @@ namespace QPatternist
          *
          * @returns @c true if @p string consists only of whitespace, otherwise @c false.
          */
-        static inline bool isWhitespaceOnly(const QStringRef &string)
+        static inline bool isWhitespaceOnly(QStringView string)
         {
             const int len = string.length();
 
@@ -154,7 +154,7 @@ namespace QPatternist
          */
         static inline bool isWhitespaceOnly(const QString &string)
         {
-            return isWhitespaceOnly(QStringRef(&string));
+            return isWhitespaceOnly(QStringView(string));
         }
 
     private:

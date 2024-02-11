@@ -146,7 +146,7 @@ namespace QPatternist
          *
          * @see characters()
          */
-        virtual void whitespaceOnly(const QStringRef &value);
+        virtual void whitespaceOnly(QStringView value);
 
         /**
          * Start of a document node.

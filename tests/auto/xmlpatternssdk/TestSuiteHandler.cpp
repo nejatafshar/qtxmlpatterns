@@ -89,8 +89,8 @@ QStringList TestSuiteHandler::readExclusionList(const bool useExclusionList) con
     return avoid;
 }
 
-bool TestSuiteHandler::startElement(const QStringRef &namespaceURI, const QStringRef &localName,
-                                    const QStringRef & /*qName*/, const QXmlStreamAttributes &atts)
+bool TestSuiteHandler::startElement(QStringView namespaceURI, QStringView localName,
+                                    QStringView  /*qName*/, const QXmlStreamAttributes &atts)
 {
     if(namespaceURI != Global::xqtsCatalogNS)
         return true;
@@ -201,9 +201,9 @@ bool TestSuiteHandler::startElement(const QStringRef &namespaceURI, const QStrin
     return true;
 }
 
-bool TestSuiteHandler::endElement(const QStringRef &namespaceURI,
-                                  const QStringRef &localName,
-                                  const QStringRef &/*qName*/)
+bool TestSuiteHandler::endElement(QStringView namespaceURI,
+                                  QStringView localName,
+                                  QStringView /*qName*/)
 {
     if(namespaceURI != Global::xqtsCatalogNS)
         return true;
@@ -310,7 +310,7 @@ bool TestSuiteHandler::endElement(const QStringRef &namespaceURI,
     return true;
 }
 
-bool TestSuiteHandler::characters(const QStringRef &ch)
+bool TestSuiteHandler::characters(QStringView ch)
 {
     m_ch = ch.toString();
     return true;

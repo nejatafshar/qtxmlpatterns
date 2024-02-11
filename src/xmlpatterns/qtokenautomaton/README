@@ -18,7 +18,7 @@ QTokenAutomaton generates a C++ class that essentially has this interface:
         };
 
         static inline Token toToken(const QString &string);
-        static inline Token toToken(const QStringRef &string);
+        static inline Token toToken(QStringView string);
         static Token toToken(const QChar *data, int length);
         static QString toString(Token token);
     };

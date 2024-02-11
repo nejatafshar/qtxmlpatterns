@@ -70,12 +70,12 @@ namespace QPatternistSDK
          * test groups when loading
          */
         XSLTTestSuiteHandler(const QUrl &catalogFile);
-        bool characters(const QStringRef &ch) override;
+        bool characters(QStringView ch) override;
 
-        bool endElement(const QStringRef &namespaceURI, const QStringRef &localName,
-                        const QStringRef &qName) override;
-        bool startElement(const QStringRef &namespaceURI, const QStringRef &localName,
-                          const QStringRef &qName, const QXmlStreamAttributes &atts) override;
+        bool endElement(QStringView namespaceURI, QStringView localName,
+                        QStringView qName) override;
+        bool startElement(QStringView namespaceURI, QStringView localName,
+                          QStringView qName, const QXmlStreamAttributes &atts) override;
 
         TestSuite *testSuite() const;
 

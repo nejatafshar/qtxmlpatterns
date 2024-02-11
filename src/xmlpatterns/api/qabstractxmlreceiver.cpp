@@ -249,7 +249,7 @@ should be extended by adding "qint64 line = -1, qint64 column = -1".
 
 /*!
   \fn void QAbstractXmlReceiver::attribute(const QXmlName &name,
-                                           const QStringRef &value)
+                                           QStringView value)
   This callback is called when an attribute node
   appears in the \l {XQuery Sequence} {sequence}.
   \a name is the \l {QXmlName} {attribute name} and
@@ -266,7 +266,7 @@ should be extended by adding "qint64 line = -1, qint64 column = -1".
  */
 
 /*!
-  \fn void QAbstractXmlReceiver::characters(const QStringRef &value)
+  \fn void QAbstractXmlReceiver::characters(QStringView value)
 
   This callback is called when a text node appears in the
   \l {XQuery Sequence} {sequence}. The \a value contains
@@ -371,7 +371,7 @@ void QAbstractXmlReceiver::sendAsNode(const QPatternist::Item &outputItem)
         case QXmlNodeModelIndex::Attribute:
         {
             const QString &v = outputItem.stringValue();
-            attribute(asNode.name(), QStringRef(&v));
+            attribute(asNode.name(), QStringView(v));
             return;
         }
         case QXmlNodeModelIndex::Element:
@@ -390,7 +390,7 @@ void QAbstractXmlReceiver::sendAsNode(const QPatternist::Item &outputItem)
         case QXmlNodeModelIndex::Text:
         {
             const QString &v = asNode.stringValue();
-            characters(QStringRef(&v));
+            characters(QStringView(v));
             return;
         }
         case QXmlNodeModelIndex::ProcessingInstruction:
@@ -437,12 +437,12 @@ void QAbstractXmlReceiver::sendAsNode(const QPatternist::Item &outputItem)
 
    \sa characters()
  */
-void QAbstractXmlReceiver::whitespaceOnly(const QStringRef &value)
+void QAbstractXmlReceiver::whitespaceOnly(QStringView value)
 {
     Q_ASSERT_X(value.toString().trimmed().isEmpty(), Q_FUNC_INFO,
                "The caller must guarantee only whitespace is passed. Use characters() in other cases.");
     const QString &v = value.toString();
-    characters(QStringRef(&v));
+    characters(QStringView(v));
 }
 
 /*!

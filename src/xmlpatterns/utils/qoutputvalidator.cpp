@@ -77,7 +77,7 @@ void OutputValidator::endElement()
 }
 
 void OutputValidator::attribute(const QXmlName &name,
-                                const QStringRef &value)
+                                QStringView value)
 {
     if(m_hasReceivedChildren)
     {
@@ -105,7 +105,7 @@ void OutputValidator::comment(const QString &value)
     m_receiver->comment(value);
 }
 
-void OutputValidator::characters(const QStringRef &value)
+void OutputValidator::characters(QStringView value)
 {
     m_hasReceivedChildren = true;
     m_receiver->characters(value);

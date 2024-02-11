@@ -932,10 +932,10 @@ Class QCharRef
    base size=12 base align=8
 QCharRef (0x0x7f51124ba480) 0
 
-Class QStringRef
+Class QStringView
    size=16 align=8
    base size=16 base align=8
-QStringRef (0x0x7f511221e300) 0
+QStringView (0x0x7f511221e300) 0
 
 Class QtPrivate::QHashCombine
    size=1 align=1

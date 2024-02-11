@@ -184,7 +184,7 @@ void AccelTreeBuilder<FromDocument>::endElement()
 }
 
 template <bool FromDocument>
-void AccelTreeBuilder<FromDocument>::attribute(const QXmlName &name, const QStringRef &value)
+void AccelTreeBuilder<FromDocument>::attribute(const QXmlName &name, QStringView value)
 {
     /* Attributes adds a namespace binding, so lets synthesize one.
      *
@@ -248,7 +248,7 @@ void AccelTreeBuilder<FromDocument>::attribute(const QXmlName &name, const QStri
 }
 
 template <bool FromDocument>
-void AccelTreeBuilder<FromDocument>::characters(const QStringRef &ch)
+void AccelTreeBuilder<FromDocument>::characters(QStringView ch)
 {
 
     /* If a text node constructor appears by itself, a node needs to
@@ -270,7 +270,7 @@ void AccelTreeBuilder<FromDocument>::characters(const QStringRef &ch)
 }
 
 template <bool FromDocument>
-void AccelTreeBuilder<FromDocument>::whitespaceOnly(const QStringRef &ch)
+void AccelTreeBuilder<FromDocument>::whitespaceOnly(QStringView ch)
 {
     Q_ASSERT(!ch.isEmpty());
     Q_ASSERT(ch.toString().trimmed().isEmpty());

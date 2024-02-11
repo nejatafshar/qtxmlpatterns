@@ -77,7 +77,7 @@ void DocumentContentValidator::endElement()
 }
 
 void DocumentContentValidator::attribute(const QXmlName &name,
-                                         const QStringRef &value)
+                                         QStringView value)
 {
     if(m_elementDepth == 0)
     {
@@ -97,7 +97,7 @@ void DocumentContentValidator::comment(const QString &value)
     m_receiver->comment(value);
 }
 
-void DocumentContentValidator::characters(const QStringRef &value)
+void DocumentContentValidator::characters(QStringView value)
 {
     m_receiver->characters(value);
 }

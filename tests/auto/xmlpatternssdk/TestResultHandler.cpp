@@ -41,8 +41,8 @@ TestResultHandler::TestResultHandler()
     m_comments.reserve(1000); /* Comments are only used for stuff that crash, more or less. */
 }
 
-bool TestResultHandler::startElement(const QStringRef &namespaceURI, const QStringRef &localName,
-                                     const QStringRef &, const QXmlStreamAttributes &atts)
+bool TestResultHandler::startElement(QStringView namespaceURI, QStringView localName,
+                                     QStringView , const QXmlStreamAttributes &atts)
 {
     /* We only care about 'test-case', ignore everything else. */
     if(localName != QLatin1StringView("test-case") ||

@@ -154,12 +154,12 @@ void QXmlFormatter::startFormattingContent()
     if(QPatternist::XPathHelper::isWhitespaceOnly(d->characterBuffer))
     {
         if(d->canIndent.top())
-            QXmlSerializer::characters(QStringRef(&d->indentString));
+            QXmlSerializer::characters(QStringView(d->indentString));
     }
     else
     {
         if(!d->characterBuffer.isEmpty()) /* Significant data, we don't touch it. */
-            QXmlSerializer::characters(QStringRef(&d->characterBuffer));
+            QXmlSerializer::characters(QStringView(d->characterBuffer));
     }
 
     d->characterBuffer.clear();
@@ -202,7 +202,7 @@ void QXmlFormatter::endElement()
   \reimp
  */
 void QXmlFormatter::attribute(const QXmlName &name,
-                              const QStringRef &value)
+                              QStringView value)
 {
     QXmlSerializer::attribute(name, value);
 }
@@ -221,7 +221,7 @@ void QXmlFormatter::comment(const QString &value)
 /*!
  \reimp
  */
-void QXmlFormatter::characters(const QStringRef &value)
+void QXmlFormatter::characters(QStringView value)
 {
     Q_D(QXmlFormatter);
     d->isPreviousAtomic = false;
@@ -283,7 +283,7 @@ void QXmlFormatter::endOfSequence()
 
     /* Flush any buffered content. */
     if(!d->characterBuffer.isEmpty())
-        QXmlSerializer::characters(QStringRef(&d->characterBuffer));
+        QXmlSerializer::characters(QStringView(d->characterBuffer));
 
     d->write('\n');
     QXmlSerializer::endOfSequence();

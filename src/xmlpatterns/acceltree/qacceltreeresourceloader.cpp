@@ -157,7 +157,7 @@ bool AccelTreeResourceLoader::streamToReceiver(QIODevice *const dev,
 
     QXmlStreamReader reader(dev);
 
-    /* Optimize: change NamePool to take QStringRef such that we don't have to call toString() below. That
+    /* Optimize: change NamePool to take QStringView such that we don't have to call toString() below. That
      * will save us a gazillion of temporary QStrings. */
 
     while(!reader.atEnd())
@@ -194,10 +194,9 @@ bool AccelTreeResourceLoader::streamToReceiver(QIODevice *const dev,
                 for(int i = 0; i < len; ++i)
                 {
                     const QXmlStreamAttribute &attr = attrs.at(i);
-                    const auto& str = attr.value().toString();
                     receiver->attribute(np->allocateQName(attr.namespaceUri().toString(), attr.name().toString(),
                                                           attr.prefix().toString()),
-                                        &str);
+                                        attr.value());
                 }
 
                 continue;
@@ -210,12 +209,10 @@ bool AccelTreeResourceLoader::streamToReceiver(QIODevice *const dev,
             case QXmlStreamReader::Characters:
             {
                 if(reader.isWhitespace()) {
-                    const auto & str = reader.text().toString();
-                    receiver->whitespaceOnly(&str);
+                    receiver->whitespaceOnly(reader.text());
                 }
                 else {
-                    const auto & str = reader.text().toString();
-                    receiver->characters(&str);
+                    receiver->characters(reader.text());
                 }
 
                 continue;

@@ -42,7 +42,7 @@
 
 #include <QtCore/QVariant>
 #include <QtCore/QScopedPointer>
-#include <QtCore5Compat/QStringRef>
+#include <QStringView>
 #include <qabstractxmlnodemodel.h>
 
 QT_BEGIN_NAMESPACE
@@ -66,9 +66,9 @@ public:
     virtual void startElement(const QXmlName &name) = 0;
     virtual void endElement() = 0;
     virtual void attribute(const QXmlName &name,
-                           const QStringRef &value) = 0;
+                           QStringView value) = 0;
     virtual void comment(const QString &value) = 0;
-    virtual void characters(const QStringRef &value) = 0;
+    virtual void characters(QStringView value) = 0;
     virtual void startDocument() = 0;
     virtual void endDocument() = 0;
 
@@ -82,7 +82,7 @@ public:
 
     /* The members below are internal, not part of the public API, and
      * unsupported. Using them leads to undefined behavior. */
-    virtual void whitespaceOnly(const QStringRef &value);
+    virtual void whitespaceOnly(QStringView value);
     virtual void item(const QPatternist::Item &item);
 
 protected:

@@ -515,9 +515,8 @@ void XSLTTokenizer::unexpectedContent(const ReportContext::ErrorCode code) const
                 }
             }
 
-            const auto & str = name().toString();
             message = QtXmlPatterns::tr("Element %1 is not allowed at this location.")
-                                       .arg(formatKeyword(&str));
+                          .arg(formatKeyword(name()));
             break;
         }
         case QXmlStreamReader::Characters:
@@ -654,8 +653,7 @@ void XSLTTokenizer::handleXMLBase(TokenSource::Queue *const to,
 
     if(effectiveAtts.hasAttribute(QLatin1StringView("xml:base")))
     {
-        const auto & str = effectiveAtts.value(QLatin1StringView("xml:base")).toString();
-        const QStringRef val(&str);
+        const QStringView val(effectiveAtts.value(QLatin1StringView("xml:base")));
 
         if(!val.isEmpty())
         {
@@ -716,8 +714,7 @@ void XSLTTokenizer::handleStandardAttributes(const bool isXSLTElement)
         if(att.namespaceUri() != ns)
             continue;
 
-        const auto & str = att.name().toString();
-        switch(toToken(&str))
+        switch(toToken(name()))
         {
             case Type:
             case Validation:
@@ -731,9 +728,8 @@ void XSLTTokenizer::handleStandardAttributes(const bool isXSLTElement)
                 if(!isXSLTElement) /* validateElement() will take care of it, and we
                                     * don't want to flag non-standard XSL-T attributes. */
                 {
-                    const auto & str = att.name().toString();
                     error(QtXmlPatterns::tr("Unknown XSL-T attribute %1.")
-                                                      .arg(formatKeyword(&str)),
+                                                      .arg(formatKeyword(name())),
                           ReportContext::XTSE0805);
                 }
             }
@@ -2423,9 +2419,8 @@ void XSLTTokenizer::insideStylesheetModule()
 
                     if(namespaceUri().isEmpty())
                     {
-                        const auto & str = name().toString();
                         error(QtXmlPatterns::tr("Top level stylesheet elements must be "
-                                                "in a non-null namespace, which %1 isn't.").arg(formatKeyword(&str)),
+                                                "in a non-null namespace, which %1 isn't.").arg(formatKeyword(name())),
                               ReportContext::XTSE0130);
                     }
                     else
@@ -2472,10 +2467,9 @@ bool XSLTTokenizer::readToggleAttribute(const QString &localName,
         return false;
     else
     {
-        const auto & str = name().toString();
         error(QtXmlPatterns::tr("The value for attribute %1 on element %2 must either "
                                            "be %3 or %4, not %5.").arg(formatKeyword(localName),
-                                                                       formatKeyword(&str),
+                                                                       formatKeyword(name()),
                                                                        formatData(isTrue),
                                                                        formatData(isFalse),
                                                                        formatData(value)),

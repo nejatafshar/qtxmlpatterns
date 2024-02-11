@@ -58,7 +58,7 @@ public:
 
     void namespaceBinding(const QXmlName &nb) override;
 
-    void characters(const QStringRef &value) override;
+    void characters(QStringView value) override;
     void comment(const QString &value) override;
 
     void startElement(const QXmlName &name) override;
@@ -66,7 +66,7 @@ public:
     void endElement() override;
 
     void attribute(const QXmlName &name,
-                   const QStringRef &value) override;
+                   QStringView value) override;
 
     void processingInstruction(const QXmlName &name,
                                const QString &value) override;

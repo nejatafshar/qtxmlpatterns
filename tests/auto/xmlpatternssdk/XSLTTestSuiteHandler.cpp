@@ -69,8 +69,8 @@ XSLTTestSuiteHandler::XSLTTestSuiteHandler(const QUrl &catalogFile) : m_ts(0)
     Q_ASSERT(!m_catalogFile.isRelative());
 }
 
-bool XSLTTestSuiteHandler::startElement(const QStringRef &namespaceURI, const QStringRef &localName,
-                                        const QStringRef & /*qName*/, const QXmlStreamAttributes &atts)
+bool XSLTTestSuiteHandler::startElement(QStringView namespaceURI, QStringView localName,
+                                        QStringView  /*qName*/, const QXmlStreamAttributes &atts)
 {
     if(namespaceURI != Global::xsltsCatalogNS)
         return true;
@@ -174,9 +174,9 @@ TestGroup *XSLTTestSuiteHandler::containerFor(const QString &name)
     return c;
 }
 
-bool XSLTTestSuiteHandler::endElement(const QStringRef &namespaceURI,
-                                      const QStringRef &localName,
-                                      const QStringRef &/*qName*/)
+bool XSLTTestSuiteHandler::endElement(QStringView namespaceURI,
+                                      QStringView localName,
+                                      QStringView /*qName*/)
 {
     if(namespaceURI != Global::xsltsCatalogNS)
         return true;
@@ -229,7 +229,7 @@ bool XSLTTestSuiteHandler::endElement(const QStringRef &namespaceURI,
     return true;
 }
 
-bool XSLTTestSuiteHandler::characters(const QStringRef &ch)
+bool XSLTTestSuiteHandler::characters(QStringView ch)
 {
     m_ch = ch.toString();
     return true;

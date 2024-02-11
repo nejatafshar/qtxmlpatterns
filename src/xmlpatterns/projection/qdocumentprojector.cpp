@@ -164,7 +164,7 @@ void DocumentProjector::endElement()
 }
 
 void DocumentProjector::attribute(const QXmlName &name,
-                                  const QStringRef &value)
+                                  QStringView value)
 {
     Q_UNUSED(name);
     Q_UNUSED(value);
@@ -182,7 +182,7 @@ void DocumentProjector::comment(const QString &value)
     Q_UNUSED(value);
 }
 
-void DocumentProjector::characters(const QStringRef &value)
+void DocumentProjector::characters(QStringView value)
 {
     Q_UNUSED(value);
 }

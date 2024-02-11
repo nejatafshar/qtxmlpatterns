@@ -98,8 +98,7 @@ QXmlStreamReader::TokenType MaintainingReader<TokenLookupClass, LookupKey>::read
     {
         case StartElement:
         {
-            const auto & str = name().toString();
-            m_currentElementName = TokenLookupClass::toToken(&str);
+            m_currentElementName = TokenLookupClass::toToken(name());
             m_currentAttributes = attributes();
             m_hasHandledStandardAttributes = false;
 
@@ -109,8 +108,7 @@ QXmlStreamReader::TokenType MaintainingReader<TokenLookupClass, LookupKey>::read
         }
         case EndElement:
         {
-            const auto & str = name().toString();
-            m_currentElementName = TokenLookupClass::toToken(&str);
+            m_currentElementName = TokenLookupClass::toToken(name());
             m_stripWhitespace.pop();
             break;
         }
@@ -125,9 +123,8 @@ template<typename TokenLookupClass,
          typename LookupKey>
 bool MaintainingReader<TokenLookupClass, LookupKey>::isWhitespace() const
 {
-    const auto & str = text().toString();
     return QXmlStreamReader::isWhitespace()
-           || XPathHelper::isWhitespaceOnly(&str);
+           || XPathHelper::isWhitespaceOnly(text());
 }
 
 
@@ -172,8 +169,7 @@ void MaintainingReader<TokenLookupClass, LookupKey>::validateElement(const Looku
             const QXmlStreamAttribute &attr = m_currentAttributes.at(i);
             if(attr.namespaceUri().isEmpty())
             {
-                const auto& str = attr.name().toString();
-                const typename TokenLookupClass::NodeName attrName(TokenLookupClass::toToken(&str));
+                const typename TokenLookupClass::NodeName attrName(TokenLookupClass::toToken(attr.name()));
                 encounteredXSLTAtts.insert(attrName);
 
                 if(!desc.requiredAttributes.contains(attrName) &&
@@ -196,36 +192,32 @@ void MaintainingReader<TokenLookupClass, LookupKey>::validateElement(const Looku
 
                     if(totalCount == 0)
                     {
-                        const auto & str = name().toString();
                         translationString = QtXmlPatterns::tr("Attribute %1 cannot appear on the element %2. Only the standard attributes can appear.")
                                             .arg(formatKeyword(stringedName),
-                                                 formatKeyword(&str));
+                                                 formatKeyword(name()));
                     }
                     else if(totalCount == 1)
                     {
-                        const auto & str = name().toString();
                         translationString = QtXmlPatterns::tr("Attribute %1 cannot appear on the element %2. Only %3 is allowed, and the standard attributes.")
                                             .arg(formatKeyword(stringedName),
-                                                 formatKeyword(&str),
+                                                 formatKeyword(name()),
                                                  allowed.first());
                     }
                     else if(totalCount == 2)
                     {
-                        const auto & str = name().toString();
                         /* Note, allowed has already had formatKeyword() applied. */
                         translationString = QtXmlPatterns::tr("Attribute %1 cannot appear on the element %2. Allowed is %3, %4, and the standard attributes.")
                                             .arg(formatKeyword(stringedName),
-                                                 formatKeyword(&str),
+                                                 formatKeyword(name()),
                                                  allowed.first(),
                                                  allowed.last());
                     }
                     else
                     {
-                        const auto & str = name().toString();
                         /* Note, allowed has already had formatKeyword() applied. */
                         translationString = QtXmlPatterns::tr("Attribute %1 cannot appear on the element %2. Allowed is %3, and the standard attributes.")
                                             .arg(formatKeyword(stringedName),
-                                                 formatKeyword(&str),
+                                                 formatKeyword(name()),
                                                  allowed.join(QLatin1StringView(", ")));
                     }
 
@@ -236,9 +228,8 @@ void MaintainingReader<TokenLookupClass, LookupKey>::validateElement(const Looku
             }
             else if(attr.namespaceUri() == namespaceUri())
             {
-                const auto & str = attr.name().toString();
                 m_context->error(QtXmlPatterns::tr("XSL-T attributes on XSL-T elements must be in the null namespace, not in the XSL-T namespace which %1 is.")
-                                                  .arg(formatKeyword(&str)),
+                                                  .arg(formatKeyword(name())),
                                  ReportContext::XTSE0090,
                                  currentLocation());
             }
@@ -249,17 +240,15 @@ void MaintainingReader<TokenLookupClass, LookupKey>::validateElement(const Looku
 
         if(!requiredButMissing.isEmpty())
         {
-            const auto & str = name().toString();
             error(QtXmlPatterns::tr("The attribute %1 must appear on element %2.")
                              .arg(QPatternist::formatKeyword(TokenLookupClass::toString(*requiredButMissing.constBegin())),
-                                  formatKeyword(&str)),
+                                  formatKeyword(name())),
                   ReportContext::XTSE0010);
         }
     }
     else
     {
-        const auto & str = name().toString();
-        error(QtXmlPatterns::tr("The element with local name %1 does not exist in XSL-T.").arg(formatKeyword(&str)),
+        error(QtXmlPatterns::tr("The element with local name %1 does not exist in XSL-T.").arg(formatKeyword(name())),
               ReportContext::XTSE0010);
     }
 }

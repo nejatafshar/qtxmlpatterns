@@ -55,7 +55,7 @@
 
 #include <QtCore/QString>
 #include <QtCore/private/qglobal_p.h>
-#include <QStringRef>
+#include <QStringView>
 
 QT_BEGIN_NAMESPACE
 
@@ -166,7 +166,7 @@ namespace QPatternist
             };
 
             static inline NodeName toToken(const QString &value);
-            static inline NodeName toToken(const QStringRef &value);
+            static inline NodeName toToken(QStringView value);
             static NodeName toToken(const QChar *data, int length);
             static QString toString(NodeName token);
 
@@ -201,7 +201,7 @@ namespace QPatternist
         return toToken(value.constData(), value.length());
     }
 
-    inline XSLTTokenLookup::NodeName XSLTTokenLookup::toToken(const QStringRef &value)
+    inline XSLTTokenLookup::NodeName XSLTTokenLookup::toToken(QStringView value)
     {
         return toToken(value.constData(), value.length());
     }

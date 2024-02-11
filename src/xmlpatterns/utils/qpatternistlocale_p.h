@@ -53,7 +53,7 @@
 #include <QCoreApplication>
 #include <QString>
 #include <QUrl>
-#include <QtCore5Compat/QStringRef>
+#include <QStringView>
 
 #include <qcardinality_p.h>
 #include <qnamepool_p.h>
@@ -100,7 +100,7 @@ namespace QPatternist
     /**
      * @overload
      */
-    static inline QString formatKeyword(const QStringRef &keyword)
+    static inline QString formatKeyword(QStringView keyword)
     {
         return formatKeyword(keyword.toString());
     }

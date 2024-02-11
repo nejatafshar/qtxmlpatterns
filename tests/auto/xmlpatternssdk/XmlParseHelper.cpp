@@ -71,8 +71,8 @@ bool XmlParseHelper::parse(QIODevice *input)
     return true;
 }
 
-bool XmlParseHelper::startElement(const QStringRef &namespaceURI, const QStringRef &localName,
-                                  const QStringRef &qName, const QXmlStreamAttributes &atts)
+bool XmlParseHelper::startElement(QStringView namespaceURI, QStringView localName,
+                                  QStringView qName, const QXmlStreamAttributes &atts)
 {
     Q_UNUSED(namespaceURI)
     Q_UNUSED(localName)
@@ -81,8 +81,8 @@ bool XmlParseHelper::startElement(const QStringRef &namespaceURI, const QStringR
     return true;
 }
 
-bool XmlParseHelper::endElement(const QStringRef &namespaceURI, const QStringRef &localName,
-                                const QStringRef &qName)
+bool XmlParseHelper::endElement(QStringView namespaceURI, QStringView localName,
+                                QStringView qName)
 {
     Q_UNUSED(namespaceURI)
     Q_UNUSED(localName)
@@ -90,7 +90,7 @@ bool XmlParseHelper::endElement(const QStringRef &namespaceURI, const QStringRef
     return true;
 }
 
-bool XmlParseHelper::characters(const QStringRef &text)
+bool XmlParseHelper::characters(QStringView text)
 {
     Q_UNUSED(text)
     return true;

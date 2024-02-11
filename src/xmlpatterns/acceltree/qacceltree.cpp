@@ -660,7 +660,7 @@ void AccelTree::copyNodeTo(const QXmlNodeModelIndex &node,
                 while(!attribute.isNull())
                 {
                     const QString &v = attribute.stringValue();
-                    receiver->attribute(attribute.name(), QStringRef(&v));
+                    receiver->attribute(attribute.name(), QStringView(v));
                     attribute = attributes->next();
                 }
             }

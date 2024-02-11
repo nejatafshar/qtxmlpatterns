@@ -782,8 +782,8 @@ XSDTestSuiteHandler::XSDTestSuiteHandler(const QUrl &catalogFile) : m_ts(0)
                 << QLatin1StringView("wildZ010");
 }
 
-bool XSDTestSuiteHandler::startElement(const QStringRef &namespaceURI, const QStringRef &localName,
-                                       const QStringRef & /*qName*/, const QXmlStreamAttributes &atts)
+bool XSDTestSuiteHandler::startElement(QStringView namespaceURI, QStringView localName,
+                                       QStringView  /*qName*/, const QXmlStreamAttributes &atts)
 {
     if(namespaceURI != QString::fromLatin1("http://www.w3.org/XML/2004/xml-schema-test-suite/"))
         return true;
@@ -856,9 +856,9 @@ bool XSDTestSuiteHandler::startElement(const QStringRef &namespaceURI, const QSt
     return true;
 }
 
-bool XSDTestSuiteHandler::endElement(const QStringRef &/*namespaceURI*/,
-                                      const QStringRef &localName,
-                                      const QStringRef &/*qName*/)
+bool XSDTestSuiteHandler::endElement(QStringView /*namespaceURI*/,
+                                      QStringView localName,
+                                      QStringView /*qName*/)
 {
     if (localName == QLatin1StringView("testGroup")) {
         m_inTestGroup = false;
@@ -878,7 +878,7 @@ bool XSDTestSuiteHandler::endElement(const QStringRef &/*namespaceURI*/,
     return true;
 }
 
-bool XSDTestSuiteHandler::characters(const QStringRef &ch)
+bool XSDTestSuiteHandler::characters(QStringView ch)
 {
     if (m_inDescription)
         m_documentation += ch;

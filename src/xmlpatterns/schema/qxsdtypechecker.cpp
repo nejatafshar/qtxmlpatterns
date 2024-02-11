@@ -153,7 +153,7 @@ static int fractionDigitsForDecimal(const QString &lexicalValue)
     const int pos = lexicalValue.indexOf(QLatin1Char('.'));
     if (pos == -1)
         return 0;
-    const QStringRef fraction = QStringRef(&lexicalValue).mid(pos).trimmed();
+    const auto& fraction = QStringView(lexicalValue).mid(pos).trimmed();
     int i = fraction.length() - 1; // fraction[0] is '.' so fraction is not empty
     while (fraction.at(i) == QLatin1Char('0'))
         --i;

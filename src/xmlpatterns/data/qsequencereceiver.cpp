@@ -114,7 +114,7 @@ void QAbstractXmlReceiver::sendAsNode(const Item &outputItem)
     }
 }
 
-void QAbstractXmlReceiver::whitespaceOnly(const QStringRef &value)
+void QAbstractXmlReceiver::whitespaceOnly(QStringView value)
 {
     Q_ASSERT_X(value.toString().trimmed().isEmpty(), Q_FUNC_INFO,
                "The caller must guarantee only whitespace is passed. Use characters() in other cases.");

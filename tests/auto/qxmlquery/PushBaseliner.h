@@ -57,9 +57,9 @@ public:
     bool isValid() const;
     virtual void startElement(const QXmlName&);
     virtual void endElement();
-    virtual void attribute(const QXmlName&, const QStringRef&);
+    virtual void attribute(const QXmlName&, QStringView);
     virtual void comment(const QString&);
-    virtual void characters(const QStringRef&);
+    virtual void characters(QStringView);
     virtual void startDocument();
     virtual void endDocument();
     virtual void processingInstruction(const QXmlName&, const QString&);
@@ -88,7 +88,7 @@ void PushBaseliner::endElement()
     m_out << "endElement()" << Qt::endl;
 }
 
-void PushBaseliner::attribute(const QXmlName &name, const QStringRef &value)
+void PushBaseliner::attribute(const QXmlName &name, QStringView value)
 {
     m_out << "attribute(" << name.toClarkName(m_namePool) << ", " << value.toString() << ')'<< Qt::endl;
 }
@@ -98,7 +98,7 @@ void PushBaseliner::comment(const QString &value)
     m_out << "comment(" << value << ')' << Qt::endl;
 }
 
-void PushBaseliner::characters(const QStringRef &value)
+void PushBaseliner::characters(QStringView value)
 {
     m_out << "characters(" << value.toString() << ')' << Qt::endl;
 }
