@@ -46,7 +46,6 @@ QT_BEGIN_NAMESPACE
 
 
 class QIODevice;
-class QTextCodec;
 class QXmlQuery;
 class QXmlSerializerPrivate;
 
@@ -80,8 +79,8 @@ public:
 
     QIODevice *outputDevice() const;
 
-    void setCodec(const QTextCodec *codec);
-    const QTextCodec *codec() const;
+    void setEncoding(const QString & enc);
+    const QString& encoding() const;
 
     /* The members below are internal, not part of the public API, and
      * unsupported. Using them leads to undefined behavior. */

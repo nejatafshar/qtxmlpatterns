@@ -1,4 +1,4 @@
-QT       += core network xml core5compat core-private
+QT       += core network xml core-private
 
 TARGET = qtxmlpatterns
 

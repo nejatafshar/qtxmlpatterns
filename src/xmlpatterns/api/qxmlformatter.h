@@ -46,7 +46,6 @@ QT_BEGIN_NAMESPACE
 
 
 class QIODevice;
-class QTextCodec;
 class QXmlQuery;
 class QXmlFormatterPrivate;
 

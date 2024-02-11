@@ -39,7 +39,6 @@
 
 #include <QFile>
 #include <QHash>
-#include <QTextCodec>
 
 #include "qcoloroutput_p.h"
 

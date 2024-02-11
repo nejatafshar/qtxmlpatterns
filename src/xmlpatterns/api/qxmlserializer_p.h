@@ -52,7 +52,6 @@
 
 #include <QtCore/QIODevice>
 #include <QtCore/QStack>
-#include <QtCore5Compat/QTextCodec>
 #include <qxmlquery.h>
 #include <qxmlnamepool.h>
 #include <qxmlserializer.h>
@@ -83,8 +82,7 @@ public:
     QStack<QVector<QXmlName> >          namespaces;
 
     QIODevice *                         device;
-    const QTextCodec *                  codec;
-    QTextCodec::ConverterState          converterState;
+    QString                             encoding;
     /**
      * Name cache. Since encoding QStrings are rather expensive
      * operations to do, and we on top of that would have to do

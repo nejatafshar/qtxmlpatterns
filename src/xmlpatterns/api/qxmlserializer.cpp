@@ -43,6 +43,7 @@
 #include "qxmlquery_p.h"
 #include "qxmlserializer_p.h"
 #include "qxmlserializer.h"
+#include <QStringEncoder>
 
 QT_BEGIN_NAMESPACE
 
@@ -54,7 +55,6 @@ QXmlSerializerPrivate::QXmlSerializerPrivate(const QXmlQuery &query,
       state(QXmlSerializer::BeforeDocumentElement),
       np(query.namePool().d),
       device(outputDevice),
-      codec(QTextCodec::codecForMib(106)), /* UTF-8 */
       query(query)
 {
     hasClosedElement.reserve(EstimatedTreeDepth);
@@ -83,9 +83,6 @@ QXmlSerializerPrivate::QXmlSerializerPrivate(const QXmlQuery &query,
                          StandardPrefixes::xml);
 
     namespaces.push(defNss);
-
-    /* If we don't set this flag, QTextCodec will generate a BOM. */
-    converterState.flags = QTextCodec::IgnoreHeader;
 }
 
 /*!
@@ -263,7 +260,15 @@ void QXmlSerializer::writeEscapedAttribute(const QString &toEscape)
 void QXmlSerializer::write(const QString &content)
 {
     Q_D(QXmlSerializer);
-    d->device->write(d->codec->fromUnicode(content.constData(), content.length(), &d->converterState));
+
+    auto encoding = QStringEncoder::Utf8;
+    if(!d->encoding.isEmpty()) {
+        if(const auto & enc = QStringConverter::encodingForName(d->encoding.toLatin1()); enc.has_value())
+            encoding = enc.value();
+    }
+    QStringEncoder encoder(encoding);
+    QByteArray result = encoder(content);
+    d->device->write(result);
 }
 
 /*!
@@ -279,9 +284,15 @@ void QXmlSerializer::write(const QXmlName &name)
         QByteArray &mutableCell = d->nameCache[name.code()];
 
         const QString content(d->np->toLexical(name));
-        mutableCell = d->codec->fromUnicode(content.constData(),
-                                            content.length(),
-                                            &d->converterState);
+
+        auto encoding = QStringEncoder::Utf8;
+        if(!d->encoding.isEmpty()) {
+            if(const auto & enc = QStringConverter::encodingForName(d->encoding.toLatin1()); enc.has_value())
+                encoding = enc.value();
+        }
+        QStringEncoder encoder(encoding);
+        mutableCell = encoder(content);
+
         d->device->write(mutableCell);
     }
     else
@@ -305,7 +316,6 @@ void QXmlSerializer::startElement(const QXmlName &name)
     Q_D(QXmlSerializer);
     Q_ASSERT(d->device);
     Q_ASSERT(d->device->isWritable());
-    Q_ASSERT(d->codec);
     Q_ASSERT(!name.isNull());
 
     d->namespaces.push(QVector<QXmlName>());
@@ -613,10 +623,10 @@ QIODevice *QXmlSerializer::outputDevice() const
   \sa codec()
 
  */
-void QXmlSerializer::setCodec(const QTextCodec *outputCodec)
+void QXmlSerializer::setEncoding(const QString & enc)
 {
     Q_D(QXmlSerializer);
-    d->codec = outputCodec;
+    d->encoding = enc;
 }
 
 /*!
@@ -625,10 +635,10 @@ void QXmlSerializer::setCodec(const QTextCodec *outputCodec)
 
   \sa setCodec()
  */
-const QTextCodec *QXmlSerializer::codec() const
+const QString & QXmlSerializer::encoding() const
 {
     Q_D(const QXmlSerializer);
-    return d->codec;
+    return d->encoding;
 }
 
 /*!

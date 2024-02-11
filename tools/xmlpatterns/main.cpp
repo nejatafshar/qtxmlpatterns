@@ -31,7 +31,6 @@
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QStringList>
-#include <QtCore/QTextCodec>
 #include <QtCore/QTextStream>
 #include <QtCore/QUrl>
 #include <QtCore/QVariant>

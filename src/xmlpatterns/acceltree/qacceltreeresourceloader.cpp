@@ -38,10 +38,9 @@
 ****************************************************************************/
 
 #include <QtCore/QFile>
-#include <QtCore5Compat/QTextCodec>
 #include <QtCore/QTimer>
 #include <QtCore/QXmlStreamReader>
-
+#include <QStringDecoder>
 #include <QtNetwork/QNetworkRequest>
 
 #include "qatomicstring_p.h"
@@ -320,36 +319,26 @@ bool AccelTreeResourceLoader::retrieveUnparsedText(const QUrl &uri,
     if(!reply)
         return false;
 
-    const QTextCodec * codec;
-    if(encoding.isEmpty())
-    {
-        /* XSL Transformations (XSLT) Version 2.0 16.2 Reading Text Files:
-         *
-         * "if the media type of the resource is text/xml or application/xml
-         * (see [RFC2376]), or if it matches the conventions text/\*+xml or
-         * application/\*+xml (see [RFC3023] and/or its successors), then the
-         * encoding is recognized as specified in [XML 1.0]"
-         */
-        codec = QTextCodec::codecForMib(106);
-    }
-    else
-    {
-        codec = QTextCodec::codecForName(encoding.toLatin1());
-        if(codec && context)
-        {
-            context->error(QtXmlPatterns::tr("%1 is an unsupported encoding.").arg(formatURI(encoding)),
-                           ReportContext::XTDE1190,
-                           where);
-        }
-        else
-            return false;
-    }
-
-    QTextCodec::ConverterState converterState;
     const QByteArray inData(reply->readAll());
-    const QString result(codec->toUnicode(inData.constData(), inData.length(), &converterState));
 
-    if(converterState.invalidChars)
+    auto enc = QStringDecoder::Utf8;
+    if(!encoding.isEmpty()) {
+        if(const auto & e = QStringConverter::encodingForName(encoding.toLatin1()); e.has_value())
+            enc = e.value();
+        else {
+            if(context)
+                context->error(QtXmlPatterns::tr("%1 is an unsupported encoding.").arg(formatURI(encoding)),
+                               ReportContext::XTDE1190,
+                               where);
+            else
+                return false;
+        }
+    }
+    QStringDecoder decoder(enc);
+    QString result;
+    result = decoder(inData);
+
+    if(decoder.hasError())
     {
         if(context)
         {
