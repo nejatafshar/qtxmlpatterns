@@ -52,9 +52,9 @@
 
 #include <QUrl>
 
-#include <private/qstaticcontext_p.h>
-#include <private/qfunctionfactory_p.h>
-#include <private/qschematypefactory_p.h>
+#include <qstaticcontext_p.h>
+#include <qfunctionfactory_p.h>
+#include <qschematypefactory_p.h>
 
 QT_BEGIN_NAMESPACE
 

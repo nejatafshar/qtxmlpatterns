@@ -149,13 +149,13 @@ QString NodeComparison::displayName(const QXmlNodeModelIndex::DocumentOrder op)
     switch(op)
     {
         case QXmlNodeModelIndex::Is:
-            return QLatin1String("is");
+            return QLatin1StringView("is");
         case QXmlNodeModelIndex::Precedes:
-            return QLatin1String("<<");
+            return QLatin1StringView("<<");
         default:
         {
             Q_ASSERT(op == QXmlNodeModelIndex::Follows);
-            return QLatin1String(">>");
+            return QLatin1StringView(">>");
         }
     }
 }

@@ -50,11 +50,11 @@
 #ifndef Patternist_IndexOfIterator_H
 #define Patternist_IndexOfIterator_H
 
-#include <private/qitem_p.h>
-#include <private/qatomiccomparator_p.h>
-#include <private/qcomparisonplatform_p.h>
-#include <private/qdynamiccontext_p.h>
-#include <private/qexpression_p.h>
+#include <qitem_p.h>
+#include <qatomiccomparator_p.h>
+#include <qcomparisonplatform_p.h>
+#include <qdynamiccontext_p.h>
+#include <qexpression_p.h>
 
 QT_BEGIN_NAMESPACE
 

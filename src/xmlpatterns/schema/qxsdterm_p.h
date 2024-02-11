@@ -50,8 +50,8 @@
 #ifndef Patternist_XsdTerm_H
 #define Patternist_XsdTerm_H
 
-#include <private/qnamedschemacomponent_p.h>
-#include <private/qxsdannotated_p.h>
+#include <qnamedschemacomponent_p.h>
+#include <qxsdannotated_p.h>
 
 QT_BEGIN_NAMESPACE
 

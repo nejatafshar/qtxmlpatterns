@@ -50,9 +50,9 @@
 #ifndef Patternist_OrderBy_H
 #define Patternist_OrderBy_H
 
-#include <private/qatomiccomparator_p.h>
-#include <private/qcomparisonplatform_p.h>
-#include <private/qsinglecontainer_p.h>
+#include <qatomiccomparator_p.h>
+#include <qcomparisonplatform_p.h>
+#include <qsinglecontainer_p.h>
 
 QT_BEGIN_NAMESPACE
 

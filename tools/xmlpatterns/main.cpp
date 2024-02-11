@@ -112,7 +112,7 @@ protected:
     QVariant convertToValue(const QApplicationArgument &arg,
                             const QString &input) const override
     {
-        if(arg.name() == QLatin1String("param"))
+        if(arg.name() == QLatin1StringView("param"))
         {
             const int assign = input.indexOf(QLatin1Char('='));
 
@@ -132,9 +132,9 @@ protected:
             }
 
             /* The value.isNull() check ensures we can bind variables whose value is an empty string. */
-            return QVariant::fromValue(Parameter(name, value.isNull() ? QString(QLatin1String("")) : value ));
+            return QVariant::fromValue(Parameter(name, value.isNull() ? QString(QLatin1StringView("")) : value ));
         }
-        else if(arg.name() == QLatin1String("output"))
+        else if(arg.name() == QLatin1StringView("output"))
         {
             QFile *const f = new QFile(input);
 
@@ -146,7 +146,7 @@ protected:
                 return QVariant();
             }
         }
-        else if(arg.name() == QLatin1String("initial-template"))
+        else if(arg.name() == QLatin1StringView("initial-template"))
         {
             const QXmlName name(QXmlName::fromClarkName(input, m_namePool));
             if(name.isNull())
@@ -163,17 +163,17 @@ protected:
 
     QString typeToName(const QApplicationArgument &argument) const override
     {
-        if(argument.name() == QLatin1String("param"))
-            return QLatin1String("name=value");
-        else if(argument.name() == QLatin1String("output"))
-            return QLatin1String("local file");
+        if(argument.name() == QLatin1StringView("param"))
+            return QLatin1StringView("name=value");
+        else if(argument.name() == QLatin1StringView("output"))
+            return QLatin1StringView("local file");
         else
             return QApplicationArgumentParser::typeToName(argument);
     }
 
     QVariant defaultValue(const QApplicationArgument &argument) const override
     {
-        if(argument.name() == QLatin1String("output"))
+        if(argument.name() == QLatin1StringView("output"))
         {
             QFile *const out = new QFile();
 
@@ -230,34 +230,34 @@ int main(int argc, char **argv)
     };
 
     const QCoreApplication app(argc, argv);
-    QCoreApplication::setApplicationName(QLatin1String("xmlpatterns"));
+    QCoreApplication::setApplicationName(QLatin1StringView("xmlpatterns"));
 
     QXmlNamePool namePool;
     PatternistApplicationParser parser(argc, argv, namePool);
-    parser.setApplicationDescription(QLatin1String("A tool for running XQuery queries."));
-    parser.setApplicationVersion(QLatin1String("0.1"));
+    parser.setApplicationDescription(QLatin1StringView("A tool for running XQuery queries."));
+    parser.setApplicationVersion(QLatin1StringView("0.1"));
 
-    QApplicationArgument param(QLatin1String("param"),
+    QApplicationArgument param(QLatin1StringView("param"),
                                QXmlPatternistCLI::tr("Binds an external variable. The value is directly available using the variable reference: $name."),
                                qMetaTypeId<Parameter>());
     param.setMaximumOccurrence(-1);
     parser.addArgument(param);
 
-    const QApplicationArgument noformat(QLatin1String("no-format"),
+    const QApplicationArgument noformat(QLatin1StringView("no-format"),
                                         QXmlPatternistCLI::tr("By default output is formatted for readability. When specified, strict serialization is performed."));
     parser.addArgument(noformat);
 
-    const QApplicationArgument isURI(QLatin1String("is-uri"),
+    const QApplicationArgument isURI(QLatin1StringView("is-uri"),
                                      QXmlPatternistCLI::tr("If specified, all filenames on the command line are interpreted as URIs instead of a local filenames."));
     parser.addArgument(isURI);
 
-    const QApplicationArgument initialTemplateName(QLatin1String("initial-template"),
+    const QApplicationArgument initialTemplateName(QLatin1StringView("initial-template"),
                                                    QXmlPatternistCLI::tr("The name of the initial template to call as a Clark Name."),
                                                    QVariant::String);
     parser.addArgument(initialTemplateName);
 
     /* The temporary object is required to compile with g++ 3.3. */
-    QApplicationArgument queryURI = QApplicationArgument(QLatin1String("query/stylesheet"),
+    QApplicationArgument queryURI = QApplicationArgument(QLatin1StringView("query/stylesheet"),
                                                          QXmlPatternistCLI::tr("A local filename pointing to the query to run. If the name ends with .xsl it's assumed "
                                                                                "to be an XSL-T stylesheet. If it ends with .xq, it's assumed to be an XQuery query. (In "
                                                                                "other cases it's also assumed to be an XQuery query, but that interpretation may "
@@ -267,7 +267,7 @@ int main(int argc, char **argv)
     queryURI.setNameless(true);
     parser.addArgument(queryURI);
 
-    QApplicationArgument focus = QApplicationArgument(QLatin1String("focus"),
+    QApplicationArgument focus = QApplicationArgument(QLatin1StringView("focus"),
                                                       QXmlPatternistCLI::tr("The document to use as focus. Mandatory "
                                                                             "in case a stylesheet is used. This option is "
                                                                             "also affected by the is-uris option."),
@@ -276,7 +276,7 @@ int main(int argc, char **argv)
     focus.setNameless(true);
     parser.addArgument(focus);
 
-    QApplicationArgument output(QLatin1String("output"),
+    QApplicationArgument output(QLatin1StringView("output"),
                                 QXmlPatternistCLI::tr("A local file to which the output should be written. "
                                                       "The file is overwritten, or if not exist, created. "
                                                       "If absent, stdout is used."),
@@ -291,7 +291,7 @@ int main(int argc, char **argv)
 
     QXmlQuery::QueryLanguage lang;
 
-    if(effectiveURI.toString().endsWith(QLatin1String(".xsl")))
+    if(effectiveURI.toString().endsWith(QLatin1StringView(".xsl")))
          lang = QXmlQuery::XSLT20;
     else
          lang = QXmlQuery::XQuery10;

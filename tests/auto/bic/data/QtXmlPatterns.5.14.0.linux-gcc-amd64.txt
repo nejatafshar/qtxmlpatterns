@@ -977,10 +977,10 @@ Class QStringView
    base size=16 base align=8
 QStringView (0x0x7fc37f4623c0) 0
 
-Class QLatin1String
+Class QLatin1StringView
    size=16 align=8
    base size=16 base align=8
-QLatin1String (0x0x7fc37f137480) 0
+QLatin1StringView (0x0x7fc37f137480) 0
 
 Class QString::Null
    size=1 align=1
@@ -1013,10 +1013,10 @@ Class QtPrivate::QStringViewArg
 QtPrivate::QStringViewArg (0x0x7fc37eed6270) 0
   QtPrivate::ArgBase (0x0x7fc37eba9cc0) 0
 
-Class QtPrivate::QLatin1StringArg
+Class QtPrivate::QLatin1StringViewArg
    size=24 align=8
    base size=24 base align=8
-QtPrivate::QLatin1StringArg (0x0x7fc37eed62d8) 0
+QtPrivate::QLatin1StringViewArg (0x0x7fc37eed62d8) 0
   QtPrivate::ArgBase (0x0x7fc37eba9ea0) 0
 
 Class std::__erased_type

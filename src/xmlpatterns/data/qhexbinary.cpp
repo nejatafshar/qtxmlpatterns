@@ -126,7 +126,7 @@ HexBinary::Ptr HexBinary::fromValue(const QByteArray &data)
 QString HexBinary::stringValue() const
 {
     static const char s_toHex[] = "0123456789ABCDEF";
-    const int len = m_value.count();
+    const int len = m_value.size();
     QString result;
     result.reserve(len * 2);
 

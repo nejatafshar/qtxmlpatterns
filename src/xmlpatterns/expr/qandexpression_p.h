@@ -50,7 +50,7 @@
 #ifndef Patternist_AndExpression_H
 #define Patternist_AndExpression_H
 
-#include <private/qpaircontainer_p.h>
+#include <qpaircontainer_p.h>
 
 QT_BEGIN_NAMESPACE
 

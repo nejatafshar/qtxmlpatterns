@@ -76,76 +76,76 @@ bool XSLTTestSuiteHandler::startElement(const QStringRef &namespaceURI, const QS
         return true;
 
     /* The elements are handled roughly in the order of highest occurrence in the catalog file. */
-    if(localName == QLatin1String("testcase"))
+    if(localName == QLatin1StringView("testcase"))
     {
         /* We pass m_ts temporarily, and change it later. */
         m_tc = new XQTSTestCase(TestCase::Standard, 0, QXmlQuery::XSLT20);
 
         m_currentQueryPath =
-                m_queryOffset.resolved(QUrl(atts.value(QLatin1String("FilePath")).toString()));
+                m_queryOffset.resolved(QUrl(atts.value(QLatin1StringView("FilePath")).toString()));
         m_currentBaselinePath =
-                m_baselineOffset.resolved(QUrl(atts.value(QLatin1String("FilePath")).toString()));
+                m_baselineOffset.resolved(QUrl(atts.value(QLatin1StringView("FilePath")).toString()));
     }
-    else if(localName == QLatin1String("stylesheet"))
+    else if(localName == QLatin1StringView("stylesheet"))
         m_tc->setQueryPath(
-                m_currentQueryPath.resolved(atts.value(QLatin1String("file")).toString()));
-    else if(localName == QLatin1String("error"))
+                m_currentQueryPath.resolved(atts.value(QLatin1StringView("file")).toString()));
+    else if(localName == QLatin1StringView("error"))
     {
         m_baseLine = new TestBaseLine(TestBaseLine::ExpectedError);
-        m_baseLine->setDetails(atts.value(QLatin1String("error-id")).toString());
+        m_baseLine->setDetails(atts.value(QLatin1StringView("error-id")).toString());
         m_tc->addBaseLine(m_baseLine);
     }
-    else if(localName == QLatin1String("testcases"))
+    else if(localName == QLatin1StringView("testcases"))
     {
         m_ts = new TestSuite();
-        m_ts->setVersion(atts.value(QLatin1String("testSuiteVersion")).toString());
+        m_ts->setVersion(atts.value(QLatin1StringView("testSuiteVersion")).toString());
 
         m_queryOffset =
-                m_catalogFile.resolved(atts.value(QLatin1String("InputOffsetPath")).toString());
+                m_catalogFile.resolved(atts.value(QLatin1StringView("InputOffsetPath")).toString());
         m_baselineOffset =
-                m_catalogFile.resolved(atts.value(QLatin1String("ResultOffsetPath")).toString());
+                m_catalogFile.resolved(atts.value(QLatin1StringView("ResultOffsetPath")).toString());
         m_sourceOffset =
-                m_catalogFile.resolved(atts.value(QLatin1String("InputOffsetPath")).toString());
+                m_catalogFile.resolved(atts.value(QLatin1StringView("InputOffsetPath")).toString());
     }
-    else if(localName == QLatin1String("source-document"))
+    else if(localName == QLatin1StringView("source-document"))
     {
-        if(atts.value(QLatin1String("role")) == QLatin1String("principal"))
+        if(atts.value(QLatin1StringView("role")) == QLatin1StringView("principal"))
             m_tc->setContextItemSource(
-                    m_sourceOffset.resolved(QUrl(atts.value(QLatin1String("file")).toString())));
+                    m_sourceOffset.resolved(QUrl(atts.value(QLatin1StringView("file")).toString())));
     }
-    else if(localName == QLatin1String("result-document"))
+    else if(localName == QLatin1StringView("result-document"))
     {
         m_baseLine = new TestBaseLine(
-                TestBaseLine::identifierFromString(atts.value(QLatin1String("type")).toString()));
+                TestBaseLine::identifierFromString(atts.value(QLatin1StringView("type")).toString()));
         m_baseLine->setDetails(
-                m_currentBaselinePath.resolved(atts.value(QLatin1String("file")).toString())
+                m_currentBaselinePath.resolved(atts.value(QLatin1StringView("file")).toString())
                         .toString());
         m_tc->addBaseLine(m_baseLine);
     }
-    else if(localName == QLatin1String("discretionary-feature"))
+    else if(localName == QLatin1StringView("discretionary-feature"))
     {
-        const QString feature(atts.value(QLatin1String("name")).toString());
+        const QString feature(atts.value(QLatin1StringView("name")).toString());
 
-        m_removeTestcase = feature == QLatin1String("schema_aware") ||
-                           feature == QLatin1String("namespace_axis") ||
-                           feature == QLatin1String("disabling_output_escaping") ||
-                           feature == QLatin1String("XML_1.1");
+        m_removeTestcase = feature == QLatin1StringView("schema_aware") ||
+                           feature == QLatin1StringView("namespace_axis") ||
+                           feature == QLatin1StringView("disabling_output_escaping") ||
+                           feature == QLatin1StringView("XML_1.1");
     }
-    else if(localName == QLatin1String("discretionary-choice"))
+    else if(localName == QLatin1StringView("discretionary-choice"))
     {
         m_baseLine = new TestBaseLine(TestBaseLine::ExpectedError);
-        m_baseLine->setDetails(atts.value(QLatin1String("name")).toString());
+        m_baseLine->setDetails(atts.value(QLatin1StringView("name")).toString());
         m_tc->addBaseLine(m_baseLine);
-        const QString feature(atts.value(QLatin1String("name")).toString());
+        const QString feature(atts.value(QLatin1StringView("name")).toString());
 
-        m_removeTestcase = feature == QLatin1String("schema_aware") ||
-                           feature == QLatin1String("namespace_axis") ||
-                           feature == QLatin1String("disabling_output_escaping") ||
-                           feature == QLatin1String("XML_1.1");
+        m_removeTestcase = feature == QLatin1StringView("schema_aware") ||
+                           feature == QLatin1StringView("namespace_axis") ||
+                           feature == QLatin1StringView("disabling_output_escaping") ||
+                           feature == QLatin1StringView("XML_1.1");
     }
-    else if(localName == QLatin1String("entry-named-template"))
+    else if(localName == QLatin1StringView("entry-named-template"))
     {
-        const QString name(atts.value(QLatin1String("qname")).toString());
+        const QString name(atts.value(QLatin1StringView("qname")).toString());
 
         if(!name.contains(QLatin1Char(':')))
         {
@@ -182,7 +182,7 @@ bool XSLTTestSuiteHandler::endElement(const QStringRef &namespaceURI,
         return true;
 
     /* The elements are handled roughly in the order of highest occurrence in the catalog file. */
-    if(localName == QLatin1String("description"))
+    if(localName == QLatin1StringView("description"))
     {
         if(m_tc)
         {
@@ -191,7 +191,7 @@ bool XSLTTestSuiteHandler::endElement(const QStringRef &namespaceURI,
             m_tc->setDescription(m_ch.simplified());
         }
     }
-    else if(localName == QLatin1String("testcase"))
+    else if(localName == QLatin1StringView("testcase"))
     {
         Q_ASSERT(m_tc->baseLines().count() >= 1);
         Q_ASSERT(m_resourceLoader);
@@ -217,13 +217,13 @@ bool XSLTTestSuiteHandler::endElement(const QStringRef &namespaceURI,
         m_tc = 0;
         m_removeTestcase = false;
     }
-    else if(localName == QLatin1String("name"))
+    else if(localName == QLatin1StringView("name"))
         m_tc->setName(m_ch);
-    else if(localName == QLatin1String("creator"))
+    else if(localName == QLatin1StringView("creator"))
         m_tc->setCreator(m_ch);
-    else if(localName == QLatin1String("contextItem"))
+    else if(localName == QLatin1StringView("contextItem"))
         m_contextItemSource = m_ch;
-    else if(localName == QLatin1String("category"))
+    else if(localName == QLatin1StringView("category"))
         m_currentCategory = m_ch;
 
     return true;

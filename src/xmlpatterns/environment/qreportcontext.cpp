@@ -56,9 +56,9 @@ ReportContext::~ReportContext()
 
 QString ReportContext::finalizeDescription(const QString &desc)
 {
-    return QLatin1String("<html xmlns='http://www.w3.org/1999/xhtml/'><body><p>")
+    return QLatin1StringView("<html xmlns='http://www.w3.org/1999/xhtml/'><body><p>")
            + desc
-           + QLatin1String("</p></body></html>");
+           + QLatin1StringView("</p></body></html>");
 }
 
 void ReportContext::warning(const QString &description,
@@ -450,7 +450,7 @@ QString ReportContext::codeToString(const ReportContext::ErrorCode code)
     }
 
     Q_ASSERT_X(result, Q_FUNC_INFO, "Unknown enum value.");
-    return QLatin1String(result);
+    return QLatin1StringView(result);
 }
 
 QUrl ReportContext::resolveURI(const QUrl &relative,

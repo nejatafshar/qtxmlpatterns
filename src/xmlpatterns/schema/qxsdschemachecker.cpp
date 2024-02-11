@@ -127,15 +127,15 @@ static bool matchesType(const SchemaType::Ptr &myType, const SchemaType::Ptr &ot
             const XsdSimpleType::Ptr simpleType = otherType;
             if (simpleType->category() == XsdSimpleType::SimpleTypeAtomic) {
                 // for atomic type we use the same test as in SchemaType::wxsTypeMatches
-                retval = (myType == simpleType ? true : matchesType(myType, simpleType->wxsSuperType(), visitedTypes));
+                retval = (myType == static_cast<SchemaType::Ptr>(simpleType) ? true : matchesType(myType, simpleType->wxsSuperType(), visitedTypes));
             } else if (simpleType->category() == XsdSimpleType::SimpleTypeList) {
                 // for list type we test against the itemType property
-                retval = (myType == simpleType->itemType() ? true : matchesType(myType, simpleType->itemType()->wxsSuperType(), visitedTypes));
+                retval = (myType == static_cast<SchemaType::Ptr>(simpleType->itemType()) ? true : matchesType(myType, simpleType->itemType()->wxsSuperType(), visitedTypes));
             } else if (simpleType->category() == XsdSimpleType::SimpleTypeUnion) {
                 // for union type we test against each member type
                 const XsdSimpleType::List members = simpleType->memberTypes();
                 for (int i = 0; i < members.count(); ++i) {
-                    if (myType == members.at(i) ? true : matchesType(myType, members.at(i)->wxsSuperType(), visitedTypes)) {
+                    if (myType == static_cast<SchemaType::Ptr>(members.at(i)) ? true : matchesType(myType, members.at(i)->wxsSuperType(), visitedTypes)) {
                         retval = true;
                         break;
                     }
@@ -159,7 +159,7 @@ static bool matchesType(const SchemaType::Ptr &myType, const SchemaType::Ptr &ot
  */
 static bool hasCircularUnionInheritance(const XsdSimpleType::Ptr &type, const SchemaType::Ptr &otherType, NamePool::Ptr &namePool)
 {
-    if (type == otherType) {
+    if (type == static_cast<XsdSimpleType::Ptr>(otherType)) {
         return true;
     }
 
@@ -172,7 +172,7 @@ static bool hasCircularUnionInheritance(const XsdSimpleType::Ptr &type, const Sc
     if (simpleOtherType->category() == XsdSimpleType::SimpleTypeUnion) {
         const XsdSimpleType::List memberTypes = simpleOtherType->memberTypes();
         for (int i = 0; i < memberTypes.count(); ++i) {
-            if (otherType->wxsSuperType() == type) {
+            if (otherType->wxsSuperType() == static_cast<SchemaType::Ptr>(type)) {
                 return true;
             }
             if (hasCircularUnionInheritance(type, memberTypes.at(i), namePool)) {
@@ -732,7 +732,7 @@ void XsdSchemaChecker::checkComplexTypeConstraints()
                     return;
                 }
 
-                if (complexType->contentType()->simpleType() != baseType) {
+                if (complexType->contentType()->simpleType() != static_cast<AnySimpleType::Ptr>(baseType)) {
                     m_context->error(QtXmlPatterns::tr("Complex type %1 must have the same simple type as its base class %2.")
                                                       .arg(formatType(m_namePool, complexType))
                                                       .arg(formatType(m_namePool, baseType)),
@@ -803,7 +803,7 @@ void XsdSchemaChecker::checkComplexTypeConstraints()
                 m_context->error(QtXmlPatterns::tr("Complex type %1 cannot be derived from base type %2%3.")
                                                   .arg(formatType(m_namePool, complexType))
                                                   .arg(formatType(m_namePool, baseType))
-                                                  .arg(errorMsg.isEmpty() ? QString() : QLatin1String(": ") + errorMsg),
+                                                  .arg(errorMsg.isEmpty() ? QString() : QLatin1StringView(": ") + errorMsg),
                                  XsdSchemaContext::XSDError, location);
                 return;
             }
@@ -1117,7 +1117,7 @@ void XsdSchemaChecker::checkConstrainingFacets(const XsdFacet::Hash &facets, con
 
         for (int i = 0; i < multiValue.count(); ++i) {
             const DerivedString<TypeString>::Ptr value = multiValue.at(i);
-            QRegExp exp = PatternPlatform::parsePattern(value->stringValue(), m_context, &reflection);
+            QRegularExpression exp = PatternPlatform::parsePattern(value->stringValue(), m_context, &reflection);
             if (!exp.isValid()) {
                 m_context->error(QtXmlPatterns::tr("%1 facet contains invalid regular expression").arg(formatKeyword("pattern.")), XsdSchemaContext::XSDError, sourceLocation(simpleType));
                 return;
@@ -1590,7 +1590,7 @@ void XsdSchemaChecker::checkConstrainingFacets(const XsdFacet::Hash &facets, con
             }
 
             // @see http://www.w3.org/TR/xmlschema-2/#enumeration-valid-restriction
-            if (facet->type() == XsdFacet::Enumeration && baseType != BuiltinTypes::xsNOTATION) {
+            if (facet->type() == XsdFacet::Enumeration && baseType != static_cast<SchemaType::Ptr>(BuiltinTypes::xsNOTATION)) {
                 const AtomicValue::List multiValue = facet->multiValue();
                 for (int j = 0; j < multiValue.count(); ++j) {
                     const QString stringValue = DerivedString<TypeString>::Ptr(multiValue.at(j))->stringValue();
@@ -1725,7 +1725,7 @@ void XsdSchemaChecker::checkElementConstraints()
                     return;
                 }
             }
-            if ((targetType == BuiltinTypes::xsID) || BuiltinTypes::xsID->wxsTypeMatches(type)) {
+            if ((targetType == static_cast<AnySimpleType::Ptr>(BuiltinTypes::xsID)) || BuiltinTypes::xsID->wxsTypeMatches(type)) {
                 m_context->error(QtXmlPatterns::tr("Element %1 is not allowed to have a value constraint if its type is derived from %2.")
                                                   .arg(formatKeyword(element->displayName(m_namePool)))
                                                   .arg(formatType(m_namePool, BuiltinTypes::xsID)),
@@ -1855,7 +1855,7 @@ bool XsdSchemaChecker::isValidValue(const QString &stringValue, const AnySimpleT
     const XsdFacet::Hash facets = XsdTypeChecker::mergedFacetsForType(type, m_context);
     const QString actualValue = XsdTypeChecker::normalizedValue(stringValue, facets);
 
-    const XsdTypeChecker checker(m_context, QVector<QXmlName>(), QSourceLocation(QUrl(QLatin1String("http://dummy.org")), 1, 1));
+    const XsdTypeChecker checker(m_context, QVector<QXmlName>(), QSourceLocation(QUrl(QLatin1StringView("http://dummy.org")), 1, 1));
     return checker.isValidString(actualValue, type, errorMsg);
 }
 

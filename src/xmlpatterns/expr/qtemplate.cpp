@@ -76,7 +76,7 @@ void Template::raiseXTSE0680(const ReportContext::Ptr &context,
 {
     context->error(QtXmlPatterns::tr("The parameter %1 is passed, but no corresponding %2 exists.")
                                      .arg(formatKeyword(context->namePool(), name),
-                                          formatKeyword(QLatin1String("xsl:param"))),
+                                          formatKeyword(QLatin1StringView("xsl:param"))),
                    ReportContext::XTSE0680,
                    reflection);
 }
@@ -147,7 +147,7 @@ DynamicContext::Ptr Template::createContext(const TemplateInvoker *const invoker
              */
             context->error(QtXmlPatterns::tr("The parameter %1 is required, but no corresponding %2 is supplied.")
                                              .arg(formatKeyword(context->namePool(), it.key()),
-                                                  formatKeyword(QLatin1String("xsl:with-param"))),
+                                                  formatKeyword(QLatin1StringView("xsl:with-param"))),
                            ReportContext::XTSE0690,
                            this);
         }

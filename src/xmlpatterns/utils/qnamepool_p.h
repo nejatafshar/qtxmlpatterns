@@ -56,9 +56,9 @@
 #include <QSharedData>
 #include <QString>
 #include <QVector>
-#include <QXmlName>
+#include <qxmlname.h>
 
-#include <QtXmlPatterns/private/qprimitives_p.h>
+#include <qprimitives_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -251,9 +251,9 @@ namespace QPatternist
      */
     static inline QString formatKeyword(const NamePool::Ptr &np, const QXmlName name)
     {
-        return QLatin1String("<span class='XQuery-keyword'>")   +
+        return QLatin1StringView("<span class='XQuery-keyword'>")   +
                escape(np->displayName(name))                    +
-               QLatin1String("</span>");
+               QLatin1StringView("</span>");
     }
 
     /**

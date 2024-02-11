@@ -53,7 +53,7 @@ void XsdSchemaDebugger::dumpParticle(const XsdParticle::Ptr &particle, int level
     QString prefix; prefix.fill(QLatin1Char(' '), level);
 
     qDebug("%s min=%s max=%s", qPrintable(prefix), qPrintable(QString::number(particle->minimumOccurs())),
-                               qPrintable(particle->maximumOccursUnbounded() ? QLatin1String("unbounded") : QString::number(particle->maximumOccurs())));
+                               qPrintable(particle->maximumOccursUnbounded() ? QLatin1StringView("unbounded") : QString::number(particle->maximumOccurs())));
 
     if (particle->term()->isElement()) {
         qDebug("%selement (%s)", qPrintable(prefix), qPrintable(XsdElement::Ptr(particle->term())->displayName(m_namePool)));
@@ -86,14 +86,14 @@ void XsdSchemaDebugger::dumpInheritance(const SchemaType::Ptr &type, int level)
 void XsdSchemaDebugger::dumpWildcard(const XsdWildcard::Ptr &wildcard)
 {
     QVector<QString> varietyNames;
-    varietyNames.append(QLatin1String("Any"));
-    varietyNames.append(QLatin1String("Enumeration"));
-    varietyNames.append(QLatin1String("Not"));
+    varietyNames.append(QLatin1StringView("Any"));
+    varietyNames.append(QLatin1StringView("Enumeration"));
+    varietyNames.append(QLatin1StringView("Not"));
 
     QVector<QString> processContentsNames;
-    processContentsNames.append(QLatin1String("Strict"));
-    processContentsNames.append(QLatin1String("Lax"));
-    processContentsNames.append(QLatin1String("Skip"));
+    processContentsNames.append(QLatin1StringView("Strict"));
+    processContentsNames.append(QLatin1StringView("Lax"));
+    processContentsNames.append(QLatin1StringView("Skip"));
 
     qDebug("      processContents: %s", qPrintable(processContentsNames.at((int)wildcard->processContents())));
     const XsdWildcard::NamespaceConstraint::Ptr constraint = wildcard->namespaceConstraint();
@@ -159,17 +159,17 @@ void XsdSchemaDebugger::dumpElement(const XsdElement::Ptr &element)
 {
     QStringList disallowedSubstGroup;
     if (element->disallowedSubstitutions() & XsdElement::RestrictionConstraint)
-        disallowedSubstGroup << QLatin1String("restriction");
+        disallowedSubstGroup << QLatin1StringView("restriction");
     if (element->disallowedSubstitutions() & XsdElement::ExtensionConstraint)
-        disallowedSubstGroup << QLatin1String("extension");
+        disallowedSubstGroup << QLatin1StringView("extension");
     if (element->disallowedSubstitutions() & XsdElement::SubstitutionConstraint)
-        disallowedSubstGroup << QLatin1String("substitution");
+        disallowedSubstGroup << QLatin1StringView("substitution");
 
 
     qDebug() << "Name:" << element->displayName(m_namePool);
     qDebug() << "IsAbstract:" << (element->isAbstract() ? "yes" : "no");
     qDebug() << "Type:" << element->type()->displayName(m_namePool);
-    qDebug() << "DisallowedSubstitutionGroups:" << disallowedSubstGroup.join(QLatin1String("' "));
+    qDebug() << "DisallowedSubstitutionGroups:" << disallowedSubstGroup.join(QLatin1StringView("' "));
 }
 
 void XsdSchemaDebugger::dumpAttribute(const XsdAttribute::Ptr &attribute)

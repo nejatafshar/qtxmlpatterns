@@ -50,9 +50,9 @@
 #ifndef Patternist_AbstractFloatCasters_H
 #define Patternist_AbstractFloatCasters_H
 
-#include <private/qabstractfloat_p.h>
-#include <private/qatomiccaster_p.h>
-#include <private/qschemanumeric_p.h>
+#include <qabstractfloat_p.h>
+#include <qatomiccaster_p.h>
+#include <qschemanumeric_p.h>
 
 /**
  * @file

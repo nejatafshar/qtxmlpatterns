@@ -38,7 +38,7 @@
 ****************************************************************************/
 
 #include <QtCore/QFile>
-#include <QtCore/QTextCodec>
+#include <QtCore5Compat/QTextCodec>
 #include <QtCore/QTimer>
 #include <QtCore/QXmlStreamReader>
 
@@ -129,7 +129,7 @@ QNetworkReply *AccelTreeResourceLoader::load(const QUrl &uri,
         ftpNetworkLoop.exec(QEventLoop::ExcludeUserInputEvents);
     }
 
-    if (reply->networkError() != QNetworkReply::NoError) {
+    if (reply->error() != QNetworkReply::NoError) {
         const QString errorMessage(escape(reply->errorString()));
 
         /* Note, we delete reply before we exit this function with error(). */
@@ -194,10 +194,10 @@ bool AccelTreeResourceLoader::streamToReceiver(QIODevice *const dev,
                 for(int i = 0; i < len; ++i)
                 {
                     const QXmlStreamAttribute &attr = attrs.at(i);
-
+                    const auto& str = attr.value().toString();
                     receiver->attribute(np->allocateQName(attr.namespaceUri().toString(), attr.name().toString(),
                                                           attr.prefix().toString()),
-                                        attr.value());
+                                        &str);
                 }
 
                 continue;
@@ -209,10 +209,14 @@ bool AccelTreeResourceLoader::streamToReceiver(QIODevice *const dev,
             }
             case QXmlStreamReader::Characters:
             {
-                if(reader.isWhitespace())
-                    receiver->whitespaceOnly(reader.text());
-                else
-                    receiver->characters(reader.text());
+                if(reader.isWhitespace()) {
+                    const auto & str = reader.text().toString();
+                    receiver->whitespaceOnly(&str);
+                }
+                else {
+                    const auto & str = reader.text().toString();
+                    receiver->characters(&str);
+                }
 
                 continue;
             }
@@ -366,7 +370,7 @@ bool AccelTreeResourceLoader::retrieveUnparsedText(const QUrl &uri,
     /* This code is a candidate for threading. Divide and conqueror. */
     for(int i = 0; i < len; ++i)
     {
-        if(!QXmlUtils::isChar(result.at(i)))
+        if(!QXmlUtils::isChar(result.at(i).toLatin1()))
         {
             if(context)
             {
@@ -418,7 +422,7 @@ QSet<QUrl> AccelTreeResourceLoader::deviceURIs() const
 
      while (it != end)
      {
-         if(it.key().toString().startsWith(QLatin1String("tag:trolltech.com,2007:QtXmlPatterns:QIODeviceVariable:")))
+         if(it.key().toString().startsWith(QLatin1StringView("tag:trolltech.com,2007:QtXmlPatterns:QIODeviceVariable:")))
              retval.insert(it.key());
 
          ++it;

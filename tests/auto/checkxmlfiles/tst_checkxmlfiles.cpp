@@ -55,7 +55,7 @@ void tst_CheckXMLFiles::checkXMLFiles() const
     QFETCH(QString, file);
 
     QXmlQuery query;
-    query.setQuery(QLatin1String("doc-available('") + inputFileAsURI(file).toString() + QLatin1String("')"));
+    query.setQuery(QLatin1StringView("doc-available('") + inputFileAsURI(file).toString() + QLatin1StringView("')"));
     QVERIFY(query.isValid());
 
     /* We don't care about the result, we only want to ensure the files can be parsed. */
@@ -74,16 +74,16 @@ void tst_CheckXMLFiles::checkXMLFiles_data() const
 
     QStringList patterns;
     /* List possible XML files in Qt. */
-    patterns.append(QLatin1String("*.xml"));
-    patterns.append(QLatin1String("*.gccxml"));
-    patterns.append(QLatin1String("*.svg"));
-    patterns.append(QLatin1String("*.ui"));
-    patterns.append(QLatin1String("*.qrc"));
-    patterns.append(QLatin1String("*.ts"));
+    patterns.append(QLatin1StringView("*.xml"));
+    patterns.append(QLatin1StringView("*.gccxml"));
+    patterns.append(QLatin1StringView("*.svg"));
+    patterns.append(QLatin1StringView("*.ui"));
+    patterns.append(QLatin1StringView("*.qrc"));
+    patterns.append(QLatin1StringView("*.ts"));
     /* We don't do HTML files currently because so many of them in 3rd party are broken. */
-    patterns.append(QLatin1String("*.xhtml"));
+    patterns.append(QLatin1StringView("*.xhtml"));
 
-    QDirIterator it(QLatin1String(SOURCETREE), patterns, QDir::AllEntries, QDirIterator::Subdirectories);
+    QDirIterator it(QLatin1StringView(SOURCETREE), patterns, QDir::AllEntries, QDirIterator::Subdirectories);
     while(it.hasNext())
     {
         it.next();

@@ -54,13 +54,13 @@ void TestSuiteResult::toXML(XMLWriter &receiver) const
      * XML format is supported), then break out the info into getters(alternatively, combined
      * with setters, or that the class is subclassed), and access the getters instead.
      */
-    const QString organizationName          (QLatin1String("K Desktop Environment(KDE)"));
-    const QString organizationWebsite       (QLatin1String("http://www.kde.org/"));
-    const QString submittorName             (QLatin1String("Frans Englich"));
-    const QString submittorEmail            (QLatin1String("frans.englich@nokia.com"));
-    const QString implementationVersion     (QLatin1String("0.1"));
-    const QString implementationName        (QLatin1String("Patternist"));
-    const QString implementationDescription (QLatin1String(
+    const QString organizationName          (QLatin1StringView("K Desktop Environment(KDE)"));
+    const QString organizationWebsite       (QLatin1StringView("http://www.kde.org/"));
+    const QString submittorName             (QLatin1StringView("Frans Englich"));
+    const QString submittorEmail            (QLatin1StringView("frans.englich@nokia.com"));
+    const QString implementationVersion     (QLatin1StringView("0.1"));
+    const QString implementationName        (QLatin1StringView("Patternist"));
+    const QString implementationDescription (QLatin1StringView(
                                              "Patternist is an implementation written in C++ "
                                              "and with the Qt/KDE libraries. "
                                              "It is licensed under GNU LGPL and part of KDE, "
@@ -75,69 +75,69 @@ void TestSuiteResult::toXML(XMLWriter &receiver) const
     receiver.startDocument();
     /* <test-suite-result> */
     receiver.startPrefixMapping(QString(), Global::xqtsResultNS);
-    receiver.startElement(QLatin1String("test-suite-result"));
+    receiver.startElement(QLatin1StringView("test-suite-result"));
 
     /* <implementation> */
     QXmlStreamAttributes implementationAtts;
-    implementationAtts.append(QLatin1String("name"), implementationName);
-    implementationAtts.append(QLatin1String("version"), implementationVersion);
-    receiver.startElement(QLatin1String("implementation"), implementationAtts);
+    implementationAtts.append(QLatin1StringView("name"), implementationName);
+    implementationAtts.append(QLatin1StringView("version"), implementationVersion);
+    receiver.startElement(QLatin1StringView("implementation"), implementationAtts);
 
     /* <organization> */
     QXmlStreamAttributes organizationAtts;
-    organizationAtts.append(QLatin1String("name"), organizationName);
-    organizationAtts.append(QLatin1String("website"), organizationWebsite);
-    receiver.startElement(QLatin1String("organization"), organizationAtts);
+    organizationAtts.append(QLatin1StringView("name"), organizationName);
+    organizationAtts.append(QLatin1StringView("website"), organizationWebsite);
+    receiver.startElement(QLatin1StringView("organization"), organizationAtts);
 
     /* </organization> */
-    receiver.endElement(QLatin1String("organization"));
+    receiver.endElement(QLatin1StringView("organization"));
 
     /* <submittor> */
     QXmlStreamAttributes submittorAtts;
-    submittorAtts.append(QLatin1String("name"), submittorName);
-    submittorAtts.append(QLatin1String("email"), submittorEmail);
-    receiver.startElement(QLatin1String("submittor"), submittorAtts);
+    submittorAtts.append(QLatin1StringView("name"), submittorName);
+    submittorAtts.append(QLatin1StringView("email"), submittorEmail);
+    receiver.startElement(QLatin1StringView("submittor"), submittorAtts);
 
     /* </submittor> */
-    receiver.endElement(QLatin1String("submittor"));
+    receiver.endElement(QLatin1StringView("submittor"));
 
     /* <description> */
-    receiver.startElement(QLatin1String("description"));
+    receiver.startElement(QLatin1StringView("description"));
 
     /* <p> */
-    receiver.startElement(QLatin1String("p"));
+    receiver.startElement(QLatin1StringView("p"));
     receiver.characters(implementationDescription);
 
     /* </p> */
-    receiver.endElement(QLatin1String("p"));
+    receiver.endElement(QLatin1StringView("p"));
     /* </description> */
-    receiver.endElement(QLatin1String("description"));
+    receiver.endElement(QLatin1StringView("description"));
 
     /* </implementation> */
-    receiver.endElement(QLatin1String("implementation"));
+    receiver.endElement(QLatin1StringView("implementation"));
 
     /* <syntax> */
-    receiver.startElement(QLatin1String("syntax"));
-    receiver.characters(QLatin1String(QLatin1String("XQuery")));
+    receiver.startElement(QLatin1StringView("syntax"));
+    receiver.characters(QLatin1StringView(QLatin1StringView("XQuery")));
 
     /* </syntax> */
-    receiver.endElement(QLatin1String("syntax"));
+    receiver.endElement(QLatin1StringView("syntax"));
 
     /* <test-run> */
     QXmlStreamAttributes test_runAtts;
-    test_runAtts.append(QLatin1String("dateRun"), m_runDate.toString(Qt::ISODate));
-    receiver.startElement(QLatin1String("test-run"), test_runAtts);
+    test_runAtts.append(QLatin1StringView("dateRun"), m_runDate.toString(Qt::ISODate));
+    receiver.startElement(QLatin1StringView("test-run"), test_runAtts);
 
     /* <test-suite> */
     QXmlStreamAttributes test_suiteAtts;
-    test_suiteAtts.append(QLatin1String("version"), m_testSuiteVersion);
-    receiver.startElement(QLatin1String("test-suite"), test_suiteAtts);
+    test_suiteAtts.append(QLatin1StringView("version"), m_testSuiteVersion);
+    receiver.startElement(QLatin1StringView("test-suite"), test_suiteAtts);
 
     /* </test-suite> */
-    receiver.endElement(QLatin1String("test-suite"));
+    receiver.endElement(QLatin1StringView("test-suite"));
 
     /* </test-run> */
-    receiver.endElement(QLatin1String("test-run"));
+    receiver.endElement(QLatin1StringView("test-run"));
 
     /* Serialize the TestResults: tons of test-case elements. */
     const TestResult::List::const_iterator end(m_results.constEnd());
@@ -147,7 +147,7 @@ void TestSuiteResult::toXML(XMLWriter &receiver) const
         (*it)->toXML(receiver);
 
     /* </test-suite-result> */
-    receiver.endElement(QLatin1String("test-suite-result"));
+    receiver.endElement(QLatin1StringView("test-suite-result"));
     receiver.endDocument();
 }
 

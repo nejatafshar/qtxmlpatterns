@@ -51,9 +51,9 @@
 #define Patternist_TemplateMode_H
 
 #include <QtCore/QSharedData>
-#include <QXmlName>
+#include <qxmlname.h>
 
-#include <private/qtemplatepattern_p.h>
+#include <qtemplatepattern_p.h>
 
 QT_BEGIN_NAMESPACE
 

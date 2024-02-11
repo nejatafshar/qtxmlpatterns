@@ -63,10 +63,10 @@ MainWindow::MainWindow() : m_userTC(new UserTestCase()),
     setupActions();
 
     QStringList suiteHeaders;
-    suiteHeaders << QLatin1String("Name")
-                 << QLatin1String("Pass")
-                 << QLatin1String("Fail")
-                 << QLatin1String("Total");
+    suiteHeaders << QLatin1StringView("Name")
+                 << QLatin1StringView("Pass")
+                 << QLatin1StringView("Fail")
+                 << QLatin1StringView("Total");
 
     TreeSortFilter *const proxy = new TreeSortFilter(this);
     connect(searchInput,    SIGNAL(textChanged(const QString &)),
@@ -158,9 +158,9 @@ void MainWindow::on_sourceInput_textChanged()
 void MainWindow::on_actionOpen_triggered()
 {
     const QString fileName(QFileDialog::getOpenFileName(this,
-                                                        QLatin1String("Open Test Suite Catalog"),
+                                                        QLatin1StringView("Open Test Suite Catalog"),
                                                         m_previousOpenedCatalog.toLocalFile(),
-                                                        QLatin1String("Test Suite Catalog file (*.xml)")));
+                                                        QLatin1StringView("Test Suite Catalog file (*.xml)")));
 
     /* "If the user presses Cancel, it returns a null string." */
     if(fileName.isNull())
@@ -173,9 +173,9 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::on_actionOpenXSLTSCatalog_triggered()
 {
     const QString fileName(QFileDialog::getOpenFileName(this,
-                                                        QLatin1String("Open Test Suite Catalog"),
+                                                        QLatin1StringView("Open Test Suite Catalog"),
                                                         m_previousOpenedCatalog.toLocalFile(),
-                                                        QLatin1String("Test Suite Catalog file (*.xml)")));
+                                                        QLatin1StringView("Test Suite Catalog file (*.xml)")));
 
     /* "If the user presses Cancel, it returns a null string." */
     if(fileName.isNull())
@@ -188,9 +188,9 @@ void MainWindow::on_actionOpenXSLTSCatalog_triggered()
 void MainWindow::on_actionOpenXSDTSCatalog_triggered()
 {
     const QString fileName(QFileDialog::getOpenFileName(this,
-                                                        QLatin1String("Open Test Suite Catalog"),
+                                                        QLatin1StringView("Open Test Suite Catalog"),
                                                         m_previousOpenedCatalog.toLocalFile(),
-                                                        QLatin1String("Test Suite Catalog file (*.xml)")));
+                                                        QLatin1StringView("Test Suite Catalog file (*.xml)")));
 
     /* "If the user presses Cancel, it returns a null string." */
     if(fileName.isNull())
@@ -214,7 +214,7 @@ void MainWindow::openCatalog(const QUrl &fileName,
     {
         if(reportError)
         {
-            QMessageBox::information(this, QLatin1String("Failed to load catalog file"),
+            QMessageBox::information(this, QLatin1StringView("Failed to load catalog file"),
                                      errorMsg, QMessageBox::Ok);
         }
 
@@ -230,7 +230,7 @@ void MainWindow::openCatalog(const QUrl &fileName,
     sourceTab->setCurrentIndex(0);
 
     setWindowTitle(QCoreApplication::applicationName() +
-                   QLatin1String(" -- ") +
+                   QLatin1StringView(" -- ") +
                    QFileInfo(fileName.toLocalFile()).fileName());
 
     /* @p reportError is set when not auto-loading on startup, and
@@ -289,15 +289,15 @@ void MainWindow::readSettings()
 {
     QSettings settings;
 
-    settings.beginGroup(QLatin1String("MainWindow"));
-    restoreState(settings.value(QLatin1String("state")).toByteArray(), Global::versionNumber);
-    resize(settings.value(QLatin1String("size"), QSize(400, 400)).toSize());
-    move(settings.value(QLatin1String("pos"), QPoint(200, 200)).toPoint());
-    m_previousOpenedCatalog = settings.value(QLatin1String("PreviousOpenedCatalogFile")).toUrl();
-    focusURI->setText(settings.value(QLatin1String("focusURI")).toString());
-    isXSLT20->setChecked(settings.value(QLatin1String("isXSLT20")).toBool());
-    compileOnly->setChecked(settings.value(QLatin1String("compileOnly")).toBool());
-    m_currentSuiteType = (TestSuite::SuiteType)settings.value(QLatin1String("PreviousSuiteType"), isXSLT20->isChecked() ? TestSuite::XsltSuite : TestSuite::XQuerySuite).toInt();
+    settings.beginGroup(QLatin1StringView("MainWindow"));
+    restoreState(settings.value(QLatin1StringView("state")).toByteArray(), Global::versionNumber);
+    resize(settings.value(QLatin1StringView("size"), QSize(400, 400)).toSize());
+    move(settings.value(QLatin1StringView("pos"), QPoint(200, 200)).toPoint());
+    m_previousOpenedCatalog = settings.value(QLatin1StringView("PreviousOpenedCatalogFile")).toUrl();
+    focusURI->setText(settings.value(QLatin1StringView("focusURI")).toString());
+    isXSLT20->setChecked(settings.value(QLatin1StringView("isXSLT20")).toBool());
+    compileOnly->setChecked(settings.value(QLatin1StringView("compileOnly")).toBool());
+    m_currentSuiteType = (TestSuite::SuiteType)settings.value(QLatin1StringView("PreviousSuiteType"), isXSLT20->isChecked() ? TestSuite::XsltSuite : TestSuite::XQuerySuite).toInt();
 
     /* Open the previously opened catalog. */
     if(!m_previousOpenedCatalog.isEmpty())
@@ -305,14 +305,14 @@ void MainWindow::readSettings()
         openCatalog(m_previousOpenedCatalog, false, m_currentSuiteType);
     }
 
-    sourceInput->setPlainText(settings.value(QLatin1String("sourceInput")).toString());
+    sourceInput->setPlainText(settings.value(QLatin1StringView("sourceInput")).toString());
     testResultView->resultViewSelection->setCurrentIndex(
-            settings.value(QLatin1String("ResultViewMethod"), 0).toInt());
+            settings.value(QLatin1StringView("ResultViewMethod"), 0).toInt());
     testResultView->outputStack->setCurrentIndex(settings.value(
-            QLatin1String("ResultViewMethod"), 0).toInt());
+            QLatin1StringView("ResultViewMethod"), 0).toInt());
 
     /* Restore the selected test case/group. */
-    const QStringList rows(settings.value(QLatin1String("SelectedTestSuiteRow"),
+    const QStringList rows(settings.value(QLatin1StringView("SelectedTestSuiteRow"),
                                           QString())
                            .toString().split(QLatin1Char(',')));
 
@@ -340,7 +340,7 @@ void MainWindow::readSettings()
 
     /* Do it here. In this way the user-entered test case gets selected, if that tab
      * was previously used. */
-    sourceTab->setCurrentIndex(settings.value(QLatin1String("SelectedTab"), 0).toInt());
+    sourceTab->setCurrentIndex(settings.value(QLatin1StringView("SelectedTab"), 0).toInt());
     on_sourceTab_currentChanged(sourceTab->currentIndex());
 
     settings.endGroup();
@@ -350,21 +350,21 @@ void MainWindow::writeSettings()
 {
     QSettings settings;
 
-    settings.beginGroup(QLatin1String("MainWindow"));
-    settings.setValue(QLatin1String("state"), saveState(Global::versionNumber));
-    settings.setValue(QLatin1String("pos"), pos());
-    settings.setValue(QLatin1String("size"), size());
-    settings.setValue(QLatin1String("sourceInput"), sourceInput->toPlainText());
-    settings.setValue(QLatin1String("PreviousOpenedCatalogFile"), m_previousOpenedCatalog);
-    settings.setValue(QLatin1String("PreviousSuiteType"), m_currentSuiteType);
-    settings.setValue(QLatin1String("SelectedTab"), sourceTab->currentIndex());
-    settings.setValue(QLatin1String("ResultViewMethod"),
+    settings.beginGroup(QLatin1StringView("MainWindow"));
+    settings.setValue(QLatin1StringView("state"), saveState(Global::versionNumber));
+    settings.setValue(QLatin1StringView("pos"), pos());
+    settings.setValue(QLatin1StringView("size"), size());
+    settings.setValue(QLatin1StringView("sourceInput"), sourceInput->toPlainText());
+    settings.setValue(QLatin1StringView("PreviousOpenedCatalogFile"), m_previousOpenedCatalog);
+    settings.setValue(QLatin1StringView("PreviousSuiteType"), m_currentSuiteType);
+    settings.setValue(QLatin1StringView("SelectedTab"), sourceTab->currentIndex());
+    settings.setValue(QLatin1StringView("ResultViewMethod"),
                       testResultView->resultViewSelection->currentIndex());
-    settings.setValue(QLatin1String("focusURI"),
+    settings.setValue(QLatin1StringView("focusURI"),
                       focusURI->text());
-    settings.setValue(QLatin1String("isXSLT20"),
+    settings.setValue(QLatin1StringView("isXSLT20"),
                       isXSLT20->isChecked());
-    settings.setValue(QLatin1String("compileOnly"),
+    settings.setValue(QLatin1StringView("compileOnly"),
                       compileOnly->isChecked());
 
     /* Store the selected test case/group. */
@@ -385,7 +385,7 @@ void MainWindow::writeSettings()
         }
         while(true);
 
-        settings.setValue(QLatin1String("SelectedTestSuiteRow"), result);
+        settings.setValue(QLatin1StringView("SelectedTestSuiteRow"), result);
     }
 
     settings.endGroup();
@@ -395,15 +395,15 @@ void MainWindow::setCurrentFile(const QUrl &f)
 {
     const QString fileName(f.toLocalFile());
     QSettings settings;
-    settings.beginGroup(QLatin1String("MainWindow"));
-    QStringList files(settings.value(QLatin1String("RecentFileList")).toStringList());
+    settings.beginGroup(QLatin1StringView("MainWindow"));
+    QStringList files(settings.value(QLatin1StringView("RecentFileList")).toStringList());
 
     files.removeAll(fileName);
     files.prepend(fileName);
     while(files.size() > MaximumRecentFiles)
         files.removeLast();
 
-    settings.setValue(QLatin1String("RecentFileList"), files);
+    settings.setValue(QLatin1StringView("RecentFileList"), files);
     settings.endGroup();
 
     updateRecentFileActions();
@@ -412,8 +412,8 @@ void MainWindow::setCurrentFile(const QUrl &f)
 void MainWindow::updateRecentFileActions()
 {
     QSettings settings;
-    settings.beginGroup(QLatin1String("MainWindow"));
-    const QStringList files(settings.value(QLatin1String("RecentFileList")).toStringList());
+    settings.beginGroup(QLatin1StringView("MainWindow"));
+    const QStringList files(settings.value(QLatin1StringView("RecentFileList")).toStringList());
     settings.endGroup();
 
     const int numRecentFiles = qMin(files.size(), static_cast<int>(MaximumRecentFiles));
@@ -458,11 +458,11 @@ void MainWindow::setupActions()
 
 void MainWindow::setupMenu()
 {
-    QMenu *const menFile = findChild<QMenu *>(QLatin1String("menuFile"));
+    QMenu *const menFile = findChild<QMenu *>(QLatin1StringView("menuFile"));
     Q_ASSERT(menFile);
-    QAction *const actOpen = findChild<QAction *>(QLatin1String("actionExecute"));
+    QAction *const actOpen = findChild<QAction *>(QLatin1StringView("actionExecute"));
     Q_ASSERT(actOpen);
-    QMenu *const recent = new QMenu(QLatin1String("O&pen Recent"), this);
+    QMenu *const recent = new QMenu(QLatin1StringView("O&pen Recent"), this);
 
     menFile->insertMenu(actOpen, recent);
     menFile->insertSeparator(actOpen);
@@ -472,7 +472,7 @@ void MainWindow::setupMenu()
 
     updateRecentFileActions();
 
-    QMenu *const menWindows = findChild<QMenu *>(QLatin1String("menuWindows"));
+    QMenu *const menWindows = findChild<QMenu *>(QLatin1StringView("menuWindows"));
     Q_ASSERT(menWindows);
 
     menWindows->addAction(testCaseView->toggleViewAction());

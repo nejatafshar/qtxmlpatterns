@@ -50,22 +50,22 @@ QString Cardinality::displayName(const CustomizeDisplayName explain) const
     if(explain == IncludeExplanation)
     {
         if(isEmpty())
-            return QString(QtXmlPatterns::tr("empty") + QLatin1String("(\"empty-sequence()\")"));
+            return QString(QtXmlPatterns::tr("empty") + QLatin1StringView("(\"empty-sequence()\")"));
         else if(isZeroOrOne())
-            return QString(QtXmlPatterns::tr("zero or one") + QLatin1String("(\"?\")"));
+            return QString(QtXmlPatterns::tr("zero or one") + QLatin1StringView("(\"?\")"));
         else if(isExactlyOne())
             return QString(QtXmlPatterns::tr("exactly one"));
         else if(isOneOrMore())
-            return QString(QtXmlPatterns::tr("one or more") + QLatin1String("(\"+\")"));
+            return QString(QtXmlPatterns::tr("one or more") + QLatin1StringView("(\"+\")"));
         else
-            return QString(QtXmlPatterns::tr("zero or more") + QLatin1String("(\"*\")"));
+            return QString(QtXmlPatterns::tr("zero or more") + QLatin1StringView("(\"*\")"));
     }
     else
     {
         Q_ASSERT(explain == ExcludeExplanation);
 
         if(isEmpty() || isZeroOrOne())
-            return QLatin1String("?");
+            return QLatin1StringView("?");
         else if(isExactlyOne())
             return QString();
         else if(isExact())
@@ -88,7 +88,7 @@ QString Cardinality::displayName(const CustomizeDisplayName explain) const
                 /* We have a range. We use a RegExp-like syntax. */
                 return QString(QLatin1Char('{'))    +
                        QString::number(minimum())   +
-                       QLatin1String(", ")          +
+                       QLatin1StringView(", ")          +
                        QString::number(maximum())   +
                        QLatin1Char('}');
 

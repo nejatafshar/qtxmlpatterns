@@ -50,10 +50,10 @@
 #ifndef Patternist_XsdIdcHelper_H
 #define Patternist_XsdIdcHelper_H
 
-#include <private/qreportcontext_p.h>
-#include <private/qschematype_p.h>
+#include <qreportcontext_p.h>
+#include <qschematype_p.h>
 
-#include <QtXmlPatterns/QXmlItem>
+#include <qabstractxmlnodemodel.h>
 
 QT_BEGIN_NAMESPACE
 

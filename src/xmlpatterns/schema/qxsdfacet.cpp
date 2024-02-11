@@ -101,21 +101,21 @@ bool XsdFacet::fixed() const
 QString XsdFacet::typeName(Type type)
 {
     switch (type) {
-        case Length: return QLatin1String("length"); break;
-        case MinimumLength: return QLatin1String("minLength"); break;
-        case MaximumLength: return QLatin1String("maxLength"); break;
-        case Pattern: return QLatin1String("pattern"); break;
-        case WhiteSpace: return QLatin1String("whiteSpace"); break;
-        case MaximumInclusive: return QLatin1String("maxInclusive"); break;
-        case MaximumExclusive: return QLatin1String("maxExclusive"); break;
-        case MinimumInclusive: return QLatin1String("minInclusive"); break;
-        case MinimumExclusive: return QLatin1String("minExclusive"); break;
-        case TotalDigits: return QLatin1String("totalDigits"); break;
-        case FractionDigits: return QLatin1String("fractionDigits"); break;
-        case Enumeration: return QLatin1String("enumeration"); break;
-        case Assertion: return QLatin1String("assertion"); break;
+        case Length: return QLatin1StringView("length"); break;
+        case MinimumLength: return QLatin1StringView("minLength"); break;
+        case MaximumLength: return QLatin1StringView("maxLength"); break;
+        case Pattern: return QLatin1StringView("pattern"); break;
+        case WhiteSpace: return QLatin1StringView("whiteSpace"); break;
+        case MaximumInclusive: return QLatin1StringView("maxInclusive"); break;
+        case MaximumExclusive: return QLatin1StringView("maxExclusive"); break;
+        case MinimumInclusive: return QLatin1StringView("minInclusive"); break;
+        case MinimumExclusive: return QLatin1StringView("minExclusive"); break;
+        case TotalDigits: return QLatin1StringView("totalDigits"); break;
+        case FractionDigits: return QLatin1StringView("fractionDigits"); break;
+        case Enumeration: return QLatin1StringView("enumeration"); break;
+        case Assertion: return QLatin1StringView("assertion"); break;
         case None: // fall through
-        default: return QLatin1String("none"); break;
+        default: return QLatin1StringView("none"); break;
     }
 }
 

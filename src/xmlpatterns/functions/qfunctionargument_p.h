@@ -53,8 +53,8 @@
 #include <QList>
 #include <QSharedData>
 
-#include <QXmlName>
-#include <private/qsequencetype_p.h>
+#include <qxmlname.h>
+#include <qsequencetype_p.h>
 
 QT_BEGIN_NAMESPACE
 

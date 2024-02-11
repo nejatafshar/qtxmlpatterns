@@ -54,7 +54,7 @@ void tst_QAbstractXmlReceiver::attributeQXmlNameStringRef() const
 {
     TestAbstractXmlReceiver receiver;
 
-    const QString input(QLatin1String("input"));
+    const QString input(QLatin1StringView("input"));
 
     QCOMPARE(receiver.receivedFromAttribute, QString());
     receiver.attribute(QXmlName(), QStringRef(&input));
@@ -65,7 +65,7 @@ void tst_QAbstractXmlReceiver::charactersStringRef() const
 {
     TestAbstractXmlReceiver receiver;
 
-    const QString input(QLatin1String("input"));
+    const QString input(QLatin1StringView("input"));
 
     QCOMPARE(receiver.receivedFromCharacters, QString());
     receiver.characters(QStringRef(&input));

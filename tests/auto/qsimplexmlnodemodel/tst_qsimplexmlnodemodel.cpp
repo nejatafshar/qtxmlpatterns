@@ -60,9 +60,9 @@ void tst_QSimpleXmlNodeModel::namePool() const
 {
     /* Check that the name pool we pass in, is what actually is returned. */
     QXmlNamePool np;
-    const QXmlName name(np, QLatin1String("localName"),
-                            QLatin1String("http://example.com/XYZ"),
-                            QLatin1String("prefix432"));
+    const QXmlName name(np, QLatin1StringView("localName"),
+                            QLatin1StringView("http://example.com/XYZ"),
+                            QLatin1StringView("prefix432"));
     TestSimpleNodeModel model(np);
     const QXmlNamePool np2(model.namePool());
 
@@ -134,8 +134,8 @@ void tst_QSimpleXmlNodeModel::stringValue() const
     TypedModel model(np);
 
     QXmlQuery query(np);
-    query.bindVariable(QLatin1String("node"), model.rootIndex());
-    query.setQuery(QLatin1String("declare variable $node external;"
+    query.bindVariable(QLatin1StringView("node"), model.rootIndex());
+    query.setQuery(QLatin1StringView("declare variable $node external;"
                                  "string($node), data($node)"));
 
     QByteArray output;

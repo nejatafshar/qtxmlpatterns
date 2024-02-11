@@ -52,9 +52,9 @@
 
 #include <QSharedData>
 
-#include <private/qexpression_p.h>
-#include <private/qpatternistlocale_p.h>
-#include <private/qvariablereference_p.h>
+#include <qexpression_p.h>
+#include <qpatternistlocale_p.h>
+#include <qvariablereference_p.h>
 
 QT_BEGIN_NAMESPACE
 

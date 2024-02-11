@@ -65,8 +65,8 @@
 #include "qxsdschemadebugger_p.h"
 
 #include <QtCore/QFile>
-#include <QtXmlPatterns/QXmlQuery>
-#include <QtXmlPatterns/QXmlResultItems>
+#include <qxmlquery.h>
+#include <qxmlresultitems.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -97,13 +97,13 @@ XsdValidatingInstanceReader::XsdValidatingInstanceReader(XsdValidatedXmlNodeMode
     : XsdInstanceReader(model, context)
     , m_model(model)
     , m_namePool(m_context->namePool())
-    , m_xsiNilName(m_namePool->allocateQName(CommonNamespaces::XSI, QLatin1String("nil")))
-    , m_xsiTypeName(m_namePool->allocateQName(CommonNamespaces::XSI, QLatin1String("type")))
-    , m_xsiSchemaLocationName(m_namePool->allocateQName(CommonNamespaces::XSI, QLatin1String("schemaLocation")))
-    , m_xsiNoNamespaceSchemaLocationName(m_namePool->allocateQName(CommonNamespaces::XSI, QLatin1String("noNamespaceSchemaLocation")))
+    , m_xsiNilName(m_namePool->allocateQName(CommonNamespaces::XSI, QLatin1StringView("nil")))
+    , m_xsiTypeName(m_namePool->allocateQName(CommonNamespaces::XSI, QLatin1StringView("type")))
+    , m_xsiSchemaLocationName(m_namePool->allocateQName(CommonNamespaces::XSI, QLatin1StringView("schemaLocation")))
+    , m_xsiNoNamespaceSchemaLocationName(m_namePool->allocateQName(CommonNamespaces::XSI, QLatin1StringView("noNamespaceSchemaLocation")))
     , m_documentUri(documentUri)
 {
-    m_idRefsType = m_context->schemaTypeFactory()->createSchemaType(m_namePool->allocateQName(CommonNamespaces::WXS, QLatin1String("IDREFS")));
+    m_idRefsType = m_context->schemaTypeFactory()->createSchemaType(m_namePool->allocateQName(CommonNamespaces::WXS, QLatin1StringView("IDREFS")));
 }
 
 void XsdValidatingInstanceReader::addSchema(const XsdSchema::Ptr &schema, const QUrl &locationUrl)
@@ -167,7 +167,7 @@ bool XsdValidatingInstanceReader::read()
 
     // check IDREF occurrences
     const QStringList ids = m_model->idIdRefBindingIds();
-    for (const QString &id : qAsConst(m_idRefs)) {
+    for (const QString &id : std::as_const(m_idRefs)) {
         if (!ids.contains(id)) {
             error(QtXmlPatterns::tr("There is one IDREF value with no corresponding ID: %1.").arg(formatKeyword(id)));
             return false;
@@ -210,7 +210,7 @@ bool XsdValidatingInstanceReader::validate(bool &hasStateMachine, XsdElement::Pt
     // first check if a custom schema is defined
     if (hasAttribute(m_xsiSchemaLocationName)) {
         const QString schemaLocation = attribute(m_xsiSchemaLocationName);
-        const QStringList parts = schemaLocation.split(QLatin1Char(' '), QString::SkipEmptyParts);
+        const QStringList parts = schemaLocation.split(QLatin1Char(' '), Qt::SkipEmptyParts);
         if ((parts.count()%2) == 1) {
             error(QtXmlPatterns::tr("%1 contains invalid data.").arg(formatKeyword(m_namePool, m_xsiSchemaLocationName)));
             return false;
@@ -451,7 +451,7 @@ bool XsdValidatingInstanceReader::validateElement(const XsdElement::Ptr &declara
             const QString value = attribute(m_xsiNilName);
             const Boolean::Ptr nil = Boolean::fromLexical(value);
             if (nil->hasError()) {
-                error(QtXmlPatterns::tr("Attribute %1 contains invalid data: %2").arg(formatKeyword(QLatin1String("nil."))).arg(formatData(value)));
+                error(QtXmlPatterns::tr("Attribute %1 contains invalid data: %2").arg(formatKeyword(QLatin1StringView("nil."))).arg(formatData(value)));
                 return false;
             }
 
@@ -595,7 +595,7 @@ bool XsdValidatingInstanceReader::validateElementSimpleType(const XsdElement::Pt
     }
 
     if (m_idRefsType->wxsTypeMatches(type)) {
-        const QStringList idRefs = actualValue.split(QLatin1Char(' '), QString::SkipEmptyParts);
+        const QStringList idRefs = actualValue.split(QLatin1Char(' '), Qt::SkipEmptyParts);
         for (int i = 0; i < idRefs.count(); ++i) {
             m_idRefs.insert(idRefs.at(i));
         }
@@ -853,7 +853,7 @@ bool XsdValidatingInstanceReader::validateAttribute(const XsdAttributeUse::Ptr &
     }
 
     if (m_idRefsType->wxsTypeMatches(declaration->attribute()->type())) {
-        const QStringList idRefs = actualValue.split(QLatin1Char(' '), QString::SkipEmptyParts);
+        const QStringList idRefs = actualValue.split(QLatin1Char(' '), Qt::SkipEmptyParts);
         for (int i = 0; i < idRefs.count(); ++i)
             m_idRefs.insert(idRefs.at(i));
     } else if (BuiltinTypes::xsIDREF->wxsTypeMatches(declaration->attribute()->type())) {
@@ -899,7 +899,7 @@ bool XsdValidatingInstanceReader::validateAttribute(const XsdAttribute::Ptr &dec
     }
 
     if (m_idRefsType->wxsTypeMatches(declaration->type())) {
-        const QStringList idRefs = actualValue.split(QLatin1Char(' '), QString::SkipEmptyParts);
+        const QStringList idRefs = actualValue.split(QLatin1Char(' '), Qt::SkipEmptyParts);
         for (int i = 0; i < idRefs.count(); ++i)
             m_idRefs.insert(idRefs.at(i));
     } else if (BuiltinTypes::xsIDREF->wxsTypeMatches(declaration->type())) {
@@ -1149,7 +1149,7 @@ bool XsdValidatingInstanceReader::selectNodeSets(const XsdElement::Ptr&, const Q
                 } else {
                     if (BuiltinTypes::xsAnySimpleType->name(m_namePool) == type->name(m_namePool)) {
                         targetType = BuiltinTypes::xsString;
-                        value = QLatin1String("___anySimpleType_value");
+                        value = QLatin1StringView("___anySimpleType_value");
                     }
                 }
 
@@ -1175,7 +1175,7 @@ bool XsdValidatingInstanceReader::selectNodeSets(const XsdElement::Ptr&, const Q
     }
 
     // copy all items from target node set to qualified node set, that have no empty fields
-    for (const TargetNode &node : qAsConst(targetNodeSet)) {
+    for (const TargetNode &node : std::as_const(targetNodeSet)) {
         if (node.emptyFieldsCount() == 0)
             qualifiedNodeSet.insert(node);
     }

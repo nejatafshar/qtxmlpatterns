@@ -41,7 +41,7 @@
 #define QABSTRACTURIRESOLVER_H
 
 #include <QtCore/QObject>
-#include <QtXmlPatterns/qtxmlpatternsglobal.h>
+#include <qtxmlpatternsglobal.h>
 
 QT_BEGIN_NAMESPACE
 

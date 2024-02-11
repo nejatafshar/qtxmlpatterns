@@ -314,7 +314,7 @@ bool QXmlName::operator!=(const QXmlName &other) const
  Computes a hash key from the local name and the namespace
  URI in \a name. The prefix in \a name is not used in the computation.
  */
-uint qHash(const QXmlName &name)
+size_t qHash(const QXmlName &name)
 {
     return name.m_qNameCode & QXmlName::ExpandedNameMask;
 }

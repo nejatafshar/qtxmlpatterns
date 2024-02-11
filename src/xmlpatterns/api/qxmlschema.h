@@ -42,7 +42,7 @@
 
 #include <QtCore/QSharedDataPointer>
 #include <QtCore/QUrl>
-#include <QtXmlPatterns/QXmlNamePool>
+#include <qxmlnamepool.h>
 
 QT_BEGIN_NAMESPACE
 

@@ -51,10 +51,10 @@
 #define QURILOADER_P_H
 
 #include <QtNetwork/QNetworkAccessManager>
-#include <QtXmlPatterns/QXmlName>
+#include <qxmlname.h>
 
-#include <private/qnamepool_p.h>
-#include <private/qvariableloader_p.h>
+#include <qnamepool_p.h>
+#include <qvariableloader_p.h>
 
 QT_BEGIN_NAMESPACE
 

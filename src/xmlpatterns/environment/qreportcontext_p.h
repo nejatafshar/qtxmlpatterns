@@ -51,11 +51,11 @@
 #define Patternist_ReportContext_H
 
 #include <QSharedData>
-#include <QAbstractUriResolver>
-#include <QSourceLocation>
+#include <qabstracturiresolver.h>
+#include <qsourcelocation.h>
 
-#include <private/qnamepool_p.h>
-#include <QXmlName>
+#include <qnamepool_p.h>
+#include <qxmlname.h>
 
 QT_BEGIN_NAMESPACE
 

@@ -55,7 +55,7 @@ AnySimpleType::~AnySimpleType()
 
 QXmlName AnySimpleType::name(const NamePool::Ptr &np) const
 {
-    return np->allocateQName(StandardNamespaces::xs, QLatin1String("anySimpleType"));
+    return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("anySimpleType"));
 }
 
 QString AnySimpleType::displayName(const NamePool::Ptr &np) const

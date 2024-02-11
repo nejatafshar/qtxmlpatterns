@@ -50,9 +50,9 @@
 #ifndef Patternist_AbstractFunctionFactory_H
 #define Patternist_AbstractFunctionFactory_H
 
-#include <private/qcommonnamespaces_p.h>
-#include <private/qfunctionfactory_p.h>
-#include <private/qfunctionsignature_p.h>
+#include <qcommonnamespaces_p.h>
+#include <qfunctionfactory_p.h>
+#include <qfunctionsignature_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -125,7 +125,7 @@ namespace QPatternist
 
         static inline QXmlName::LocalNameCode argument(const NamePool::Ptr &np, const char *const name)
         {
-            return np->allocateLocalName(QLatin1String(name));
+            return np->allocateLocalName(QLatin1StringView(name));
         }
 
         FunctionSignature::Hash m_signatures;

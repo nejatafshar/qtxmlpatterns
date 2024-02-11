@@ -50,12 +50,12 @@
 #ifndef Patternist_AtomicType_H
 #define Patternist_AtomicType_H
 
-#include <private/qanysimpletype_p.h>
-#include <private/qatomiccasterlocator_p.h>
-#include <private/qatomiccomparatorlocator_p.h>
-#include <private/qatomicmathematicianlocator_p.h>
-#include <private/qatomictypedispatch_p.h>
-#include <private/qitemtype_p.h>
+#include <qanysimpletype_p.h>
+#include <qatomiccasterlocator_p.h>
+#include <qatomiccomparatorlocator_p.h>
+#include <qatomicmathematicianlocator_p.h>
+#include <qatomictypedispatch_p.h>
+#include <qitemtype_p.h>
 
 QT_BEGIN_NAMESPACE
 

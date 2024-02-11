@@ -50,8 +50,8 @@
 #ifndef Patternist_NodeFNs_H
 #define Patternist_NodeFNs_H
 
-#include <private/qfunctioncall_p.h>
-#include <private/qcastingplatform_p.h>
+#include <qfunctioncall_p.h>
+#include <qcastingplatform_p.h>
 
 /**
  * @file

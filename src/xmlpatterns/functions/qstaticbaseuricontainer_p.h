@@ -52,7 +52,7 @@
 
 #include <QUrl>
 
-#include <private/qfunctioncall_p.h>
+#include <qfunctioncall_p.h>
 
 QT_BEGIN_NAMESPACE
 

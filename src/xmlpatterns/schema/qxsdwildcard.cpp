@@ -45,7 +45,7 @@ using namespace QPatternist;
 
 QString XsdWildcard::absentNamespace()
 {
-    return QLatin1String("__ns_absent");
+    return QLatin1StringView("__ns_absent");
 }
 
 void XsdWildcard::NamespaceConstraint::setVariety(Variety variety)

@@ -90,7 +90,7 @@ ItemType::Ptr AtomicType::atomizedType() const
 QString AtomicType::displayName(const NamePool::Ptr &) const
 {
     /* A bit faster than calling name()->displayName() */
-    return QLatin1String("xs:anyAtomicType");
+    return QLatin1StringView("xs:anyAtomicType");
 }
 
 bool AtomicType::isNodeType() const

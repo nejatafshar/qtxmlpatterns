@@ -53,9 +53,9 @@
 #include <QtCore/QPair>
 #include <QtCore/QStack>
 
-#include <private/qabstractxmlforwarditerator_p.h>
-#include <private/qabstractxmlpullprovider_p.h>
-#include <private/qitem_p.h>
+#include <qabstractxmlforwarditerator_p.h>
+#include <qabstractxmlpullprovider_p.h>
+#include <qitem_p.h>
 
 QT_BEGIN_NAMESPACE
 

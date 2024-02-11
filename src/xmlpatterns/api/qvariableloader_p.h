@@ -51,13 +51,18 @@
 #define PATTERNIST_VARIABLELOADER_P_H
 
 #include <QtCore/QSet>
-#include <QtXmlPatterns/QXmlQuery>
+#include <qxmlquery.h>
 #include <QtDebug>
 
-#include <private/qdynamiccontext_p.h>
-#include <private/qexternalvariableloader_p.h>
+#include <qdynamiccontext_p.h>
+#include <qexternalvariableloader_p.h>
 
 QT_BEGIN_NAMESPACE
+
+#ifndef OPAQUE_PTR_QIODevice
+#define OPAQUE_PTR_QIODevice
+Q_DECLARE_OPAQUE_POINTER(QIODevice*)
+#endif // OPAQUE_PTR_QIODevice
 
 namespace QPatternist
 {

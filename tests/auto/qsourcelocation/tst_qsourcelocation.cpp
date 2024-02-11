@@ -92,12 +92,12 @@ void tst_QSourceLocation::copyConstructor() const
         QSourceLocation val;
         val.setLine(5);
         val.setColumn(600);
-        val.setUri(QUrl(QLatin1String("http://example.com/")));
+        val.setUri(QUrl(QLatin1StringView("http://example.com/")));
 
         QSourceLocation copy(val);
         QCOMPARE(copy.line(), qint64(5));
         QCOMPARE(copy.column(), qint64(600));
-        QCOMPARE(copy.uri(), QUrl(QLatin1String("http://example.com/")));
+        QCOMPARE(copy.uri(), QUrl(QLatin1StringView("http://example.com/")));
     }
 
     {
@@ -110,9 +110,9 @@ void tst_QSourceLocation::copyConstructor() const
 
 void tst_QSourceLocation::valueConstructor() const
 {
-    const QSourceLocation sl(QUrl(QLatin1String("http://example.com/")), 5, 4);
+    const QSourceLocation sl(QUrl(QLatin1StringView("http://example.com/")), 5, 4);
 
-    QCOMPARE(sl.uri(), QUrl(QLatin1String("http://example.com/")));
+    QCOMPARE(sl.uri(), QUrl(QLatin1StringView("http://example.com/")));
     QCOMPARE(sl.line(), qint64(5));
     QCOMPARE(sl.column(), qint64(4));
 }
@@ -120,9 +120,9 @@ void tst_QSourceLocation::valueConstructor() const
 void tst_QSourceLocation::valueConstructorDefaultArguments() const
 {
     /* The line and column arguments are optional. */
-    const QSourceLocation sl(QUrl(QLatin1String("http://example.com/")));
+    const QSourceLocation sl(QUrl(QLatin1StringView("http://example.com/")));
 
-    QCOMPARE(sl.uri(), QUrl(QLatin1String("http://example.com/")));
+    QCOMPARE(sl.uri(), QUrl(QLatin1StringView("http://example.com/")));
     QCOMPARE(sl.line(), qint64(-1));
     QCOMPARE(sl.column(), qint64(-1));
 }
@@ -146,14 +146,14 @@ void tst_QSourceLocation::assignmentOperator() const
         QSourceLocation val;
         val.setLine(3);
         val.setColumn(4);
-        val.setUri(QUrl(QLatin1String("http://example.com/2")));
+        val.setUri(QUrl(QLatin1StringView("http://example.com/2")));
 
         QSourceLocation assigned;
         assigned = val;
 
         QCOMPARE(assigned.line(), qint64(3));
         QCOMPARE(assigned.column(), qint64(4));
-        QCOMPARE(assigned.uri(), QUrl(QLatin1String("http://example.com/2")));
+        QCOMPARE(assigned.uri(), QUrl(QLatin1StringView("http://example.com/2")));
     }
 
     /* Assign to modified object. */
@@ -161,18 +161,18 @@ void tst_QSourceLocation::assignmentOperator() const
         QSourceLocation val;
         val.setLine(3);
         val.setColumn(4);
-        val.setUri(QUrl(QLatin1String("http://example.com/2")));
+        val.setUri(QUrl(QLatin1StringView("http://example.com/2")));
 
         QSourceLocation assigned;
         assigned.setLine(700);
         assigned.setColumn(4000);
-        assigned.setUri(QUrl(QLatin1String("http://example.com/3")));
+        assigned.setUri(QUrl(QLatin1StringView("http://example.com/3")));
 
         assigned = val;
 
         QCOMPARE(assigned.line(), qint64(3));
         QCOMPARE(assigned.column(), qint64(4));
-        QCOMPARE(assigned.uri(), QUrl(QLatin1String("http://example.com/2")));
+        QCOMPARE(assigned.uri(), QUrl(QLatin1StringView("http://example.com/2")));
     }
 }
 
@@ -224,7 +224,7 @@ void tst_QSourceLocation::equalnessOperator_data() const
 
     {
         QSourceLocation modified;
-        modified.setUri(QUrl(QLatin1String("http://example.com/")));
+        modified.setUri(QUrl(QLatin1StringView("http://example.com/")));
 
         QTest::newRow("Default constructed, against line-modified")
             << QSourceLocation()
@@ -234,7 +234,7 @@ void tst_QSourceLocation::equalnessOperator_data() const
 
     {
         QSourceLocation modified;
-        modified.setUri(QUrl(QLatin1String("http://example.com/")));
+        modified.setUri(QUrl(QLatin1StringView("http://example.com/")));
         modified.setLine(5);
         modified.setColumn(4);
 
@@ -301,7 +301,7 @@ void tst_QSourceLocation::isNull() const
 
     {
         QSourceLocation def3;
-        def3.setUri(QUrl(QLatin1String("http://example.com/")));
+        def3.setUri(QUrl(QLatin1StringView("http://example.com/")));
         QVERIFY(!def3.isNull());
     }
 }
@@ -323,8 +323,8 @@ void tst_QSourceLocation::setColumn() const
 void tst_QSourceLocation::setUri() const
 {
     QSourceLocation sl;
-    sl.setUri(QUrl(QLatin1String("http://example.com/")));
-    QCOMPARE(sl.uri(), QUrl(QLatin1String("http://example.com/")));
+    sl.setUri(QUrl(QLatin1StringView("http://example.com/")));
+    QCOMPARE(sl.uri(), QUrl(QLatin1StringView("http://example.com/")));
 }
 
 void tst_QSourceLocation::withinQVariant() const
@@ -360,7 +360,7 @@ void tst_QSourceLocation::debugStream_data() const
     }
 
     {
-        QSourceLocation location(QUrl(QLatin1String("http://example.com/")), 4, 5);
+        QSourceLocation location(QUrl(QLatin1StringView("http://example.com/")), 4, 5);
         QTest::newRow("Properties set")
             << location
             << QString::fromLatin1("QSourceLocation( QUrl(\"http://example.com/\") , line: 4 , column: 5 ) ");

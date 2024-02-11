@@ -98,18 +98,22 @@ QXmlStreamReader::TokenType MaintainingReader<TokenLookupClass, LookupKey>::read
     {
         case StartElement:
         {
-            m_currentElementName = TokenLookupClass::toToken(name());
+            const auto & str = name().toString();
+            m_currentElementName = TokenLookupClass::toToken(&str);
             m_currentAttributes = attributes();
             m_hasHandledStandardAttributes = false;
 
-            if(!m_currentAttributes.hasAttribute(QLatin1String("xml:space")))
+            if(!m_currentAttributes.hasAttribute(QLatin1StringView("xml:space")))
                 m_stripWhitespace.push(m_stripWhitespace.top());
             break;
         }
         case EndElement:
-            m_currentElementName = TokenLookupClass::toToken(name());
+        {
+            const auto & str = name().toString();
+            m_currentElementName = TokenLookupClass::toToken(&str);
             m_stripWhitespace.pop();
             break;
+        }
         default:
             break;
     }
@@ -121,8 +125,9 @@ template<typename TokenLookupClass,
          typename LookupKey>
 bool MaintainingReader<TokenLookupClass, LookupKey>::isWhitespace() const
 {
+    const auto & str = text().toString();
     return QXmlStreamReader::isWhitespace()
-           || XPathHelper::isWhitespaceOnly(text());
+           || XPathHelper::isWhitespaceOnly(&str);
 }
 
 
@@ -167,7 +172,8 @@ void MaintainingReader<TokenLookupClass, LookupKey>::validateElement(const Looku
             const QXmlStreamAttribute &attr = m_currentAttributes.at(i);
             if(attr.namespaceUri().isEmpty())
             {
-                const typename TokenLookupClass::NodeName attrName(TokenLookupClass::toToken(attr.name()));
+                const auto& str = attr.name().toString();
+                const typename TokenLookupClass::NodeName attrName(TokenLookupClass::toToken(&str));
                 encounteredXSLTAtts.insert(attrName);
 
                 if(!desc.requiredAttributes.contains(attrName) &&
@@ -190,33 +196,37 @@ void MaintainingReader<TokenLookupClass, LookupKey>::validateElement(const Looku
 
                     if(totalCount == 0)
                     {
+                        const auto & str = name().toString();
                         translationString = QtXmlPatterns::tr("Attribute %1 cannot appear on the element %2. Only the standard attributes can appear.")
                                             .arg(formatKeyword(stringedName),
-                                                 formatKeyword(name()));
+                                                 formatKeyword(&str));
                     }
                     else if(totalCount == 1)
                     {
+                        const auto & str = name().toString();
                         translationString = QtXmlPatterns::tr("Attribute %1 cannot appear on the element %2. Only %3 is allowed, and the standard attributes.")
                                             .arg(formatKeyword(stringedName),
-                                                 formatKeyword(name()),
+                                                 formatKeyword(&str),
                                                  allowed.first());
                     }
                     else if(totalCount == 2)
                     {
+                        const auto & str = name().toString();
                         /* Note, allowed has already had formatKeyword() applied. */
                         translationString = QtXmlPatterns::tr("Attribute %1 cannot appear on the element %2. Allowed is %3, %4, and the standard attributes.")
                                             .arg(formatKeyword(stringedName),
-                                                 formatKeyword(name()),
+                                                 formatKeyword(&str),
                                                  allowed.first(),
                                                  allowed.last());
                     }
                     else
                     {
+                        const auto & str = name().toString();
                         /* Note, allowed has already had formatKeyword() applied. */
                         translationString = QtXmlPatterns::tr("Attribute %1 cannot appear on the element %2. Allowed is %3, and the standard attributes.")
                                             .arg(formatKeyword(stringedName),
-                                                 formatKeyword(name()),
-                                                 allowed.join(QLatin1String(", ")));
+                                                 formatKeyword(&str),
+                                                 allowed.join(QLatin1StringView(", ")));
                     }
 
                     m_context->error(translationString,
@@ -226,8 +236,9 @@ void MaintainingReader<TokenLookupClass, LookupKey>::validateElement(const Looku
             }
             else if(attr.namespaceUri() == namespaceUri())
             {
+                const auto & str = attr.name().toString();
                 m_context->error(QtXmlPatterns::tr("XSL-T attributes on XSL-T elements must be in the null namespace, not in the XSL-T namespace which %1 is.")
-                                                  .arg(formatKeyword(attr.name())),
+                                                  .arg(formatKeyword(&str)),
                                  ReportContext::XTSE0090,
                                  currentLocation());
             }
@@ -238,15 +249,17 @@ void MaintainingReader<TokenLookupClass, LookupKey>::validateElement(const Looku
 
         if(!requiredButMissing.isEmpty())
         {
+            const auto & str = name().toString();
             error(QtXmlPatterns::tr("The attribute %1 must appear on element %2.")
                              .arg(QPatternist::formatKeyword(TokenLookupClass::toString(*requiredButMissing.constBegin())),
-                                  formatKeyword(name())),
+                                  formatKeyword(&str)),
                   ReportContext::XTSE0010);
         }
     }
     else
     {
-        error(QtXmlPatterns::tr("The element with local name %1 does not exist in XSL-T.").arg(formatKeyword(name())),
+        const auto & str = name().toString();
+        error(QtXmlPatterns::tr("The element with local name %1 does not exist in XSL-T.").arg(formatKeyword(&str)),
               ReportContext::XTSE0010);
     }
 }

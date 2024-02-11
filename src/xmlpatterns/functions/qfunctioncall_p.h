@@ -50,9 +50,9 @@
 #ifndef Patternist_FunctionCall_H
 #define Patternist_FunctionCall_H
 
-#include <private/qunlimitedcontainer_p.h>
-#include <private/qfunctionsignature_p.h>
-#include <private/qxpathhelper_p.h>
+#include <qunlimitedcontainer_p.h>
+#include <qfunctionsignature_p.h>
+#include <qxpathhelper_p.h>
 
 QT_BEGIN_NAMESPACE
 

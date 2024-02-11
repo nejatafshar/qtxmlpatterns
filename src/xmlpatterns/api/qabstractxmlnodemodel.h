@@ -40,7 +40,7 @@
 #ifndef QABSTRACTXMLNODEMODEL_H
 #define QABSTRACTXMLNODEMODEL_H
 
-#include <QtXmlPatterns/QXmlName>
+#include <qxmlname.h>
 #include <QtCore/QSharedData>
 #include <QtCore/QScopedPointer>
 
@@ -58,7 +58,7 @@ class QUrl;
 class QXmlName;
 class QXmlNodeModelIndex;
 template<typename T> class QAbstractXmlForwardIterator;
-template<typename T> class QVector;
+//template<typename T> class QVector;
 
 /* The members in the namespace QPatternist are internal, not part of the public API, and
  * unsupported. Using them leads to undefined behavior. */
@@ -260,7 +260,7 @@ private:
     QPatternist::NodeIndexStorage m_storage;
 };
 
-Q_XMLPATTERNS_EXPORT uint qHash(const QXmlNodeModelIndex &index);
+Q_XMLPATTERNS_EXPORT size_t qHash(const QXmlNodeModelIndex &index);
 
 inline bool qIsForwardIteratorEnd(const QXmlNodeModelIndex &item)
 {
@@ -364,7 +364,7 @@ private:
 Q_DECLARE_TYPEINFO(QXmlNodeModelIndex, Q_MOVABLE_TYPE);
 
 template<typename T> class QAbstractXmlForwardIterator;
-class QVariant;
+#include <QtCore/qcontainerfwd.h>
 class QXmlItemPrivate;
 
 namespace QPatternist

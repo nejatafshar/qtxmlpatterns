@@ -50,8 +50,8 @@
 #ifndef Patternist_XsdAttributeUse_H
 #define Patternist_XsdAttributeUse_H
 
-#include <private/qxsdattribute_p.h>
-#include <private/qxsdattributeterm_p.h>
+#include <qxsdattribute_p.h>
+#include <qxsdattributeterm_p.h>
 
 #include <QtCore/QList>
 

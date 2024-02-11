@@ -50,8 +50,8 @@
 #ifndef Patternist_PairContainer_H
 #define Patternist_PairContainer_H
 
-#include <private/qexpression_p.h>
-#include <private/qatomictype_p.h>
+#include <qexpression_p.h>
+#include <qatomictype_p.h>
 
 QT_BEGIN_NAMESPACE
 

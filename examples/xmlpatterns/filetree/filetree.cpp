@@ -84,13 +84,13 @@ FileTree::FileTree(const QXmlNamePool& pool)
 {
     QXmlNamePool np = namePool();
     m_names.resize(7);
-    m_names[File]               = QXmlName(np, QLatin1String("file"));
-    m_names[Directory]          = QXmlName(np, QLatin1String("directory"));
-    m_names[AttributeFileName]  = QXmlName(np, QLatin1String("fileName"));
-    m_names[AttributeFilePath]  = QXmlName(np, QLatin1String("filePath"));
-    m_names[AttributeSize]      = QXmlName(np, QLatin1String("size"));
-    m_names[AttributeMIMEType]  = QXmlName(np, QLatin1String("mimeType"));
-    m_names[AttributeSuffix]    = QXmlName(np, QLatin1String("suffix"));
+    m_names[File]               = QXmlName(np, QLatin1StringView("file"));
+    m_names[Directory]          = QXmlName(np, QLatin1StringView("directory"));
+    m_names[AttributeFileName]  = QXmlName(np, QLatin1StringView("fileName"));
+    m_names[AttributeFilePath]  = QXmlName(np, QLatin1StringView("filePath"));
+    m_names[AttributeSize]      = QXmlName(np, QLatin1StringView("size"));
+    m_names[AttributeMIMEType]  = QXmlName(np, QLatin1StringView("mimeType"));
+    m_names[AttributeSuffix]    = QXmlName(np, QLatin1StringView("suffix"));
 }
 //! [2]
 
@@ -313,7 +313,7 @@ QXmlName FileTree::name(const QXmlNodeModelIndex &node) const
 QXmlNodeModelIndex FileTree::root(const QXmlNodeModelIndex &node) const
 {
     Q_UNUSED(node);
-    return toNodeIndex(QFileInfo(QLatin1String("/")));
+    return toNodeIndex(QFileInfo(QLatin1StringView("/")));
 }
 
 /*!
@@ -343,7 +343,7 @@ QVariant FileTree::typedValue(const QXmlNodeModelIndex &node) const
             {
                 /* We don't have any MIME detection code currently, so return
                  * the most generic one. */
-                return QLatin1String("application/octet-stream");
+                return QLatin1StringView("application/octet-stream");
             }
         case AttributeSuffix:
             return fi.suffix();

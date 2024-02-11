@@ -50,7 +50,7 @@
 #ifndef Patternist_RangeIterator_H
 #define Patternist_RangeIterator_H
 
-#include <private/qitem_p.h>
+#include <qitem_p.h>
 
 QT_BEGIN_NAMESPACE
 

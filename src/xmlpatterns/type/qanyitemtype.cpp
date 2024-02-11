@@ -62,7 +62,7 @@ bool AnyItemType::xdtTypeMatches(const ItemType::Ptr &) const
 
 QString AnyItemType::displayName(const NamePool::Ptr &) const
 {
-    return QLatin1String("item()");
+    return QLatin1StringView("item()");
 }
 
 ItemType::Ptr AnyItemType::xdtSuperType() const

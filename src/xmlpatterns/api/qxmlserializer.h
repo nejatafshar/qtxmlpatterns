@@ -40,7 +40,7 @@
 #ifndef QXMLSERIALIZER_H
 #define QXMLSERIALIZER_H
 
-#include <QtXmlPatterns/QAbstractXmlReceiver>
+#include <qabstractxmlreceiver.h>
 
 QT_BEGIN_NAMESPACE
 

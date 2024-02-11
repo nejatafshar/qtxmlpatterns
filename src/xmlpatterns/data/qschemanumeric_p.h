@@ -50,8 +50,8 @@
 #ifndef Patternist_Numeric_H
 #define Patternist_Numeric_H
 
-#include <private/qitem_p.h>
-#include <private/qprimitives_p.h>
+#include <qitem_p.h>
+#include <qprimitives_p.h>
 
 QT_BEGIN_NAMESPACE
 

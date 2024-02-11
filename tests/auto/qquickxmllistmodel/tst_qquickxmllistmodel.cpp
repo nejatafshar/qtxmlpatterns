@@ -115,7 +115,7 @@ private:
                 if (item.isEmpty())
                     continue;
                 QVariantList variants;
-                xml += QLatin1String("<item>");
+                xml += QLatin1StringView("<item>");
                 const QStringList fields = item.split(QLatin1Char(','));
                 for (const QString &field : fields) {
                     QStringList values = field.split(QLatin1Char('='));
@@ -133,14 +133,14 @@ private:
                     else
                         variants << values[1];
                 }
-                xml += QLatin1String("</item>");
+                xml += QLatin1StringView("</item>");
                 if (modelData)
                     modelData->append(variants);
             }
         }
 
         QString decl = "<?xml version=\"1.0\" encoding=\"iso-8859-1\" ?>";
-        return decl + QLatin1String("<data>") + xml + QLatin1String("</data>");
+        return decl + QLatin1StringView("<data>") + xml + QLatin1StringView("</data>");
     }
 
     QQmlEngine engine;
@@ -193,10 +193,10 @@ void tst_qquickxmllistmodel::buildModel()
     QTRY_COMPARE(model->rowCount(), 9);
 
     QModelIndex index = model->index(3, 0);
-    QCOMPARE(model->data(index, Qt::UserRole).toString(), QLatin1String("Spot"));
-    QCOMPARE(model->data(index, Qt::UserRole+1).toString(), QLatin1String("Dog"));
+    QCOMPARE(model->data(index, Qt::UserRole).toString(), QLatin1StringView("Spot"));
+    QCOMPARE(model->data(index, Qt::UserRole+1).toString(), QLatin1StringView("Dog"));
     QCOMPARE(model->data(index, Qt::UserRole+2).toInt(), 9);
-    QCOMPARE(model->data(index, Qt::UserRole+3).toString(), QLatin1String("Medium"));
+    QCOMPARE(model->data(index, Qt::UserRole+3).toString(), QLatin1StringView("Medium"));
 
     delete model;
 }
@@ -267,7 +267,7 @@ void tst_qquickxmllistmodel::cdata()
     QVERIFY(model != 0);
     QTRY_COMPARE(model->rowCount(), 5);
 
-    QVERIFY(model->data(model->index(2, 0), Qt::UserRole+2).toString().startsWith(QLatin1String("<html>")));
+    QVERIFY(model->data(model->index(2, 0), Qt::UserRole+2).toString().startsWith(QLatin1StringView("<html>")));
 
     delete model;
 }
@@ -278,7 +278,7 @@ void tst_qquickxmllistmodel::attributes()
     QAbstractItemModel *model = qobject_cast<QAbstractItemModel *>(component.create());
     QVERIFY(model != 0);
     QTRY_COMPARE(model->rowCount(), 5);
-    QCOMPARE(model->data(model->index(2, 0), Qt::UserRole).toString(), QLatin1String("Vegetable Soup"));
+    QCOMPARE(model->data(model->index(2, 0), Qt::UserRole).toString(), QLatin1StringView("Vegetable Soup"));
 
     delete model;
 }
@@ -760,8 +760,8 @@ void tst_qquickxmllistmodel::noKeysValueChanges()
     QList<int> roles = model->roleNames().keys();
     std::sort(roles.begin(), roles.end());
     // wait for the new xml data to be set, and verify no signals were emitted
-    QTRY_VERIFY(model->data(model->index(0, 0), roles.at(2)).toString() != QLatin1String("Football"));
-    QCOMPARE(model->data(model->index(0, 0), roles.at(2)).toString(), QLatin1String("AussieRules"));
+    QTRY_VERIFY(model->data(model->index(0, 0), roles.at(2)).toString() != QLatin1StringView("Football"));
+    QCOMPARE(model->data(model->index(0, 0), roles.at(2)).toString(), QLatin1StringView("AussieRules"));
 
     QCOMPARE(spyInsert.count(), 0);
     QCOMPARE(spyRemove.count(), 0);
@@ -973,7 +973,7 @@ void tst_qquickxmllistmodel::selectAncestor()
 
     QModelIndex index = model->index(0, 0);
     QCOMPARE(model->data(index, Qt::UserRole).toInt(), 12);
-    QCOMPARE(model->data(index, Qt::UserRole+1).toString(), QLatin1String("cats"));
+    QCOMPARE(model->data(index, Qt::UserRole+1).toString(), QLatin1StringView("cats"));
 }
 
 void tst_qquickxmllistmodel::roleCrash()

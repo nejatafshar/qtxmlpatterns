@@ -50,7 +50,7 @@
 #ifndef Patternist_TreatAs_H
 #define Patternist_TreatAs_H
 
-#include <private/qsinglecontainer_p.h>
+#include <qsinglecontainer_p.h>
 
 QT_BEGIN_NAMESPACE
 

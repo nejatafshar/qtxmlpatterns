@@ -83,7 +83,7 @@ QString EBVType::displayName(const NamePool::Ptr &) const
     /* Some QName-lexical is not used here because it makes little sense
      * for this strange type. Instead the operand type of the fn:boolean()'s
      * argument is used. */
-    return QLatin1String("item()*(: EBV extractable type :)");
+    return QLatin1StringView("item()*(: EBV extractable type :)");
 }
 
 Cardinality EBVType::cardinality() const

@@ -50,7 +50,7 @@
 #ifndef Patternist_ExpressionSequence_H
 #define Patternist_ExpressionSequence_H
 
-#include <private/qunlimitedcontainer_p.h>
+#include <qunlimitedcontainer_p.h>
 
 QT_BEGIN_NAMESPACE
 

@@ -50,10 +50,10 @@
 #ifndef Patternist_ExpressionFactory_H
 #define Patternist_ExpressionFactory_H
 
-#include <QXmlQuery>
+#include <qxmlquery.h>
 
-#include <private/qexpression_p.h>
-#include <private/qtokenizer_p.h>
+#include <qexpression_p.h>
+#include <qtokenizer_p.h>
 
 #include <QSharedData>
 #include <QUrl>

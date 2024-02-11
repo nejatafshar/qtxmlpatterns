@@ -51,9 +51,9 @@
 #define Patternist_PatternPlatform_H
 
 #include <QFlags>
-#include <QRegExp>
+#include <QRegularExpression>
 
-#include <private/qfunctioncall_p.h>
+#include <qfunctioncall_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -109,7 +109,7 @@ namespace QPatternist
          * settings its flags, and everything else required for getting it ready to use. If an error
          * occurs, an appropriate error is raised via @p context.
          */
-        QRegExp pattern(const DynamicContext::Ptr &context) const;
+        QRegularExpression pattern(const DynamicContext::Ptr &context) const;
 
         /**
          * @returns the number of captures, also called parenthesized sub-expressions, the pattern has.
@@ -121,7 +121,7 @@ namespace QPatternist
         /**
          * @short Parses pattern
          */
-        static QRegExp parsePattern(const QString &pattern,
+        static QRegularExpression parsePattern(const QString &pattern,
                                     const ReportContext::Ptr &context,
                                     const SourceLocationReflection *const location);
 
@@ -154,7 +154,7 @@ namespace QPatternist
          * @short Calls the public parsePattern() function and passes in @c
          * this as the location.
          */
-        inline QRegExp parsePattern(const QString &pattern,
+        inline QRegularExpression parsePattern(const QString &pattern,
                                     const ReportContext::Ptr &context) const;
 
         Q_DISABLE_COPY(PatternPlatform)
@@ -162,14 +162,14 @@ namespace QPatternist
         Flags parseFlags(const QString &flags,
                          const DynamicContext::Ptr &context) const;
 
-        static void applyFlags(const Flags flags, QRegExp &pattern);
+        static void applyFlags(const Flags flags, QRegularExpression &pattern);
 
         /**
          * The parts that have been pre-compiled at compile time.
          */
         PreCompiledParts    m_compiledParts;
         Flags               m_flags;
-        QRegExp             m_pattern;
+        QRegularExpression  m_pattern;
         const qint8         m_flagsPosition;
     };
 

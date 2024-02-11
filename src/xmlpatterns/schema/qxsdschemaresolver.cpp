@@ -314,12 +314,12 @@ void XsdSchemaResolver::copyDataTo(const XsdSchemaResolver::Ptr &other) const
 QXmlName XsdSchemaResolver::baseTypeNameOfType(const SchemaType::Ptr &type) const
 {
     for (int i = 0; i < m_simpleRestrictionBases.count(); ++i) {
-        if (m_simpleRestrictionBases.at(i).simpleType == type)
+        if (m_simpleRestrictionBases.at(i).simpleType == static_cast<XsdSimpleType::Ptr>(type))
             return m_simpleRestrictionBases.at(i).baseName;
     }
 
     for (int i = 0; i < m_complexBaseTypes.count(); ++i) {
-        if (m_complexBaseTypes.at(i).complexType == type)
+        if (m_complexBaseTypes.at(i).complexType == static_cast<XsdComplexType::Ptr>(type))
             return m_complexBaseTypes.at(i).baseName;
     }
 
@@ -440,7 +440,7 @@ void XsdSchemaResolver::resolveSimpleRestrictions(const XsdSimpleType::Ptr &simp
 
     // as xs:NMTOKENS, xs:ENTITIES and xs:IDREFS are provided by our XsdSchemaTypesFactory, they are
     // setup correctly already and shouldn't be handled here
-    if (m_predefinedSchemaTypes.contains(simpleType))
+    if (m_predefinedSchemaTypes.contains(static_cast<SchemaType::Ptr>(simpleType)))
         return;
 
     const SchemaType::Ptr baseType = simpleType->wxsSuperType();

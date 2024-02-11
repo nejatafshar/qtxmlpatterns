@@ -68,11 +68,11 @@ private:
 
 void tst_PatternistExamples::initTestCase()
 {
-    m_dirs.append(QDir(QLatin1String(SOURCETREE "src/xmlpatterns/doc/snippets/patternist/")));
-    m_dirs.append(QDir(QLatin1String(SOURCETREE "examples/xmlpatterns/xquery/globalVariables/")));
-    m_dirs.append(QDir(QLatin1String(SOURCETREE "examples/xmlpatterns/filetree/")));
-    m_dirs.append(QDir(QLatin1String(SOURCETREE "examples/xmlpatterns/recipes/")));
-    m_dirs.append(QDir(QLatin1String(SOURCETREE "examples/xmlpatterns/recipes/files/")));
+    m_dirs.append(QDir(QLatin1StringView(SOURCETREE "src/xmlpatterns/doc/snippets/patternist/")));
+    m_dirs.append(QDir(QLatin1StringView(SOURCETREE "examples/xmlpatterns/xquery/globalVariables/")));
+    m_dirs.append(QDir(QLatin1StringView(SOURCETREE "examples/xmlpatterns/filetree/")));
+    m_dirs.append(QDir(QLatin1StringView(SOURCETREE "examples/xmlpatterns/recipes/")));
+    m_dirs.append(QDir(QLatin1StringView(SOURCETREE "examples/xmlpatterns/recipes/files/")));
 
     for(int i = 0; i < m_dirs.size(); ++i)
         QVERIFY(m_dirs.at(i).exists());
@@ -112,22 +112,22 @@ void tst_PatternistExamples::checkQueries() const
     QXmlQuery query;
 
     /* Two queries relies on this binding, so provide it such that we don't get a compile error. */
-    query.bindVariable(QLatin1String("fileToOpen"), QVariant(QString::fromLatin1("dummyString")));
+    query.bindVariable(QLatin1StringView("fileToOpen"), QVariant(QString::fromLatin1("dummyString")));
 
     /* This is needed for the recipes example. */
-    query.bindVariable(QLatin1String("inputDocument"), QVariant(QString::fromLatin1("dummString")));
+    query.bindVariable(QLatin1StringView("inputDocument"), QVariant(QString::fromLatin1("dummString")));
 
     /* This is needed for literalsAndOperators.xq. */
-    query.bindVariable(QLatin1String("date"), QVariant(QDate::currentDate()));
+    query.bindVariable(QLatin1StringView("date"), QVariant(QDate::currentDate()));
 
     /* These are needed for introExample2.xq. */
-    query.bindVariable(QLatin1String("file"), QVariant(QLatin1String("dummy")));
-    query.bindVariable(QLatin1String("publisher"), QVariant(QLatin1String("dummy")));
-    query.bindVariable(QLatin1String("year"), QVariant(2000));
+    query.bindVariable(QLatin1StringView("file"), QVariant(QLatin1StringView("dummy")));
+    query.bindVariable(QLatin1StringView("publisher"), QVariant(QLatin1StringView("dummy")));
+    query.bindVariable(QLatin1StringView("year"), QVariant(2000));
 
     /* and filetree/ needs this. */
     TestSimpleNodeModel nodeModel(query.namePool());
-    query.bindVariable(QLatin1String("exampleDirectory"), nodeModel.root());
+    query.bindVariable(QLatin1StringView("exampleDirectory"), nodeModel.root());
 
     query.setQuery(&file, queryFile);
 
@@ -138,7 +138,7 @@ void tst_PatternistExamples::checkQueries_data() const
 {
     QTest::addColumn<QString>("queryFile");
 
-    const QStringList queryExamples(listFiles(QStringList(QLatin1String("*.xq"))));
+    const QStringList queryExamples(listFiles(QStringList(QLatin1StringView("*.xq"))));
 
     QCOMPARE(queryExamples.count(), int(XQueryFileCount));
 
@@ -152,7 +152,7 @@ void tst_PatternistExamples::checkXMLFiles() const
 
     QXmlQuery query;
     /* Wrapping in QUrl ensures it gets formatted as a URI on all platforms. */
-    query.setQuery(QLatin1String("doc('") + QUrl::fromLocalFile(file).toString() + QLatin1String("')"));
+    query.setQuery(QLatin1StringView("doc('") + QUrl::fromLocalFile(file).toString() + QLatin1StringView("')"));
     QVERIFY(query.isValid());
 
     /* We don't care about the result, we only want to ensure the files can be parsed. */
@@ -170,11 +170,11 @@ void tst_PatternistExamples::checkXMLFiles_data() const
 {
     QTest::addColumn<QString>("file");
     QStringList patterns;
-    patterns.append(QLatin1String("*.xml"));
-    patterns.append(QLatin1String("*.gccxml"));
-    patterns.append(QLatin1String("*.svg"));
-    patterns.append(QLatin1String("*.ui"));
-    patterns.append(QLatin1String("*.html"));
+    patterns.append(QLatin1StringView("*.xml"));
+    patterns.append(QLatin1StringView("*.gccxml"));
+    patterns.append(QLatin1StringView("*.svg"));
+    patterns.append(QLatin1StringView("*.ui"));
+    patterns.append(QLatin1StringView("*.html"));
 
     const QStringList xmlFiles(listFiles(patterns));
 

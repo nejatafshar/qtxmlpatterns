@@ -52,7 +52,7 @@
 
 #include <QSet>
 
-#include <private/qtokenizer_p.h>
+#include <qtokenizer_p.h>
 
 QT_BEGIN_NAMESPACE
 

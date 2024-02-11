@@ -113,7 +113,7 @@ PatternPlatform::PatternPlatform(const qint8 flagsPosition) : m_compiledParts(No
 {
 }
 
-QRegExp PatternPlatform::pattern(const DynamicContext::Ptr &context) const
+QRegularExpression PatternPlatform::pattern(const DynamicContext::Ptr &context) const
 {
     if(m_compiledParts == FlagsAndPattern) /* This is the most common case. */
     {
@@ -121,7 +121,7 @@ QRegExp PatternPlatform::pattern(const DynamicContext::Ptr &context) const
         return m_pattern;
     }
 
-    QRegExp retvalPattern;
+    QRegularExpression retvalPattern;
     Flags flags;
 
     /* Compile the flags, if necessary. */
@@ -153,7 +153,7 @@ QRegExp PatternPlatform::pattern(const DynamicContext::Ptr &context) const
     return retvalPattern;
 }
 
-void PatternPlatform::applyFlags(const Flags flags, QRegExp &patternP)
+void PatternPlatform::applyFlags(const Flags flags, QRegularExpression &patternP)
 {
     Q_ASSERT(patternP.isValid());
     if(flags == NoFlags)
@@ -161,41 +161,41 @@ void PatternPlatform::applyFlags(const Flags flags, QRegExp &patternP)
 
     if(flags & CaseInsensitive)
     {
-        patternP.setCaseSensitivity(Qt::CaseInsensitive);
+        patternP.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
     }
     // TODO Apply the other flags, like 'x'.
 }
 
-QRegExp PatternPlatform::parsePattern(const QString &pattern,
+QRegularExpression PatternPlatform::parsePattern(const QString &pattern,
                                       const ReportContext::Ptr &context) const
 {
     return parsePattern(pattern, context, this);
 }
 
-QRegExp PatternPlatform::parsePattern(const QString &patternP,
+QRegularExpression PatternPlatform::parsePattern(const QString &patternP,
                                       const ReportContext::Ptr &context,
                                       const SourceLocationReflection *const location)
 {
-    if(patternP == QLatin1String("(.)\\3") ||
-       patternP == QLatin1String("\\3")    ||
-       patternP == QLatin1String("(.)\\2"))
+    if(patternP == QLatin1StringView("(.)\\3") ||
+       patternP == QLatin1StringView("\\3")    ||
+       patternP == QLatin1StringView("(.)\\2"))
     {
-        context->error(QLatin1String("We don't want to hang infinitely on K2-MatchesFunc-9, "
+        context->error(QLatin1StringView("We don't want to hang infinitely on K2-MatchesFunc-9, "
                                      "10 and 11."),
                        ReportContext::FOER0000, location);
-        return QRegExp();
+        return QRegularExpression();
     }
 
     QString rewrittenPattern(patternP);
 
-    /* We rewrite some well known patterns to QRegExp style here. Note that
+    /* We rewrite some well known patterns to QRegularExpression style here. Note that
      * these character classes only works in the ASCII range, and fail for
-     * others. This support needs to be in QRegExp, since it's about checking
+     * others. This support needs to be in QRegularExpression, since it's about checking
      * QChar::category(). */
-    rewrittenPattern.replace(QLatin1String("[\\i-[:]]"), QLatin1String("[a-zA-Z_]"));
-    rewrittenPattern.replace(QLatin1String("[\\c-[:]]"), QLatin1String("[a-zA-Z0-9_\\-\\.]"));
+    rewrittenPattern.replace(QLatin1StringView("[\\i-[:]]"), QLatin1StringView("[a-zA-Z_]"));
+    rewrittenPattern.replace(QLatin1StringView("[\\c-[:]]"), QLatin1StringView("[a-zA-Z0-9_\\-\\.]"));
 
-    QRegExp retval(rewrittenPattern, Qt::CaseSensitive, QRegExp::W3CXmlSchema11);
+    QRegularExpression retval(rewrittenPattern);
 
     if(retval.isValid())
         return retval;
@@ -204,7 +204,7 @@ QRegExp PatternPlatform::parsePattern(const QString &patternP,
         context->error(QtXmlPatterns::tr("%1 is an invalid regular expression pattern: %2")
                                         .arg(formatExpression(patternP), retval.errorString()),
                                    ReportContext::FORX0002, location);
-        return QRegExp();
+        return QRegularExpression();
     }
 }
 
@@ -245,7 +245,7 @@ PatternPlatform::Flags PatternPlatform::parseFlags(const QString &flags,
             // TODO handle bidi correctly
             // TODO format this with rich text(list/table)
             message.append(formatKeyword(it.key()));
-            message.append(QLatin1String(" - "));
+            message.append(QLatin1StringView(" - "));
             message.append(it.value().description);
 
             ++it;

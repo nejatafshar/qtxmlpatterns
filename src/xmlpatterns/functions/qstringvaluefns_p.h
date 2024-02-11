@@ -52,7 +52,7 @@
 
 #include <QByteArray>
 
-#include <private/qfunctioncall_p.h>
+#include <qfunctioncall_p.h>
 
 /**
  * @file

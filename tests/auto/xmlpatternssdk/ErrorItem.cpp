@@ -42,9 +42,9 @@ QString ErrorItem::toString(const QtMsgType type)
     switch(type)
     {
         case QtWarningMsg:
-            return QLatin1String("Warning");
+            return QLatin1StringView("Warning");
         case QtFatalMsg:
-            return QLatin1String("Error");
+            return QLatin1StringView("Error");
         default:
         {
             Q_ASSERT(false);

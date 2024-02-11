@@ -65,7 +65,7 @@ DayTimeDuration::Ptr DayTimeDuration::fromLexical(const QString &lexical)
 {
     static const CaptureTable captureTable(
         /* The extra paranthesis is a build fix for GCC 3.3. */
-        (QRegExp(QLatin1String(
+        (QRegularExpression(QLatin1StringView(
                 "^\\s*"                         /* Any preceding whitespace. */
                 "(-)?"                          /* Any minus sign. */
                 "P"                             /* Delimiter. */
@@ -145,7 +145,7 @@ QString DayTimeDuration::stringValue() const
 
     if (!m_hours && !m_minutes && !m_seconds && !m_mseconds) {
         if(!m_days)
-            return QLatin1String("PT0S");
+            return QLatin1StringView("PT0S");
         else
             return retval;
     }
@@ -173,7 +173,7 @@ QString DayTimeDuration::stringValue() const
         retval.append(QLatin1Char('S'));
     }
     else if(!m_days && !m_hours && !m_minutes)
-        retval.append(QLatin1String("0S"));
+        retval.append(QLatin1StringView("0S"));
 
     return retval;
 }

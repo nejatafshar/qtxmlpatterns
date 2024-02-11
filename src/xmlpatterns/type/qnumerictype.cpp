@@ -76,7 +76,7 @@ bool NumericType::xdtTypeMatches(const ItemType::Ptr &t) const
 
 QString NumericType::displayName(const NamePool::Ptr &) const
 {
-    return QLatin1String("numeric");
+    return QLatin1StringView("numeric");
 }
 
 SchemaType::Ptr NumericType::wxsSuperType() const

@@ -283,7 +283,7 @@ int QQuickXmlQueryEngine::doQuery(QString query, QString namespaces, QByteArray 
     XmlQueryJob job;
     job.queryId = m_queryIds.loadRelaxed();
     job.data = data;
-    job.query = QLatin1String("doc($src)") + query;
+    job.query = QLatin1StringView("doc($src)") + query;
     job.namespaces = namespaces;
     job.keyRoleResultsCache = keyRoleResultsCache;
 
@@ -387,7 +387,7 @@ void QQuickXmlQueryEngine::doQueryJob(XmlQueryJob *currentJob, QQuickXmlQueryRes
     QXmlQuery query;
     QBuffer buffer(&currentJob->data);
     buffer.open(QIODevice::ReadOnly);
-    query.bindVariable(QLatin1String("src"), &buffer);
+    query.bindVariable(QLatin1StringView("src"), &buffer);
     query.setQuery(currentJob->namespaces + currentJob->query);
     query.evaluateTo(&r);
 
@@ -396,16 +396,16 @@ void QQuickXmlQueryEngine::doQueryJob(XmlQueryJob *currentJob, QQuickXmlQueryRes
     QBuffer b(&xml);
     b.open(QIODevice::ReadOnly);
 
-    QString namespaces = QLatin1String("declare namespace dummy=\"http://qtsotware.com/dummy\";\n") + currentJob->namespaces;
-    QString prefix = QLatin1String("doc($inputDocument)/dummy:items/*");
+    QString namespaces = QLatin1StringView("declare namespace dummy=\"http://qtsotware.com/dummy\";\n") + currentJob->namespaces;
+    QString prefix = QLatin1StringView("doc($inputDocument)/dummy:items/*");
 
     //figure out how many items we are dealing with
     int count = -1;
     {
         QXmlResultItems result;
         QXmlQuery countquery;
-        countquery.bindVariable(QLatin1String("inputDocument"), &b);
-        countquery.setQuery(namespaces + QLatin1String("count(") + prefix + QLatin1Char(')'));
+        countquery.bindVariable(QLatin1StringView("inputDocument"), &b);
+        countquery.setQuery(namespaces + QLatin1StringView("count(") + prefix + QLatin1Char(')'));
         countquery.evaluateTo(&result);
         QXmlItem item(result.next());
         if (item.isAtomicValue())
@@ -424,7 +424,7 @@ void QQuickXmlQueryEngine::getValuesOfKeyRoles(const XmlQueryJob& currentJob, QS
     if (keysQueries.count() == 1)
         keysQuery = currentJob.prefix + keysQueries[0];
     else if (keysQueries.count() > 1)
-        keysQuery = currentJob.prefix + QLatin1String("concat(") + keysQueries.join(QLatin1Char(',')) + QLatin1Char(')');
+        keysQuery = currentJob.prefix + QLatin1StringView("concat(") + keysQueries.join(QLatin1Char(',')) + QLatin1Char(')');
 
     if (!keysQuery.isEmpty()) {
         query->setQuery(keysQuery);
@@ -455,7 +455,7 @@ void QQuickXmlQueryEngine::doSubQueryJob(XmlQueryJob *currentJob, QQuickXmlQuery
     b.open(QIODevice::ReadOnly);
 
     QXmlQuery subquery;
-    subquery.bindVariable(QLatin1String("inputDocument"), &b);
+    subquery.bindVariable(QLatin1StringView("inputDocument"), &b);
 
     QStringList keyRoleResults;
     getValuesOfKeyRoles(*currentJob, &keyRoleResults, &subquery);
@@ -489,7 +489,7 @@ void QQuickXmlQueryEngine::doSubQueryJob(XmlQueryJob *currentJob, QQuickXmlQuery
     for (int i = 0; i < queries.size(); ++i) {
         QList<QVariant> resultList;
         if (!queries[i].isEmpty()) {
-            subquery.setQuery(currentJob->prefix + QLatin1String("(let $v := string(") + queries[i] + QLatin1String(") return if ($v) then ") + queries[i] + QLatin1String(" else \"\")"));
+            subquery.setQuery(currentJob->prefix + QLatin1StringView("(let $v := string(") + queries[i] + QLatin1StringView(") return if ($v) then ") + queries[i] + QLatin1StringView(" else \"\")"));
             if (subquery.isValid()) {
                 QXmlResultItems resultItems;
                 subquery.evaluateTo(&resultItems);
@@ -525,9 +525,9 @@ void QQuickXmlQueryEngine::doSubQueryJob(XmlQueryJob *currentJob, QQuickXmlQuery
                 subquery.evaluateTo(&s);
                 if (role->isCData()) {
                     //un-escape
-                    s.replace(QLatin1String("&lt;"), QLatin1String("<"));
-                    s.replace(QLatin1String("&gt;"), QLatin1String(">"));
-                    s.replace(QLatin1String("&amp;"), QLatin1String("&"));
+                    s.replace(QLatin1StringView("&lt;"), QLatin1StringView("<"));
+                    s.replace(QLatin1StringView("&gt;"), QLatin1StringView(">"));
+                    s.replace(QLatin1StringView("&amp;"), QLatin1StringView("&"));
                 }
                 resultList << s.trimmed();
                 //qDebug() << s;

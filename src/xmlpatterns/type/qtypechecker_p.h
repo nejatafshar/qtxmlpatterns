@@ -50,8 +50,8 @@
 #ifndef Patternist_TypeChecker_H
 #define Patternist_TypeChecker_H
 
-#include <private/qstaticcontext_p.h>
-#include <private/qexpression_p.h>
+#include <qstaticcontext_p.h>
+#include <qexpression_p.h>
 
 QT_BEGIN_NAMESPACE
 

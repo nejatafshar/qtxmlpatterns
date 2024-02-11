@@ -56,7 +56,7 @@ SchemaType::Ptr Untyped::wxsSuperType() const
 
 QXmlName Untyped::name(const NamePool::Ptr &np) const
 {
-    return np->allocateQName(StandardNamespaces::xs, QLatin1String("untyped"));
+    return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("untyped"));
 }
 
 ItemType::Ptr Untyped::atomizedType() const

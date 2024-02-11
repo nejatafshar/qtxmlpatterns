@@ -145,7 +145,7 @@ Tokenizer::Token XQueryTokenizer::tokenAndAdvance(const TokenType code,
 QString XQueryTokenizer::normalizeEOL(const QString &input,
                                       const CharacterSkips &characterSkips)
 {
-    const int len = input.count();
+    const int len = input.length();
     QString result;
 
     /* The likely hood is rather high it'll be the same content. */
@@ -609,11 +609,11 @@ QChar XQueryTokenizer::charForReference(const QString &reference)
     {
         /* Initialize. */
         m_charRefs.reserve(5);
-        m_charRefs.insert(QLatin1String("lt"),     QLatin1Char('<'));
-        m_charRefs.insert(QLatin1String("gt"),     QLatin1Char('>'));
-        m_charRefs.insert(QLatin1String("amp"),    QLatin1Char('&'));
-        m_charRefs.insert(QLatin1String("quot"),   QLatin1Char('"'));
-        m_charRefs.insert(QLatin1String("apos"),   QLatin1Char('\''));
+        m_charRefs.insert(QLatin1StringView("lt"),     QLatin1Char('<'));
+        m_charRefs.insert(QLatin1StringView("gt"),     QLatin1Char('>'));
+        m_charRefs.insert(QLatin1StringView("amp"),    QLatin1Char('&'));
+        m_charRefs.insert(QLatin1StringView("quot"),   QLatin1Char('"'));
+        m_charRefs.insert(QLatin1StringView("apos"),   QLatin1Char('\''));
     }
 
     return m_charRefs.value(reference);
@@ -646,7 +646,7 @@ Tokenizer::Token XQueryTokenizer::tokenizeStringLiteral()
                 return error();
             else
             {
-                skipEOLNormalization.insert(result.count());
+                skipEOLNormalization.insert(result.length());
                 result.append(charRef);
             }
 
@@ -1239,7 +1239,7 @@ Tokenizer::Token XQueryTokenizer::nextToken()
                              * to the state. */
                             m_pos = currentPos;
                             setState(Operator);
-                            return Token(T_NCNAME, QLatin1String(keyword->name));
+                            return Token(T_NCNAME, QLatin1StringView(keyword->name));
                         }
                     }
                 }
@@ -1835,7 +1835,7 @@ Tokenizer::Token XQueryTokenizer::nextToken()
                             return Token(T_ERROR);
                         else
                         {
-                            skipEOLNormalization.insert(result.count());
+                            skipEOLNormalization.insert(result.length());
                             result.append(ret);
                             mayBeWS = false;
                             break;

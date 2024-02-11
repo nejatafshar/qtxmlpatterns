@@ -50,8 +50,8 @@
 #ifndef Patternist_ReturnOrderBy_H
 #define Patternist_ReturnOrderBy_H
 
-#include <private/qorderby_p.h>
-#include <private/qunlimitedcontainer_p.h>
+#include <qorderby_p.h>
+#include <qunlimitedcontainer_p.h>
 
 QT_BEGIN_NAMESPACE
 

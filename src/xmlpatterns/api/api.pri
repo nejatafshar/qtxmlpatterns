@@ -50,7 +50,6 @@ SOURCES += $$PWD/qvariableloader.cpp \
     $$PWD/qcoloringmessagehandler.cpp \
     $$PWD/qcoloroutput.cpp
 
-qtConfig(xml-schema) {
     HEADERS += $$PWD/qxmlschema.h \
         $$PWD/qxmlschema_p.h \
         $$PWD/qxmlschemavalidator.h \
@@ -58,4 +57,3 @@ qtConfig(xml-schema) {
     SOURCES += $$PWD/qxmlschema.cpp \
         $$PWD/qxmlschema_p.cpp \
         $$PWD/qxmlschemavalidator.cpp
-}

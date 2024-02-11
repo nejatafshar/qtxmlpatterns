@@ -50,7 +50,7 @@
 #ifndef QPatternist_DeviceResourceLoader_p_H
 #define QPatternist_DeviceResourceLoader_p_H
 
-#include <private/qresourceloader_p.h>
+#include <qresourceloader_p.h>
 
 QT_BEGIN_NAMESPACE
 

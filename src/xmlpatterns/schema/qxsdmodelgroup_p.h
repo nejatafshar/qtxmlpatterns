@@ -50,8 +50,8 @@
 #ifndef Patternist_XsdModelGroup_H
 #define Patternist_XsdModelGroup_H
 
-#include <private/qxsdparticle_p.h>
-#include <private/qxsdterm_p.h>
+#include <qxsdparticle_p.h>
+#include <qxsdterm_p.h>
 #include <qcontainerfwd.h>
 
 QT_BEGIN_NAMESPACE

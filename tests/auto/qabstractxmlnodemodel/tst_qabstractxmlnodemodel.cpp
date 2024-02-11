@@ -154,7 +154,7 @@ void tst_QAbstractXmlNodeModel::nextFromSimpleAxis()
     /* Fill out, using LoadingModel. */
     {
         QXmlQuery query(m_namePool);
-        query.bindVariable(QLatin1String("node"), m_rootNode);
+        query.bindVariable(QLatin1StringView("node"), m_rootNode);
         query.setQuery(queryString);
         QVERIFY(query.isValid());
 
@@ -169,15 +169,15 @@ void tst_QAbstractXmlNodeModel::nextFromSimpleAxis()
     /* Create the baseline. */
     {
         QXmlQuery openDoc(m_namePool);
-        const QString testFilePath = QDir::currentPath() + QLatin1Char('/') + QLatin1String(testFileName);
-        openDoc.bindVariable(QLatin1String("docURI"), QVariant(QUrl::fromLocalFile(testFilePath)));
-        openDoc.setQuery(QLatin1String("doc($docURI)"));
+        const QString testFilePath = QDir::currentPath() + QLatin1Char('/') + QLatin1StringView(testFileName);
+        openDoc.bindVariable(QLatin1StringView("docURI"), QVariant(QUrl::fromLocalFile(testFilePath)));
+        openDoc.setQuery(QLatin1StringView("doc($docURI)"));
         QXmlResultItems doc;
         QVERIFY(openDoc.isValid());
         openDoc.evaluateTo(&doc);
 
         QXmlQuery produceBaseline(m_namePool);
-        produceBaseline.bindVariable(QLatin1String("node"), doc.next());
+        produceBaseline.bindVariable(QLatin1StringView("node"), doc.next());
         produceBaseline.setQuery(queryString);
         QVERIFY(produceBaseline.isValid());
         QVERIFY(baseline.open(QIODevice::WriteOnly));
@@ -371,8 +371,8 @@ void tst_QAbstractXmlNodeModel::typedValue() const
     TypedModel model;
 
     QXmlQuery query;
-    query.bindVariable(QLatin1String("node"), model.rootIndex());
-    query.setQuery(QLatin1String("declare variable $node external;"
+    query.bindVariable(QLatin1StringView("node"), model.rootIndex());
+    query.setQuery(QLatin1StringView("declare variable $node external;"
                                  "string($node), data($node)"));
 
     QByteArray output;

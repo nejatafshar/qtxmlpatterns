@@ -701,7 +701,7 @@ bool XsdSchemaHelper::isValidAttributeUsesRestriction(const XsdAttributeUse::Lis
                 ok = true;
 
             if (derivedConstraint && baseConstraint) {
-                const XsdTypeChecker checker(context, QVector<QXmlName>(), QSourceLocation(QUrl(QLatin1String("http://dummy.org")), 1, 1));
+                const XsdTypeChecker checker(context, QVector<QXmlName>(), QSourceLocation(QUrl(QLatin1StringView("http://dummy.org")), 1, 1));
                 if (derivedConstraint->variety() == XsdAttributeUse::ValueConstraint::Fixed && checker.valuesAreEqual(derivedConstraint->value(), baseConstraint->value(), baseAttributeUse->attribute()->type()))
                     ok = true;
             }

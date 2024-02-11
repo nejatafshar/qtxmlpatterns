@@ -167,7 +167,7 @@ void tst_QXmlFormatter::format_data() const
     QDir dir;
     dir.cd(QFINDTESTDATA("input"));
 
-    const QStringList entries(dir.entryList(QStringList(QLatin1String("*.xq"))));
+    const QStringList entries(dir.entryList(QStringList(QLatin1StringView("*.xq"))));
     for(int i = 0; i < entries.count(); ++i)
     {
         const QString &at = entries.at(i);

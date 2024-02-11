@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 {
     const QApplication app(argc, argv);
     app.setOrganizationName(Global::organizationName);
-    app.setApplicationName(QLatin1String("PatternistSDKView"));
+    app.setApplicationName(QLatin1StringView("PatternistSDKView"));
 
     MainWindow *const mainWindow = new MainWindow();
     mainWindow->show();

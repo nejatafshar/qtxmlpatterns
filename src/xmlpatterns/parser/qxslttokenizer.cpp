@@ -477,10 +477,10 @@ QHash<QString, int> XSLTTokenizer::createValidationAlternatives()
 {
     QHash<QString, int> retval;
 
-    retval.insert(QLatin1String("preserve"), 0);
-    retval.insert(QLatin1String("strip"), 1);
-    retval.insert(QLatin1String("strict"), 2);
-    retval.insert(QLatin1String("lax"), 3);
+    retval.insert(QLatin1StringView("preserve"), 0);
+    retval.insert(QLatin1StringView("strip"), 1);
+    retval.insert(QLatin1StringView("strict"), 2);
+    retval.insert(QLatin1StringView("lax"), 3);
 
     return retval;
 }
@@ -515,8 +515,9 @@ void XSLTTokenizer::unexpectedContent(const ReportContext::ErrorCode code) const
                 }
             }
 
+            const auto & str = name().toString();
             message = QtXmlPatterns::tr("Element %1 is not allowed at this location.")
-                                       .arg(formatKeyword(name()));
+                                       .arg(formatKeyword(&str));
             break;
         }
         case QXmlStreamReader::Characters:
@@ -597,10 +598,10 @@ void XSLTTokenizer::handleXSLTVersion(TokenSource::Queue *const to,
     const QString ns(isXSLTElement ? QString() : CommonNamespaces::XSLT);
     const QXmlStreamAttributes effectiveAtts(atts ? *atts : attributes());
 
-    if(!effectiveAtts.hasAttribute(ns, QLatin1String("version")))
+    if(!effectiveAtts.hasAttribute(ns, QLatin1StringView("version")))
         return;
 
-    const QString attribute(effectiveAtts.value(ns, QLatin1String("version")).toString());
+    const QString attribute(effectiveAtts.value(ns, QLatin1StringView("version")).toString());
     const AtomicValue::Ptr number(Decimal::fromLexical(attribute));
 
     if(number->hasError())
@@ -651,9 +652,10 @@ void XSLTTokenizer::handleXMLBase(TokenSource::Queue *const to,
 {
     const QXmlStreamAttributes effectiveAtts(atts ? *atts : m_currentAttributes);
 
-    if(effectiveAtts.hasAttribute(QLatin1String("xml:base")))
+    if(effectiveAtts.hasAttribute(QLatin1StringView("xml:base")))
     {
-        const QStringRef val(effectiveAtts.value(QLatin1String("xml:base")));
+        const auto & str = effectiveAtts.value(QLatin1StringView("xml:base")).toString();
+        const QStringRef val(&str);
 
         if(!val.isEmpty())
         {
@@ -693,7 +695,7 @@ void XSLTTokenizer::handleStandardAttributes(const bool isXSLTElement)
     {
         const QXmlStreamAttribute &att = m_currentAttributes.at(i);
 
-        if(att.qualifiedName() == QLatin1String("xml:space"))
+        if(att.qualifiedName() == QLatin1StringView("xml:space"))
         {
             /* We raise an error if the value is not recognized.
              *
@@ -705,16 +707,17 @@ void XSLTTokenizer::handleStandardAttributes(const bool isXSLTElement)
              * for other values to be specified; the XML processor may report
              * the error or may recover by ignoring the attribute specification
              * or by reporting the (erroneous) value to the application.' */
-            m_stripWhitespace.push(readToggleAttribute(QLatin1String("xml:space"),
-                                                       QLatin1String("default"),
-                                                       QLatin1String("preserve"),
+            m_stripWhitespace.push(readToggleAttribute(QLatin1StringView("xml:space"),
+                                                       QLatin1StringView("default"),
+                                                       QLatin1StringView("preserve"),
                                                        &m_currentAttributes));
         }
 
         if(att.namespaceUri() != ns)
             continue;
 
-        switch(toToken(att.name()))
+        const auto & str = att.name().toString();
+        switch(toToken(&str))
         {
             case Type:
             case Validation:
@@ -728,8 +731,9 @@ void XSLTTokenizer::handleStandardAttributes(const bool isXSLTElement)
                 if(!isXSLTElement) /* validateElement() will take care of it, and we
                                     * don't want to flag non-standard XSL-T attributes. */
                 {
+                    const auto & str = att.name().toString();
                     error(QtXmlPatterns::tr("Unknown XSL-T attribute %1.")
-                                                      .arg(formatKeyword(att.name())),
+                                                      .arg(formatKeyword(&str)),
                           ReportContext::XTSE0805);
                 }
             }
@@ -743,8 +747,8 @@ void XSLTTokenizer::handleValidationAttributes(const bool isLRE) const
 
     const QString ns(isLRE ? QString() : CommonNamespaces::XSLT);
 
-    const bool hasValidation = hasAttribute(ns, QLatin1String("validation"));
-    const bool hasType = hasAttribute(ns, QLatin1String("type"));
+    const bool hasValidation = hasAttribute(ns, QLatin1StringView("validation"));
+    const bool hasType = hasAttribute(ns, QLatin1StringView("type"));
 
     if(!hasType && !hasValidation)
         return;
@@ -752,8 +756,8 @@ void XSLTTokenizer::handleValidationAttributes(const bool isLRE) const
     if(hasType && hasValidation)
     {
         error(QtXmlPatterns::tr("Attribute %1 and %2 are mutually exclusive.")
-                                          .arg(formatKeyword(QLatin1String("validation")),
-                                               formatKeyword(QLatin1String("type"))),
+                                          .arg(formatKeyword(QLatin1StringView("validation")),
+                                               formatKeyword(QLatin1StringView("type"))),
               ReportContext::XTSE1505);
     }
 
@@ -764,7 +768,7 @@ void XSLTTokenizer::handleValidationAttributes(const bool isLRE) const
     for(int i = 0; i < len; ++i)
     {
         const QXmlStreamAttribute &at = m_currentAttributes.at(i);
-        if(at.name() == QLatin1String("validation") && at.namespaceUri() == ns)
+        if(at.name() == QLatin1StringView("validation") && at.namespaceUri() == ns)
             validationAttribute = at;
     }
 
@@ -883,7 +887,7 @@ void XSLTTokenizer::outsideDocumentElement()
 
                     /* mode #all */
                     queueToken(T_MODE, &m_tokenSource);
-                    queueToken(Token(T_NCNAME, QLatin1String("#all")), &m_tokenSource);
+                    queueToken(Token(T_NCNAME, QLatin1StringView("#all")), &m_tokenSource);
                     queueToken(T_CURLY_LBRACE, &m_tokenSource);
 
                     /* text{.} { */
@@ -915,10 +919,10 @@ void XSLTTokenizer::outsideDocumentElement()
                 {
                     /* We're a simplified stylesheet. */
 
-                    if(!hasAttribute(CommonNamespaces::XSLT, QLatin1String("version")))
+                    if(!hasAttribute(CommonNamespaces::XSLT, QLatin1StringView("version")))
                     {
                         error(QtXmlPatterns::tr("In a simplified stylesheet module, attribute %1 must be present.")
-                                                          .arg(formatKeyword(QLatin1String("version"))),
+                                                          .arg(formatKeyword(QLatin1StringView("version"))),
                               ReportContext::XTSE0010);
                     }
 
@@ -979,29 +983,29 @@ void XSLTTokenizer::leaveState()
 
 void XSLTTokenizer::insideTemplate()
 {
-    const bool hasPriority  = hasAttribute(QLatin1String("priority"));
-    const bool hasMatch     = hasAttribute(QLatin1String("match"));
-    const bool hasName      = hasAttribute(QLatin1String("name"));
-    const bool hasMode      = hasAttribute(QLatin1String("mode"));
-    const bool hasAs        = hasAttribute(QLatin1String("as"));
+    const bool hasPriority  = hasAttribute(QLatin1StringView("priority"));
+    const bool hasMatch     = hasAttribute(QLatin1StringView("match"));
+    const bool hasName      = hasAttribute(QLatin1StringView("name"));
+    const bool hasMode      = hasAttribute(QLatin1StringView("mode"));
+    const bool hasAs        = hasAttribute(QLatin1StringView("as"));
 
     if(!hasMatch &&
        (hasMode ||
         hasPriority))
     {
         error(QtXmlPatterns::tr("If element %1 has no attribute %2, it cannot have attribute %3 or %4.")
-                         .arg(formatKeyword(QLatin1String("template")),
-                              formatKeyword(QLatin1String("match")),
-                              formatKeyword(QLatin1String("mode")),
-                              formatKeyword(QLatin1String("priority"))),
+                         .arg(formatKeyword(QLatin1StringView("template")),
+                              formatKeyword(QLatin1StringView("match")),
+                              formatKeyword(QLatin1StringView("mode")),
+                              formatKeyword(QLatin1StringView("priority"))),
               ReportContext::XTSE0500);
     }
     else if(!hasMatch && !hasName)
     {
         error(QtXmlPatterns::tr("Element %1 must have at least one of the attributes %2 or %3.")
-                         .arg(formatKeyword(QLatin1String("template")),
-                              formatKeyword(QLatin1String("name")),
-                              formatKeyword(QLatin1String("match"))),
+                         .arg(formatKeyword(QLatin1StringView("template")),
+                              formatKeyword(QLatin1StringView("name")),
+                              formatKeyword(QLatin1StringView("match"))),
               ReportContext::XTSE0500);
     }
 
@@ -1011,24 +1015,24 @@ void XSLTTokenizer::insideTemplate()
     if(hasName)
     {
         queueToken(T_NAME, &m_tokenSource);
-        queueToken(Token(T_QNAME, readAttribute(QLatin1String("name"))), &m_tokenSource);
+        queueToken(Token(T_QNAME, readAttribute(QLatin1StringView("name"))), &m_tokenSource);
     }
 
     if(hasMatch)
     {
         queueToken(T_MATCHES, &m_tokenSource);
-        queueExpression(readAttribute(QLatin1String("match")), &m_tokenSource);
+        queueExpression(readAttribute(QLatin1StringView("match")), &m_tokenSource);
     }
 
     if(hasMode)
     {
-        const QString modeString(readAttribute(QLatin1String("mode")).simplified());
+        const QString modeString(readAttribute(QLatin1StringView("mode")).simplified());
 
         if(modeString.isEmpty())
         {
             error(QtXmlPatterns::tr("At least one mode must be specified in the %1-attribute on element %2.")
-                             .arg(formatKeyword(QLatin1String("mode")),
-                                  formatKeyword(QLatin1String("template"))),
+                             .arg(formatKeyword(QLatin1StringView("mode")),
+                                  formatKeyword(QLatin1StringView("template"))),
                   ReportContext::XTSE0500);
         }
 
@@ -1050,7 +1054,7 @@ void XSLTTokenizer::insideTemplate()
     if(hasPriority)
     {
         queueToken(T_PRIORITY, &m_tokenSource);
-        queueToken(Token(T_STRING_LITERAL, readAttribute(QLatin1String("priority"))), &m_tokenSource);
+        queueToken(Token(T_STRING_LITERAL, readAttribute(QLatin1StringView("priority"))), &m_tokenSource);
     }
 
     QStack<Token> onExitTokens;
@@ -1066,7 +1070,7 @@ void XSLTTokenizer::insideTemplate()
     if(hasAs)
     {
         queueToken(T_AS, &m_tokenSource);
-        queueSequenceType(atts.value(QLatin1String("as")).toString());
+        queueSequenceType(atts.value(QLatin1StringView("as")).toString());
     }
 
     queueToken(T_CURLY_LBRACE, &m_tokenSource);
@@ -1150,13 +1154,13 @@ void XSLTTokenizer::insideChoose(TokenSource::Queue *const to)
                             if(hasHandledOtherwise)
                             {
                                 error(QtXmlPatterns::tr("Element %1 must come last.")
-                                                                  .arg(formatKeyword(QLatin1String("otherwise"))),
+                                                                  .arg(formatKeyword(QLatin1StringView("otherwise"))),
                                       ReportContext::XTSE0010);
                             }
 
                             queueToken(T_IF, to);
                             queueToken(T_LPAREN, to);
-                            queueExpression(readAttribute(QLatin1String("test")), to);
+                            queueExpression(readAttribute(QLatin1StringView("test")), to);
                             queueToken(T_RPAREN, to);
                             queueToken(T_THEN, to);
                             queueToken(T_LPAREN, to);
@@ -1174,14 +1178,14 @@ void XSLTTokenizer::insideChoose(TokenSource::Queue *const to)
                             if(!hasEncounteredAtLeastOneWhen)
                             {
                                 error(QtXmlPatterns::tr("At least one %1-element must occur before %2.")
-                                                                  .arg(formatKeyword(QLatin1String("when")),
-                                                                       formatKeyword(QLatin1String("otherwise"))),
+                                                                  .arg(formatKeyword(QLatin1StringView("when")),
+                                                                       formatKeyword(QLatin1StringView("otherwise"))),
                                       ReportContext::XTSE0010);
                             }
                             else if(hasHandledOtherwise)
                             {
                                 error(QtXmlPatterns::tr("Only one %1-element can appear.")
-                                                                  .arg(formatKeyword(QLatin1String("otherwise"))),
+                                                                  .arg(formatKeyword(QLatin1StringView("otherwise"))),
                                       ReportContext::XTSE0010);
                             }
 
@@ -1212,8 +1216,8 @@ void XSLTTokenizer::insideChoose(TokenSource::Queue *const to)
                             if(!hasEncounteredAtLeastOneWhen)
                             {
                                 error(QtXmlPatterns::tr("At least one %1-element must occur inside %2.")
-                                                                  .arg(formatKeyword(QLatin1String("when")),
-                                                                       formatKeyword(QLatin1String("choose"))),
+                                                                  .arg(formatKeyword(QLatin1StringView("when")),
+                                                                       formatKeyword(QLatin1StringView("choose"))),
                                       ReportContext::XTSE0010);
                             }
 
@@ -1260,15 +1264,15 @@ bool XSLTTokenizer::queueSelectOrSequenceConstructor(const ReportContext::ErrorC
     const NodeName elementName(currentElementName());
     const QXmlStreamAttributes atts(attsP ? *attsP : m_currentAttributes);
 
-    if(atts.hasAttribute(QLatin1String("select")))
+    if(atts.hasAttribute(QLatin1StringView("select")))
     {
-        queueExpression(atts.value(QLatin1String("select")).toString(), to);
+        queueExpression(atts.value(QLatin1StringView("select")).toString(), to);
 
         /* First, verify that we don't have a body. */
         if(skipSubTree(true))
         {
             error(QtXmlPatterns::tr("When attribute %1 is present on %2, a sequence "
-                                               "constructor cannot be used.").arg(formatKeyword(QLatin1String("select")),
+                                               "constructor cannot be used.").arg(formatKeyword(QLatin1StringView("select")),
                                                                                   formatKeyword(toString(elementName))),
                   code);
         }
@@ -1282,7 +1286,7 @@ bool XSLTTokenizer::queueSelectOrSequenceConstructor(const ReportContext::ErrorC
         {
             error(QtXmlPatterns::tr("Element %1 must have either a %2-attribute "
                                                "or a sequence constructor.").arg(formatKeyword(toString(elementName)),
-                                                                                 formatKeyword(QLatin1String("select"))),
+                                                                                 formatKeyword(QLatin1StringView("select"))),
                   code);
 
         }
@@ -1297,13 +1301,13 @@ void XSLTTokenizer::queueSimpleContentConstructor(const ReportContext::ErrorCode
                                                   const bool selectOnlyFirst)
 {
     queueToken(T_INTERNAL_NAME, to);
-    queueToken(Token(T_NCNAME, QLatin1String("generic-string-join")), to);
+    queueToken(Token(T_NCNAME, QLatin1StringView("generic-string-join")), to);
     queueToken(T_LPAREN, to);
 
     /* We have to read the attribute before calling
      * queueSelectOrSequenceConstructor(), since it advances the reader. */
-    const bool hasSeparator = m_currentAttributes.hasAttribute(QLatin1String("separator"));
-    const QString separatorAVT(m_currentAttributes.value(QLatin1String("separator")).toString());
+    const bool hasSeparator = m_currentAttributes.hasAttribute(QLatin1StringView("separator"));
+    const QString separatorAVT(m_currentAttributes.value(QLatin1StringView("separator")).toString());
 
     queueToken(T_LPAREN, to);
     const bool viaSelectAttribute = queueSelectOrSequenceConstructor(code, emptynessAllowed, to);
@@ -1366,13 +1370,13 @@ void XSLTTokenizer::queueVariableDeclaration(const VariableType variableType,
 
     queueToken(T_DOLLAR, to);
 
-    queueExpression(readAttribute(QLatin1String("name")), to, false);
+    queueExpression(readAttribute(QLatin1StringView("name")), to, false);
 
-    const bool hasAs = m_currentAttributes.hasAttribute(QLatin1String("as"));
+    const bool hasAs = m_currentAttributes.hasAttribute(QLatin1StringView("as"));
     if(hasAs)
     {
         queueToken(T_AS, to);
-        queueSequenceType(m_currentAttributes.value(QLatin1String("as")).toString());
+        queueSequenceType(m_currentAttributes.value(QLatin1StringView("as")).toString());
     }
 
     if(variableType == FunctionParameter)
@@ -1383,8 +1387,8 @@ void XSLTTokenizer::queueVariableDeclaration(const VariableType variableType,
 
     /* We must do this here, because queueSelectOrSequenceConstructor()
      * advances the reader. */
-    const bool hasSelect = hasAttribute(QLatin1String("select"));
-    const bool isRequired = hasAttribute(QLatin1String("required")) ? attributeYesNo(QLatin1String("required")) : false;
+    const bool hasSelect = hasAttribute(QLatin1StringView("select"));
+    const bool isRequired = hasAttribute(QLatin1StringView("required")) ? attributeYesNo(QLatin1StringView("required")) : false;
 
     TokenSource::Queue storage;
     queueSelectOrSequenceConstructor(ReportContext::XTSE0620, true, &storage, 0, false);
@@ -1407,7 +1411,7 @@ void XSLTTokenizer::queueVariableDeclaration(const VariableType variableType,
         {
             error(QtXmlPatterns::tr("When a parameter is required, a default value "
                                                "cannot be supplied through a %1-attribute or "
-                                               "a sequence constructor.").arg(formatKeyword(QLatin1String("select"))),
+                                               "a sequence constructor.").arg(formatKeyword(QLatin1StringView("select"))),
                   ReportContext::XTSE0010);
         }
     }
@@ -1560,7 +1564,7 @@ bool XSLTTokenizer::insideSequenceConstructor(TokenSource::Queue *const to,
                             queueToken(T_IF, to);
                             queueToken(T_LPAREN, to);
 
-                            queueExpression(readAttribute(QLatin1String("test")), to);
+                            queueExpression(readAttribute(QLatin1StringView("test")), to);
                             queueToken(T_RPAREN, to);
                             queueToken(T_THEN, to);
 
@@ -1582,13 +1586,13 @@ bool XSLTTokenizer::insideSequenceConstructor(TokenSource::Queue *const to,
                             queueToken(T_CURLY_LBRACE, to);
 
                             queueSimpleContentConstructor(ReportContext::XTSE0870, true, to,
-                                                          !hasAttribute(QLatin1String("separator")) && m_processingMode.top() == BackwardsCompatible);
+                                                          !hasAttribute(QLatin1StringView("separator")) && m_processingMode.top() == BackwardsCompatible);
                             queueToken(T_CURLY_RBRACE, to);
                             break;
                         }
                         case Sequence:
                         {
-                            queueExpression(readAttribute(QLatin1String("select")), to);
+                            queueExpression(readAttribute(QLatin1StringView("select")), to);
                             parseFallbacksOnly();
                             break;
                         }
@@ -1622,7 +1626,7 @@ bool XSLTTokenizer::insideSequenceConstructor(TokenSource::Queue *const to,
                         case CallTemplate:
                         {
                             queueToken(T_CALL_TEMPLATE, to);
-                            queueToken(Token(T_QNAME, readAttribute(QLatin1String("name"))), to);
+                            queueToken(Token(T_QNAME, readAttribute(QLatin1StringView("name"))), to);
                             queueToken(T_LPAREN, to);
                             queueWithParams(CallTemplate, to);
                             queueToken(T_RPAREN, to);
@@ -1630,7 +1634,7 @@ bool XSLTTokenizer::insideSequenceConstructor(TokenSource::Queue *const to,
                         }
                         case ForEach:
                         {
-                            queueExpression(readAttribute(QLatin1String("select")), to);
+                            queueExpression(readAttribute(QLatin1StringView("select")), to);
                             queueToken(T_MAP, to);
                             pushState(InsideSequenceConstructor);
 
@@ -1668,14 +1672,14 @@ bool XSLTTokenizer::insideSequenceConstructor(TokenSource::Queue *const to,
                         }
                         case CopyOf:
                         {
-                            queueExpression(readAttribute(QLatin1String("select")), to);
+                            queueExpression(readAttribute(QLatin1StringView("select")), to);
                             // TODO
 
                             if(readNext() == QXmlStreamReader::EndElement)
                                 break;
                             else
                             {
-                                error(QtXmlPatterns::tr("Element %1 cannot have children.").arg(formatKeyword(QLatin1String("copy-of"))),
+                                error(QtXmlPatterns::tr("Element %1 cannot have children.").arg(formatKeyword(QLatin1StringView("copy-of"))),
                                       ReportContext::XTSE0010);
                             }
                             break;
@@ -1741,7 +1745,7 @@ bool XSLTTokenizer::insideSequenceConstructor(TokenSource::Queue *const to,
                             queueToken(T_ELEMENT, to);
                             queueToken(T_INTERNAL, to);
                             queueToken(T_CURLY_LBRACE, to);
-                            queueToken(Token(T_NCNAME, QLatin1String("node-name")), to); // TODO what if the default ns changes?
+                            queueToken(Token(T_NCNAME, QLatin1StringView("node-name")), to); // TODO what if the default ns changes?
                             queueToken(T_LPAREN, to);
                             queueToken(T_DOT, to);
                             queueToken(T_RPAREN, to);
@@ -1781,7 +1785,7 @@ bool XSLTTokenizer::insideSequenceConstructor(TokenSource::Queue *const to,
                         {
                             queueToken(T_PROCESSING_INSTRUCTION, to);
                             queueToken(T_CURLY_LBRACE, to);
-                            queueAVT(readAttribute(QLatin1String("name")), to);
+                            queueAVT(readAttribute(QLatin1StringView("name")), to);
                             queueToken(T_CURLY_RBRACE, to);
                             queueToken(T_CURLY_LBRACE, to);
                             queueSelectOrSequenceConstructor(ReportContext::XTSE0880, true, to);
@@ -1812,7 +1816,7 @@ bool XSLTTokenizer::insideSequenceConstructor(TokenSource::Queue *const to,
                             /* The name. */
                             queueToken(T_CURLY_LBRACE, to);
                             // TODO only strings allowed, not qname values.
-                            queueAVT(readAttribute(QLatin1String("name")), to);
+                            queueAVT(readAttribute(QLatin1StringView("name")), to);
                             queueToken(T_CURLY_RBRACE, to);
 
                             /* The sequence constructor. */
@@ -1833,7 +1837,7 @@ bool XSLTTokenizer::insideSequenceConstructor(TokenSource::Queue *const to,
                             /* The name. */
                             queueToken(T_CURLY_LBRACE, to);
                             // TODO only strings allowed, not qname values.
-                            queueAVT(readAttribute(QLatin1String("name")), to);
+                            queueAVT(readAttribute(QLatin1StringView("name")), to);
                             queueToken(T_CURLY_RBRACE, to);
 
                             /* The sequence constructor. */
@@ -1849,7 +1853,7 @@ bool XSLTTokenizer::insideSequenceConstructor(TokenSource::Queue *const to,
 
                             /* The name. */
                             queueToken(T_CURLY_LBRACE, to);
-                            queueAVT(readAttribute(QLatin1String("name")), to);
+                            queueAVT(readAttribute(QLatin1StringView("name")), to);
                             queueToken(T_CURLY_RBRACE, to);
 
                             /* The sequence constructor. */
@@ -1909,8 +1913,8 @@ bool XSLTTokenizer::insideSequenceConstructor(TokenSource::Queue *const to,
                         }
                         case ApplyTemplates:
                         {
-                            if(hasAttribute(QLatin1String("select")))
-                                queueExpression(readAttribute(QLatin1String("select")), to);
+                            if(hasAttribute(QLatin1StringView("select")))
+                                queueExpression(readAttribute(QLatin1StringView("select")), to);
                             else
                             {
                                 queueToken(T_CHILD, to);
@@ -1920,11 +1924,11 @@ bool XSLTTokenizer::insideSequenceConstructor(TokenSource::Queue *const to,
                                 queueToken(T_RPAREN, to);
                             }
 
-                            bool hasMode = hasAttribute(QLatin1String("mode"));
+                            bool hasMode = hasAttribute(QLatin1StringView("mode"));
                             QString mode;
 
                             if(hasMode)
-                                mode = readAttribute(QLatin1String("mode")).trimmed();
+                                mode = readAttribute(QLatin1StringView("mode")).trimmed();
 
                             queueToken(T_FOR_APPLY_TEMPLATE, to);
 
@@ -2136,7 +2140,7 @@ void XSLTTokenizer::queueWithParams(const XSLTTokenLookup::NodeName parentName,
 
                 if(isXSLT() && isElement(WithParam))
                 {
-                    if(hasAttribute(QLatin1String("tunnel")) && attributeYesNo(QLatin1String("tunnel")))
+                    if(hasAttribute(QLatin1StringView("tunnel")) && attributeYesNo(QLatin1StringView("tunnel")))
                         queueToken(T_TUNNEL, to);
 
                     queueVariableDeclaration(WithParamVariable, to);
@@ -2189,26 +2193,26 @@ void XSLTTokenizer::queueParams(const XSLTTokenLookup::NodeName parentName,
 
                     validateElement();
 
-                    if(parentName == Function && m_currentAttributes.hasAttribute(QLatin1String("select")))
+                    if(parentName == Function && m_currentAttributes.hasAttribute(QLatin1StringView("select")))
                     {
                         error(QtXmlPatterns::tr("The attribute %1 cannot appear on %2, when it is a child of %3.")
-                                         .arg(formatKeyword(QLatin1String("select")),
-                                              formatKeyword(QLatin1String("param")),
-                                              formatKeyword(QLatin1String("function"))),
+                                         .arg(formatKeyword(QLatin1StringView("select")),
+                                              formatKeyword(QLatin1StringView("param")),
+                                              formatKeyword(QLatin1StringView("function"))),
                               ReportContext::XTSE0760);
                     }
 
-                    if(parentName == Function && m_currentAttributes.hasAttribute(QLatin1String("required")))
+                    if(parentName == Function && m_currentAttributes.hasAttribute(QLatin1StringView("required")))
                     {
                         error(QtXmlPatterns::tr("The attribute %1 cannot appear on %2, when it is a child of %3.")
-                                         .arg(formatKeyword(QLatin1String("required")),
-                                              formatKeyword(QLatin1String("param")),
-                                              formatKeyword(QLatin1String("function"))),
+                                         .arg(formatKeyword(QLatin1StringView("required")),
+                                              formatKeyword(QLatin1StringView("param")),
+                                              formatKeyword(QLatin1StringView("function"))),
                               ReportContext::XTSE0010);
                     }
 
-                    const bool hasTunnel = m_currentAttributes.hasAttribute(QLatin1String("tunnel"));
-                    const bool isTunnel = hasTunnel ? attributeYesNo(QLatin1String("tunnel")) : false;
+                    const bool hasTunnel = m_currentAttributes.hasAttribute(QLatin1StringView("tunnel"));
+                    const bool isTunnel = hasTunnel ? attributeYesNo(QLatin1StringView("tunnel")) : false;
 
                     if(isTunnel)
                     {
@@ -2419,8 +2423,9 @@ void XSLTTokenizer::insideStylesheetModule()
 
                     if(namespaceUri().isEmpty())
                     {
+                        const auto & str = name().toString();
                         error(QtXmlPatterns::tr("Top level stylesheet elements must be "
-                                                           "in a non-null namespace, which %1 isn't.").arg(formatKeyword(name())),
+                                                "in a non-null namespace, which %1 isn't.").arg(formatKeyword(&str)),
                               ReportContext::XTSE0130);
                     }
                     else
@@ -2467,9 +2472,10 @@ bool XSLTTokenizer::readToggleAttribute(const QString &localName,
         return false;
     else
     {
+        const auto & str = name().toString();
         error(QtXmlPatterns::tr("The value for attribute %1 on element %2 must either "
                                            "be %3 or %4, not %5.").arg(formatKeyword(localName),
-                                                                       formatKeyword(name()),
+                                                                       formatKeyword(&str),
                                                                        formatData(isTrue),
                                                                        formatData(isFalse),
                                                                        formatData(value)),
@@ -2496,7 +2502,7 @@ int XSLTTokenizer::readAlternativeAttribute(const QHash<QString, int> &alternati
 
 bool XSLTTokenizer::attributeYesNo(const QString &localName) const
 {
-    return readToggleAttribute(localName, QLatin1String("yes"), QLatin1String("no"));
+    return readToggleAttribute(localName, QLatin1StringView("yes"), QLatin1StringView("no"));
 }
 
 void XSLTTokenizer::queueSorting(const bool oneSortRequired,
@@ -2539,17 +2545,17 @@ void XSLTTokenizer::queueSorting(const bool oneSortRequired,
                         queueToken(T_COMMA, to);
 
                     /* sorts are by default stable. */
-                    if(hasAttribute(QLatin1String("stable")))
+                    if(hasAttribute(QLatin1StringView("stable")))
                     {
                         if(hasQueuedOneSort)
                         {
                             error(QtXmlPatterns::tr("The attribute %1 can only appear on "
-                                                               "the first %2 element.").arg(formatKeyword(QLatin1String("stable")),
-                                                                                            formatKeyword(QLatin1String("sort"))),
+                                                               "the first %2 element.").arg(formatKeyword(QLatin1StringView("stable")),
+                                                                                            formatKeyword(QLatin1StringView("sort"))),
                                   ReportContext::XTSE0020);
                         }
 
-                        if(attributeYesNo(QLatin1String("stable")))
+                        if(attributeYesNo(QLatin1StringView("stable")))
                             queueToken(T_STABLE, to);
                     }
 
@@ -2566,15 +2572,15 @@ void XSLTTokenizer::queueSorting(const bool oneSortRequired,
                     const int before = to->count();
 
                     // TODO This doesn't work as is. @data-type can be an AVT.
-                    if(atts.hasAttribute(QLatin1String("data-type")))
+                    if(atts.hasAttribute(QLatin1StringView("data-type")))
                     {
-                        if(readToggleAttribute(QLatin1String("data-type"),
-                                               QLatin1String("text"),
-                                               QLatin1String("number"),
+                        if(readToggleAttribute(QLatin1StringView("data-type"),
+                                               QLatin1StringView("text"),
+                                               QLatin1StringView("number"),
                                                &atts))
-                            queueToken(Token(T_NCNAME, QLatin1String("string")), to);
+                            queueToken(Token(T_NCNAME, QLatin1StringView("string")), to);
                         else
-                            queueToken(Token(T_NCNAME, QLatin1String("number")), to);
+                            queueToken(Token(T_NCNAME, QLatin1StringView("number")), to);
                     }
                     /* We queue these parantheses for the sake of the function
                      * call for attribute data-type. In the case we don't have
@@ -2595,9 +2601,9 @@ void XSLTTokenizer::queueSorting(const bool oneSortRequired,
                     // TODO lang
 
                     // TODO This doesn't work as is. @order can be an AVT, and so can case-order and lang.
-                    if(atts.hasAttribute(QLatin1String("order")) && readToggleAttribute(QLatin1String("order"),
-                                                                                       QLatin1String("descending"),
-                                                                                       QLatin1String("ascending"),
+                    if(atts.hasAttribute(QLatin1StringView("order")) && readToggleAttribute(QLatin1StringView("order"),
+                                                                                       QLatin1StringView("descending"),
+                                                                                       QLatin1StringView("ascending"),
                                                                                        &atts))
                     {
                         queueToken(T_DESCENDING, to);
@@ -2608,11 +2614,11 @@ void XSLTTokenizer::queueSorting(const bool oneSortRequired,
                         queueToken(T_ASCENDING, to);
                     }
 
-                    if(atts.hasAttribute(QLatin1String("collation")))
+                    if(atts.hasAttribute(QLatin1StringView("collation")))
                     {
                         queueToken(T_INTERNAL, to);
                         queueToken(T_COLLATION, to);
-                        queueAVT(atts.value(QLatin1String("collation")).toString(), to);
+                        queueAVT(atts.value(QLatin1StringView("collation")).toString(), to);
                     }
 
                     hasQueuedOneSort = true;
@@ -2642,7 +2648,7 @@ void XSLTTokenizer::queueSorting(const bool oneSortRequired,
         if(oneSortRequired && !hasQueuedOneSort)
         {
             error(QtXmlPatterns::tr("At least one %1 element must appear as child of %2.")
-                                              .arg(formatKeyword(QLatin1String("sort")), formatKeyword(toString(elementName))),
+                                              .arg(formatKeyword(QLatin1StringView("sort")), formatKeyword(toString(elementName))),
                   ReportContext::XTSE0010);
         }
         else
@@ -2656,14 +2662,14 @@ void XSLTTokenizer::insideFunction()
     queueToken(T_DECLARE, &m_tokenSource);
     queueToken(T_FUNCTION, &m_tokenSource);
     queueToken(T_INTERNAL, &m_tokenSource);
-    queueToken(Token(T_QNAME, readAttribute(QLatin1String("name"))), &m_tokenSource);
+    queueToken(Token(T_QNAME, readAttribute(QLatin1StringView("name"))), &m_tokenSource);
     queueToken(T_LPAREN, &m_tokenSource);
-    const QString expectedType(hasAttribute(QLatin1String("as")) ? readAttribute(QLatin1String("as")): QString());
+    const QString expectedType(hasAttribute(QLatin1StringView("as")) ? readAttribute(QLatin1StringView("as")): QString());
 
-    if(hasAttribute(QLatin1String("override")))
+    if(hasAttribute(QLatin1StringView("override")))
     {
         /* We currently have no external functions, so we don't pass it on currently. */
-        attributeYesNo(QLatin1String("override"));
+        attributeYesNo(QLatin1StringView("override"));
     }
 
     queueParams(Function, &m_tokenSource);

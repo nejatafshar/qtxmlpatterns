@@ -50,9 +50,9 @@
 #ifndef Patternist_XsdAttributeReference_H
 #define Patternist_XsdAttributeReference_H
 
-#include <private/qxsdattributeuse_p.h>
+#include <qxsdattributeuse_p.h>
 
-#include <QtXmlPatterns/QSourceLocation>
+#include <qsourcelocation.h>
 
 QT_BEGIN_NAMESPACE
 

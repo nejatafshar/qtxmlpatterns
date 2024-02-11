@@ -50,7 +50,7 @@
 #ifndef Patternist_ElementAvailableFN_H
 #define Patternist_ElementAvailableFN_H
 
-#include <private/qstaticnamespacescontainer_p.h>
+#include <qstaticnamespacescontainer_p.h>
 
 QT_BEGIN_NAMESPACE
 

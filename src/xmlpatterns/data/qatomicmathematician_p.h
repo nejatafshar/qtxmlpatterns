@@ -52,9 +52,9 @@
 
 #include <QFlags>
 
-#include <private/qdynamiccontext_p.h>
-#include <private/qitem_p.h>
-#include <private/qatomictypedispatch_p.h>
+#include <qdynamiccontext_p.h>
+#include <qitem_p.h>
+#include <qatomictypedispatch_p.h>
 
 QT_BEGIN_NAMESPACE
 

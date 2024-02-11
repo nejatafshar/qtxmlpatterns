@@ -75,34 +75,34 @@ TestResult::List TestCase::execute(const ExecutionStage stage,
 
     const QByteArray nm = name().toLatin1();
 
-    if(name() == QLatin1String("Constr-cont-document-3"))
+    if(name() == QLatin1StringView("Constr-cont-document-3"))
     {
             TestResult::List result;
-            result.append(createTestResult(TestResult::Fail, QLatin1String("Skipped this test, because we loop infinitely on it.")));
+            result.append(createTestResult(TestResult::Fail, QLatin1StringView("Skipped this test, because we loop infinitely on it.")));
             return result;
     }
-    else if(name() == QLatin1String("Axes089"))
+    else if(name() == QLatin1StringView("Axes089"))
     {
             TestResult::List result;
-            result.append(createTestResult(TestResult::Fail, QLatin1String("Skipped this test, we crash on it.")));
+            result.append(createTestResult(TestResult::Fail, QLatin1StringView("Skipped this test, we crash on it.")));
             return result;
     }
-    else if (name() == QLatin1String("op-numeric-unary-minus-1"))
+    else if (name() == QLatin1StringView("op-numeric-unary-minus-1"))
     {
             TestResult::List result;
-            result.append(createTestResult(TestResult::Fail, QLatin1String("Skipped this test, we crash on it.")));
+            result.append(createTestResult(TestResult::Fail, QLatin1StringView("Skipped this test, we crash on it.")));
             return result;
     }
-    else if (name() == QLatin1String("emptyorderdecl-13"))
+    else if (name() == QLatin1StringView("emptyorderdecl-13"))
     {
         TestResult::List result;
-        result.append(createTestResult(TestResult::Fail, QLatin1String("Skipped this test, we crash on it.")));
+        result.append(createTestResult(TestResult::Fail, QLatin1StringView("Skipped this test, we crash on it.")));
         return result;
     }
-    else if (name() == QLatin1String("emptyorderdecl-21"))
+    else if (name() == QLatin1StringView("emptyorderdecl-21"))
     {
         TestResult::List result;
-        result.append(createTestResult(TestResult::Fail, QLatin1String("Skipped this test, we crash on it.")));
+        result.append(createTestResult(TestResult::Fail, QLatin1StringView("Skipped this test, we crash on it.")));
         return result;
     }
     else {
@@ -120,7 +120,7 @@ TestResult::List TestCase::execute(const ExecutionStage stage,
         const bool skip = std::binary_search(&crashes[0], &crashes[sizeof(crashes)/sizeof(crashes[0])], nm.constData(), lessThan);
         if (skip) {
             TestResult::List result;
-            result.append(createTestResult(TestResult::Fail, QLatin1String("Skipped this test, we crash on it.")));
+            result.append(createTestResult(TestResult::Fail, QLatin1StringView("Skipped this test, we crash on it.")));
             return result;
         }
     }
@@ -163,7 +163,7 @@ TestResult::List TestCase::execute(const ExecutionStage stage)
 
     if(contextItemSource().isValid())
     {
-        openDoc.setQuery(QString::fromLatin1("doc('") + contextItemSource().toString() + QLatin1String("')"));
+        openDoc.setQuery(QString::fromLatin1("doc('") + contextItemSource().toString() + QLatin1StringView("')"));
         Q_ASSERT(openDoc.isValid());
         QXmlResultItems result;
 
@@ -317,13 +317,13 @@ TestResult::List TestCase::execute(const ExecutionStage stage)
 
 TestCase::Scenario TestCase::scenarioFromString(const QString &string)
 {
-    if(string == QLatin1String("standard"))
+    if(string == QLatin1StringView("standard"))
         return Standard;
-    else if(string == QLatin1String("parse-error"))
+    else if(string == QLatin1StringView("parse-error"))
         return ParseError;
-    else if(string == QLatin1String("runtime-error"))
+    else if(string == QLatin1StringView("runtime-error"))
         return RuntimeError;
-    else if(string == QLatin1String("trivial"))
+    else if(string == QLatin1StringView("trivial"))
         return Trivial;
     else
     {
@@ -337,56 +337,56 @@ void TestCase::toXML(XMLWriter &receiver) const
 {
     /* <test-case> */
     QXmlStreamAttributes test_caseAtts;
-    test_caseAtts.append(QLatin1String("is-XPath2"), isXPath() ? QLatin1String("true")
-                                                               : QLatin1String("false"));
-    test_caseAtts.append(QLatin1String("name"), name());
-    test_caseAtts.append(QLatin1String("creator"), creator());
+    test_caseAtts.append(QLatin1StringView("is-XPath2"), isXPath() ? QLatin1StringView("true")
+                                                               : QLatin1StringView("false"));
+    test_caseAtts.append(QLatin1StringView("name"), name());
+    test_caseAtts.append(QLatin1StringView("creator"), creator());
     QString scen;
     switch(scenario())
     {
         case Standard:
         {
-            scen = QLatin1String("standard");
+            scen = QLatin1StringView("standard");
             break;
         }
         case ParseError:
         {
-            scen = QLatin1String("parse-error");
+            scen = QLatin1StringView("parse-error");
             break;
         }
         case RuntimeError:
         {
-            scen = QLatin1String("runtime-error");
+            scen = QLatin1StringView("runtime-error");
             break;
         }
         case Trivial:
         {
-            scen = QLatin1String("trivial");
+            scen = QLatin1StringView("trivial");
             break;
         }
         default: /* includes 'AnyError' */
             Q_ASSERT(false);
     }
-    test_caseAtts.append(QLatin1String("scenario"), scen);
-    test_caseAtts.append(QLatin1String("FilePath"), QString());
-    receiver.startElement(QLatin1String("test-case"), test_caseAtts);
+    test_caseAtts.append(QLatin1StringView("scenario"), scen);
+    test_caseAtts.append(QLatin1StringView("FilePath"), QString());
+    receiver.startElement(QLatin1StringView("test-case"), test_caseAtts);
 
     /* <description> */
-    receiver.startElement(QLatin1String("description"), test_caseAtts);
+    receiver.startElement(QLatin1StringView("description"), test_caseAtts);
     receiver.characters(description());
 
     /* </description> */
-    receiver.endElement(QLatin1String("description"));
+    receiver.endElement(QLatin1StringView("description"));
 
     /* <query> */
     QXmlStreamAttributes queryAtts;
-    queryAtts.append(QLatin1String("date"), /* This date is a dummy. */
+    queryAtts.append(QLatin1StringView("date"), /* This date is a dummy. */
                      QDate::currentDate().toString(Qt::ISODate));
-    queryAtts.append(QLatin1String("name"), testCasePath().toString());
-    receiver.startElement(QLatin1String("query"), queryAtts);
+    queryAtts.append(QLatin1StringView("name"), testCasePath().toString());
+    receiver.startElement(QLatin1StringView("query"), queryAtts);
 
     /* </query> */
-    receiver.endElement(QLatin1String("query"));
+    receiver.endElement(QLatin1StringView("query"));
 
     /* Note: this is invalid, we don't add spec-citation. */
     TestBaseLine::List bls(baseLines());
@@ -397,7 +397,7 @@ void TestCase::toXML(XMLWriter &receiver) const
         (*it)->toXML(receiver);
 
     /* </test-case> */
-    receiver.endElement(QLatin1String("test-case"));
+    receiver.endElement(QLatin1StringView("test-case"));
 }
 
 QString TestCase::displayName(const Scenario scen)
@@ -405,13 +405,13 @@ QString TestCase::displayName(const Scenario scen)
     switch(scen)
     {
         case Standard:
-            return QLatin1String("Standard");
+            return QLatin1StringView("Standard");
         case ParseError:
-            return QLatin1String("Parse Error");
+            return QLatin1StringView("Parse Error");
         case RuntimeError:
-            return QLatin1String("Runtime Error");
+            return QLatin1StringView("Runtime Error");
         case Trivial:
-            return QLatin1String("Trivial");
+            return QLatin1StringView("Trivial");
         case AnyError:
         {
             Q_ASSERT(false);

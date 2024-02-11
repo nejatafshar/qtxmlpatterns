@@ -87,7 +87,7 @@ void qMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &
     /* This message is hacky. Ideally, we should do it the same way
      * ReportContext::error() constructs messages, but this is just testing
      * code. */
-    ErrorHandler::handler->message(t, QLatin1String("<p>") + QPatternist::escape(description) + QLatin1String("</p>"));
+    ErrorHandler::handler->message(t, QLatin1StringView("<p>") + QPatternist::escape(description) + QLatin1StringView("</p>"));
 }
 
 void ErrorHandler::installQtMessageHandler(ErrorHandler *const h)
@@ -118,13 +118,13 @@ void ErrorHandler::handleMessage(QtMsgType type,
     buffer.open(QIODevice::ReadOnly);
 
     QXmlQuery query;
-    query.bindVariable(QLatin1String("desc"), &buffer);
-    query.setQuery(QLatin1String("string(doc($desc))"));
+    query.bindVariable(QLatin1StringView("desc"), &buffer);
+    query.setQuery(QLatin1StringView("string(doc($desc))"));
 
     QStringList result;
     const bool success = query.evaluateTo(&result);
 
-    if(!description.startsWith(QLatin1String("\"Test-suite harness error:")))
+    if(!description.startsWith(QLatin1StringView("\"Test-suite harness error:")))
     {
         const QString msg(QString::fromLatin1("Invalid description: %1").arg(description));
         QVERIFY2(success, qPrintable(msg));

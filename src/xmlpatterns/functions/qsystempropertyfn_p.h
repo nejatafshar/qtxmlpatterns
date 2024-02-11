@@ -50,7 +50,7 @@
 #ifndef Patternist_SystemPropertyFN_H
 #define Patternist_SystemPropertyFN_H
 
-#include <private/qstaticnamespacescontainer_p.h>
+#include <qstaticnamespacescontainer_p.h>
 
 QT_BEGIN_NAMESPACE
 

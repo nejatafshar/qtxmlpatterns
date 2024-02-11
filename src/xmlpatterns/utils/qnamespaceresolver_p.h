@@ -51,7 +51,7 @@
 #define Patternist_NamespaceResolver_H
 
 #include <QSharedData>
-#include <QXmlName>
+#include <qxmlname.h>
 #include <private/qglobal_p.h>
 
 

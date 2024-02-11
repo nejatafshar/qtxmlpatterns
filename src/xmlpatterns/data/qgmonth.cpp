@@ -53,7 +53,7 @@ GMonth::Ptr GMonth::fromLexical(const QString &lexical)
 {
     static const CaptureTable captureTable( // STATIC DATA
         /* The extra paranthesis is a build fix for GCC 3.3. */
-        (QRegExp(QLatin1String(
+        (QRegularExpression(QLatin1StringView(
                 "^\\s*"                             /* Any preceding whitespace. */
                 "--"                                /* Delimier. */
                 "(\\d{2})"                          /* The month part, "03". */
@@ -74,7 +74,7 @@ GMonth::Ptr GMonth::fromLexical(const QString &lexical)
 
 GMonth::Ptr GMonth::fromDateTime(const QDateTime &dt)
 {
-    QDateTime result(QDate(DefaultYear, dt.date().month(), DefaultDay));
+    QDateTime result(QDate(DefaultYear, dt.date().month(), DefaultDay), {0,0});
     copyTimeSpec(dt, result);
 
     return GMonth::Ptr(new GMonth(result));
@@ -82,7 +82,7 @@ GMonth::Ptr GMonth::fromDateTime(const QDateTime &dt)
 
 QString GMonth::stringValue() const
 {
-    return m_dateTime.toString(QLatin1String("--MM")) + zoneOffsetToString();
+    return m_dateTime.toString(QLatin1StringView("--MM")) + zoneOffsetToString();
 }
 
 ItemType::Ptr GMonth::type() const

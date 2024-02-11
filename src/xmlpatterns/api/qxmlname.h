@@ -42,14 +42,14 @@
 
 #include <QtCore/QString>
 #include <QtCore/QMetaType>
-#include <QtXmlPatterns/qtxmlpatternsglobal.h>
+#include <qtxmlpatternsglobal.h>
 
 QT_BEGIN_NAMESPACE
 
 
 class QXmlName;
 class QXmlNamePool;
-Q_XMLPATTERNS_EXPORT uint qHash(const QXmlName &name);
+Q_XMLPATTERNS_EXPORT size_t qHash(const QXmlName &name);
 
 class Q_XMLPATTERNS_EXPORT QXmlName
 {
@@ -118,7 +118,7 @@ public:
     inline void setLocalName(const LocalNameCode c);
     inline Code code() const;
 
-    friend Q_XMLPATTERNS_EXPORT uint qHash(const QXmlName &);
+    friend Q_XMLPATTERNS_EXPORT size_t qHash(const QXmlName &);
 
 private:
     inline QXmlName(const int c) : m_qNameCode(c)

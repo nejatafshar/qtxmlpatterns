@@ -214,11 +214,11 @@ void QXmlSerializer::writeEscaped(const QString &toEscape)
         const QChar c(toEscape.at(i));
 
         if(c == QLatin1Char('<'))
-            result += QLatin1String("&lt;");
+            result += QLatin1StringView("&lt;");
         else if(c == QLatin1Char('>'))
-            result += QLatin1String("&gt;");
+            result += QLatin1StringView("&gt;");
         else if(c == QLatin1Char('&'))
-            result += QLatin1String("&amp;");
+            result += QLatin1StringView("&amp;");
         else
             result += toEscape.at(i);
     }
@@ -243,13 +243,13 @@ void QXmlSerializer::writeEscapedAttribute(const QString &toEscape)
         const QChar c(toEscape.at(i));
 
         if(c == QLatin1Char('<'))
-            result += QLatin1String("&lt;");
+            result += QLatin1StringView("&lt;");
         else if(c == QLatin1Char('>'))
-            result += QLatin1String("&gt;");
+            result += QLatin1StringView("&gt;");
         else if(c == QLatin1Char('&'))
-            result += QLatin1String("&amp;");
+            result += QLatin1StringView("&amp;");
         else if(c == QLatin1Char('"'))
-            result += QLatin1String("&quot;");
+            result += QLatin1StringView("&quot;");
         else
             result += toEscape.at(i);
     }
@@ -485,7 +485,7 @@ void QXmlSerializer::namespaceBinding(const QXmlName &nb)
 void QXmlSerializer::comment(const QString &value)
 {
     Q_D(QXmlSerializer);
-    Q_ASSERT_X(!value.contains(QLatin1String("--")),
+    Q_ASSERT_X(!value.contains(QLatin1StringView("--")),
                Q_FUNC_INFO,
                "Invalid input; it's the caller's responsibility to ensure "
                "the input is correct.");
@@ -515,7 +515,7 @@ void QXmlSerializer::processingInstruction(const QXmlName &name,
                                            const QString &value)
 {
     Q_D(QXmlSerializer);
-    Q_ASSERT_X(!value.contains(QLatin1String("?>")),
+    Q_ASSERT_X(!value.contains(QLatin1StringView("?>")),
                Q_FUNC_INFO,
                "Invalid input; it's the caller's responsibility to ensure "
                "the input is correct.");

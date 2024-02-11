@@ -99,7 +99,7 @@ public:
                    "An XML name cannot be empty.");
         Q_ASSERT_X(!name.endsWith(QLatin1Char(':')), Q_FUNC_INFO,
                    "An XML name cannot end with a colon(QLatin1Char(':')).");
-        Q_ASSERT_X(!name.contains(QRegExp(QLatin1String("[ \t\n]"))), Q_FUNC_INFO,
+        Q_ASSERT_X(!name.contains(QRegExp(QLatin1StringView("[ \t\n]"))), Q_FUNC_INFO,
                    "An XML name cannot contain whitespace.");
     }
 
@@ -110,7 +110,7 @@ public:
     {
         const QString prefix(qName.left(qName.indexOf(QLatin1Char(':'))));
 
-        if(qName.contains(QLatin1Char(':')) && prefix != QLatin1String("xml"))
+        if(qName.contains(QLatin1Char(':')) && prefix != QLatin1StringView("xml"))
         {
             bool foundPrefix = false;
             const QStack<NSBindingList>::const_iterator end(namespaceTracker.constEnd());
@@ -150,9 +150,9 @@ public:
             const QChar c(ch.at(i));
 
             if(c == QLatin1Char(QLatin1Char('&')))
-                retval += QLatin1String("&amp;");
+                retval += QLatin1StringView("&amp;");
             else if(c == QLatin1Char(QLatin1Char('<')))
-                retval += QLatin1String("&lt;");
+                retval += QLatin1StringView("&lt;");
             else
                 retval += c;
         }
@@ -171,11 +171,11 @@ public:
 
             /* We don't have to escape '\'' because we use '\"' as attribute delimiter. */
             if(c == QLatin1Char('&'))
-                retval += QLatin1String("&amp;");
+                retval += QLatin1StringView("&amp;");
             else if(c == QLatin1Char('<'))
-                retval += QLatin1String("&lt;");
+                retval += QLatin1StringView("&lt;");
             else if(c == QLatin1Char('"'))
-                retval += QLatin1String("&quot;");
+                retval += QLatin1StringView("&quot;");
             else
                 retval += c;
         }
@@ -206,7 +206,7 @@ public:
             else if(c == QLatin1Char('>'))
             {
                 if(atEnd == 2)
-                    retval += QLatin1String("&gt;");
+                    retval += QLatin1StringView("&gt;");
                 else
                 {
                     atEnd = 0;
@@ -323,7 +323,7 @@ bool XMLWriter::startDocument()
         serialize('\n');
     }
 
-    serialize(QLatin1String("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"));
+    serialize(QLatin1StringView("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"));
 
     return true;
 }
@@ -332,7 +332,7 @@ bool XMLWriter::startElement(const QString &qName, const QXmlStreamAttributes &a
 {
     Q_ASSERT_X(!d->insideCDATA, Q_FUNC_INFO,
                "Only characters() can be received when inside CDATA.");
-    Q_ASSERT_X(!qName.startsWith(QLatin1String("xmlns")), Q_FUNC_INFO,
+    Q_ASSERT_X(!qName.startsWith(QLatin1StringView("xmlns")), Q_FUNC_INFO,
                "startElement should not be used for declaring prefixes, "
                "use startPrefixMapping() for that.");
 
@@ -398,12 +398,12 @@ bool XMLWriter::endElement(const QString &qName)
 
     if(d->hasElementContent())
     {
-        serialize(QLatin1String("</"));
+        serialize(QLatin1StringView("</"));
         serialize(qName);
         serialize('>');
     }
     else
-        serialize(QLatin1String("/>"));
+        serialize(QLatin1StringView("/>"));
 
     d->hasContentStack.pop();
 
@@ -414,15 +414,15 @@ bool XMLWriter::startPrefixMapping(const QString &prefix, const QString &uri)
 {
     Q_ASSERT_X(!d->insideCDATA, Q_FUNC_INFO,
                "Only characters() can be received when inside CDATA.");
-    Q_ASSERT_X(prefix.toLower() != QLatin1String("xml") ||
-               (prefix.toLower() == QLatin1String("xml") &&
-               (uri == QLatin1String("http://www.w3.org/TR/REC-xml-names/") ||
+    Q_ASSERT_X(prefix.toLower() != QLatin1StringView("xml") ||
+               (prefix.toLower() == QLatin1StringView("xml") &&
+               (uri == QLatin1StringView("http://www.w3.org/TR/REC-xml-names/") ||
                                               uri.isEmpty())),
                Q_FUNC_INFO,
                "The prefix 'xml' can only be bound to the namespace "
                "\"http://www.w3.org/TR/REC-xml-names/\".");
-    Q_ASSERT_X(prefix.toLower() != QLatin1String("xml") &&
-                uri != QLatin1String("http://www.w3.org/TR/REC-xml-names/"),
+    Q_ASSERT_X(prefix.toLower() != QLatin1StringView("xml") &&
+                uri != QLatin1StringView("http://www.w3.org/TR/REC-xml-names/"),
                Q_FUNC_INFO,
                "The namespace \"http://www.w3.org/TR/REC-xml-names/\" can only be bound to the "
                "\"xml\" prefix.");
@@ -434,21 +434,21 @@ bool XMLWriter::startPrefixMapping(const QString &prefix, const QString &uri)
 bool XMLWriter::processingInstruction(const QString &target,
                                       const QString &data)
 {
-    Q_ASSERT_X(target.toLower() != QLatin1String("xml"), Q_FUNC_INFO,
+    Q_ASSERT_X(target.toLower() != QLatin1StringView("xml"), Q_FUNC_INFO,
                "A processing instruction cannot have the name xml in any "
                "capitalization, because it is reserved.");
-    Q_ASSERT_X(!data.contains(QLatin1String("?>")), Q_FUNC_INFO,
+    Q_ASSERT_X(!data.contains(QLatin1StringView("?>")), Q_FUNC_INFO,
                "The content of a processing instruction cannot contain the string \"?>\".");
     Q_ASSERT_X(!d->insideCDATA, "XMLWriter::processingInstruction()",
                "Only characters() can be received when inside CDATA.");
 
     d->handleElement();
 
-    serialize(QLatin1String("<?"));
+    serialize(QLatin1StringView("<?"));
     serialize(target);
     serialize(' ');
     serialize(data);
-    serialize(QLatin1String("?>"));
+    serialize(QLatin1StringView("?>"));
     return true;
 }
 
@@ -470,7 +470,7 @@ bool XMLWriter::comment(const QString &ch)
 {
     Q_ASSERT_X(!d->insideCDATA, Q_FUNC_INFO,
                "Only characters() can be received when inside CDATA.");
-    Q_ASSERT_X(!ch.contains(QLatin1String("--")), Q_FUNC_INFO,
+    Q_ASSERT_X(!ch.contains(QLatin1StringView("--")), Q_FUNC_INFO,
                "XML comments may not contain double-hyphens(\"--\").");
     Q_ASSERT_X(!ch.endsWith(QLatin1Char('-')), Q_FUNC_INFO,
                "XML comments cannot end with a hyphen, \"-\"(add a space, for example).");
@@ -478,9 +478,9 @@ bool XMLWriter::comment(const QString &ch)
 
     d->handleElement();
 
-    serialize(QLatin1String("<!--"));
+    serialize(QLatin1StringView("<!--"));
     serialize(ch);
-    serialize(QLatin1String("-->"));
+    serialize(QLatin1StringView("-->"));
 
     return true;
 }
@@ -492,7 +492,7 @@ bool XMLWriter::startCDATA()
     Q_ASSERT_X(d->tags.count() >= 1, Q_FUNC_INFO,
                "CDATA sections can only appear inside elements(no elements sent).");
     d->insideCDATA = true;
-    serialize(QLatin1String("<![CDATA["));
+    serialize(QLatin1StringView("<![CDATA["));
     return true;
 }
 
@@ -519,7 +519,7 @@ bool XMLWriter::startDTD(const QString &name,
     Q_ASSERT_X(!systemId.contains(QLatin1Char('"')), Q_FUNC_INFO,
                "The SYSTEM ID cannot contain quotes('\"').");
 
-    serialize(QLatin1String("<!DOCTYPE "));
+    serialize(QLatin1StringView("<!DOCTYPE "));
     serialize(name);
 
     if(!publicId.isEmpty())
@@ -551,7 +551,7 @@ bool XMLWriter::endDTD()
     Q_ASSERT_X(d->tags.isEmpty() && d->namespaces.isEmpty(), Q_FUNC_INFO,
                "Content such as namespace declarations or elements cannot occur inside "
                "the DOCTYPE declaration, the XML is invalid.");
-    serialize(QLatin1String(">\n"));
+    serialize(QLatin1StringView(">\n"));
     return true;
 }
 

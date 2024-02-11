@@ -50,10 +50,10 @@
 #ifndef Patternist_XsdFacet_H
 #define Patternist_XsdFacet_H
 
-#include <private/qitem_p.h>
-#include <private/qnamedschemacomponent_p.h>
-#include <private/qxsdannotated_p.h>
-#include <private/qxsdassertion_p.h>
+#include <qitem_p.h>
+#include <qnamedschemacomponent_p.h>
+#include <qxsdannotated_p.h>
+#include <qxsdassertion_p.h>
 
 #include <QtCore/QList>
 

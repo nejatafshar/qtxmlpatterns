@@ -50,7 +50,7 @@
 #ifndef Patternist_UnparsedTextAvailableFN_H
 #define Patternist_UnparsedTextAvailableFN_H
 
-#include <private/qstaticbaseuricontainer_p.h>
+#include <qstaticbaseuricontainer_p.h>
 
 QT_BEGIN_NAMESPACE
 namespace QPatternist

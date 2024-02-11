@@ -109,17 +109,17 @@ QString BuiltinNodeType<kind>::displayName(const NamePool::Ptr &) const
     switch(kind)
     {
         case QXmlNodeModelIndex::Element:
-            return QLatin1String("element()");
+            return QLatin1StringView("element()");
         case QXmlNodeModelIndex::Document:
-            return QLatin1String("document()");
+            return QLatin1StringView("document()");
         case QXmlNodeModelIndex::Attribute:
-            return QLatin1String("attribute()");
+            return QLatin1StringView("attribute()");
         case QXmlNodeModelIndex::Text:
-            return QLatin1String("text()");
+            return QLatin1StringView("text()");
         case QXmlNodeModelIndex::ProcessingInstruction:
-            return QLatin1String("processing-instruction()");
+            return QLatin1StringView("processing-instruction()");
         case QXmlNodeModelIndex::Comment:
-            return QLatin1String("comment()");
+            return QLatin1StringView("comment()");
         default:
         {
             Q_ASSERT_X(false, Q_FUNC_INFO,

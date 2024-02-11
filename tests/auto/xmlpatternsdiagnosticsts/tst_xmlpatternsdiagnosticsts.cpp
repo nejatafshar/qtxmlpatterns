@@ -60,7 +60,7 @@ void tst_XmlPatternsDiagnosticsTS::catalogPath(QString &write) const
     if (!testSuitePath.isEmpty()) {
         const QString testDirectory = QFileInfo(testSuitePath).absolutePath();
         QVERIFY2(QDir::setCurrent(testDirectory), qPrintable(QStringLiteral("Could not chdir to ") + testDirectory));
-        write = QLatin1String(testSuite) + QStringLiteral("/DiagnosticsCatalog.xml");
+        write = QLatin1StringView(testSuite) + QStringLiteral("/DiagnosticsCatalog.xml");
     }
 }
 

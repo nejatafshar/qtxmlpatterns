@@ -71,38 +71,38 @@ QString AtomicComparator::displayName(const AtomicComparator::Operator op,
         switch(op)
         {
             case OperatorEqual:
-                return QLatin1String("=");
+                return QLatin1StringView("=");
             case OperatorGreaterOrEqual:
-                return QLatin1String("<=");
+                return QLatin1StringView("<=");
             case OperatorGreaterThan:
-                return QLatin1String("<");
+                return QLatin1StringView("<");
             case OperatorLessOrEqual:
-                return QLatin1String(">=");
+                return QLatin1StringView(">=");
             case OperatorLessThanNaNLeast:
             case OperatorLessThanNaNGreatest:
             case OperatorLessThan:
-                return QLatin1String(">");
+                return QLatin1StringView(">");
             case OperatorNotEqual:
-                return QLatin1String("!=");
+                return QLatin1StringView("!=");
         }
     }
 
     switch(op)
     {
         case OperatorEqual:
-            return QLatin1String("eq");
+            return QLatin1StringView("eq");
         case OperatorGreaterOrEqual:
-            return QLatin1String("ge");
+            return QLatin1StringView("ge");
         case OperatorGreaterThan:
-            return QLatin1String("gt");
+            return QLatin1StringView("gt");
         case OperatorLessOrEqual:
-            return QLatin1String("le");
+            return QLatin1StringView("le");
         case OperatorLessThanNaNLeast:
         case OperatorLessThanNaNGreatest:
         case OperatorLessThan:
-            return QLatin1String("lt");
+            return QLatin1StringView("lt");
         case OperatorNotEqual:
-            return QLatin1String("ne");
+            return QLatin1StringView("ne");
     }
 
     Q_ASSERT(false);

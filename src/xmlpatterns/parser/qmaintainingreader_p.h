@@ -51,13 +51,13 @@
 #define Patternist_MaintainingReader_H
 
 #include <QSet>
-#include <QSourceLocation>
+#include <qsourcelocation.h>
 #include <QStack>
 #include <QStringList>
 #include <QXmlStreamReader>
 
-#include <private/qxpathhelper_p.h>
-#include <private/qxslttokenlookup_p.h>
+#include <qxpathhelper_p.h>
+#include <qxslttokenlookup_p.h>
 
 QT_BEGIN_NAMESPACE
 

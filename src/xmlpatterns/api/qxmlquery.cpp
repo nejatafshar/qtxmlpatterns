@@ -39,7 +39,7 @@
 
 #include <QtCore/QBuffer>
 #include <QtCore/QStringList>
-#include <QtXmlPatterns/QXmlFormatter>
+#include <qxmlformatter.h>
 
 #include "qacceltreeresourceloader_p.h"
 #include "qcommonvalues_p.h"
@@ -621,7 +621,7 @@ void QXmlQuery::bindVariable(const QXmlName &name, QIODevice *device)
          * same which means that the URI is the same, and hence the resource
          * loader will return the document for the old QIODevice.
          */
-        d->resourceLoader()->clear(QUrl(QLatin1String("tag:trolltech.com,2007:QtXmlPatterns:QIODeviceVariable:") + d->namePool.d->stringForLocalName(name.localName())));
+        d->resourceLoader()->clear(QUrl(QLatin1StringView("tag:trolltech.com,2007:QtXmlPatterns:QIODeviceVariable:") + d->namePool.d->stringForLocalName(name.localName())));
     }
     else
     {
@@ -976,7 +976,7 @@ bool setFocusHelper(QXmlQuery *const queryInstance,
 
     Q_ASSERT(focusQuery.queryLanguage() == QXmlQuery::XQuery10);
     focusQuery.bindVariable(QChar::fromLatin1('u'), focusValue);
-    focusQuery.setQuery(QLatin1String("doc($u)"));
+    focusQuery.setQuery(QLatin1StringView("doc($u)"));
     Q_ASSERT(focusQuery.isValid());
 
     QXmlResultItems focusResult;

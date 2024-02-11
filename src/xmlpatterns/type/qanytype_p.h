@@ -50,7 +50,7 @@
 #ifndef Patternist_AnyType_H
 #define Patternist_AnyType_H
 
-#include <private/qschematype_p.h>
+#include <qschematype_p.h>
 
 QT_BEGIN_NAMESPACE
 

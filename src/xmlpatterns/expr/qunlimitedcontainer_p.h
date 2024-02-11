@@ -51,8 +51,8 @@
 #define Patternist_UnlimitedContainer_H
 
 #include <QList>
-#include <private/qexpression_p.h>
-#include <private/qgenericsequencetype_p.h>
+#include <qexpression_p.h>
+#include <qgenericsequencetype_p.h>
 
 QT_BEGIN_NAMESPACE
 

@@ -52,25 +52,25 @@ QVariant UserTestCase::data(const Qt::ItemDataRole role, int /*column*/) const
 
 QString UserTestCase::creator() const
 {
-    return QString(QLatin1String("The user of %1."))
+    return QString(QLatin1StringView("The user of %1."))
                    .arg(QCoreApplication::instance()->applicationName());
 }
 
 QString UserTestCase::name() const
 {
-    return QString(QLatin1String("X-KDE-%1-UserCreated"))
+    return QString(QLatin1StringView("X-KDE-%1-UserCreated"))
                    .arg(QCoreApplication::instance()->applicationName());
 }
 
 QString UserTestCase::description() const
 {
-    return QLatin1String("No description available; the test case is not part of "
+    return QLatin1StringView("No description available; the test case is not part of "
                          "a test suite, but entered manually in the source code window.");
 }
 
 QString UserTestCase::title() const
 {
-    return QLatin1String("User Specified Test");
+    return QLatin1StringView("User Specified Test");
 }
 
 TestCase::Scenario UserTestCase::scenario() const

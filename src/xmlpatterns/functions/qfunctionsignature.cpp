@@ -86,21 +86,21 @@ QString FunctionSignature::displayName(const NamePool::Ptr &np) const
         {
             result += QLatin1Char('$');
             result += np->displayName((*it)->name());
-            result += QLatin1String(" as ");
+            result += QLatin1StringView(" as ");
             result += (*it)->type()->displayName(np);
 
             ++it;
             if(it == end)
                 break;
 
-            result += QLatin1String(", ");
+            result += QLatin1StringView(", ");
         }
     }
 
     if(m_maxArgs == FunctionSignature::UnlimitedArity)
-        result += QLatin1String(", ...");
+        result += QLatin1StringView(", ...");
 
-    result += QLatin1String(") as ");
+    result += QLatin1StringView(") as ");
     result += m_returnType->displayName(np);
 
     return result;

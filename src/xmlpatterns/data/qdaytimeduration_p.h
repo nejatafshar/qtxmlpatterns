@@ -50,8 +50,8 @@
 #ifndef Patternist_DayTimeDuration_H
 #define Patternist_DayTimeDuration_H
 
-#include <private/qabstractduration_p.h>
-#include <private/qitem_p.h>
+#include <qabstractduration_p.h>
+#include <qitem_p.h>
 
 QT_BEGIN_NAMESPACE
 

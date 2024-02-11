@@ -45,9 +45,9 @@ QString TestFundament::offset()
 {
 #if defined(Q_OS_WIN)
     /* On Windows, the executable is placed in a release/ or debug/ folder. */
-    return QLatin1String("../");
+    return QLatin1StringView("../");
 #elif defined(Q_OS_MAC)
-    return QLatin1String("../../../");
+    return QLatin1StringView("../../../");
 #else
     return QString();
 #endif

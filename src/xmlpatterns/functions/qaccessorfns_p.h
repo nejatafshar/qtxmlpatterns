@@ -50,7 +50,7 @@
 #ifndef Patternist_AccessorFNs_H
 #define Patternist_AccessorFNs_H
 
-#include <private/qfunctioncall_p.h>
+#include <qfunctioncall_p.h>
 
 /**
  * @file

@@ -86,9 +86,9 @@ void tst_QAbstractUriResolver::constCorrectness() const
 void tst_QAbstractUriResolver::resolve() const
 {
     const TestURIResolver instance;
-    QCOMPARE(instance.resolve(QUrl(QLatin1String("foo/relative.file")),
-                              QUrl(QLatin1String("http://example.com/NotThisOne"))),
-             QUrl(QLatin1String("http://example.com/")));
+    QCOMPARE(instance.resolve(QUrl(QLatin1StringView("foo/relative.file")),
+                              QUrl(QLatin1StringView("http://example.com/NotThisOne"))),
+             QUrl(QLatin1StringView("http://example.com/")));
 }
 
 void tst_QAbstractUriResolver::objectSize() const

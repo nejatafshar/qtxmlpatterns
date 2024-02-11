@@ -236,13 +236,13 @@ int NormalizeUnicodeFN::determineNormalizationForm(const DynamicContext::Ptr &co
     /* TODO. Put these values in a QHash for faster lookup. Keep thread safety in mind. */
     if(strRepr.isEmpty())
         return -1;
-    else if(strRepr == QLatin1String("NFC"))
+    else if(strRepr == QLatin1StringView("NFC"))
         return QString::NormalizationForm_C;
-    else if(strRepr == QLatin1String("NFD"))
+    else if(strRepr == QLatin1StringView("NFD"))
         return QString::NormalizationForm_D;
-    else if(strRepr == QLatin1String("NFKC"))
+    else if(strRepr == QLatin1StringView("NFKC"))
         return QString::NormalizationForm_KC;
-    else if(strRepr == QLatin1String("NFKD"))
+    else if(strRepr == QLatin1StringView("NFKD"))
         return QString::NormalizationForm_KD;
     else
     {
@@ -344,7 +344,7 @@ Item EncodeString::evaluateSingleton(const DynamicContext::Ptr &context) const
         return CommonValues::EmptyString;
 
     const QByteArray value = item.stringValue().toUtf8().toPercentEncoding(m_excludeChars, m_includeChars);
-    return AtomicString::fromValue(QLatin1String(value));
+    return AtomicString::fromValue(QLatin1StringView(value));
 }
 
 const char *const EncodeForURIFN::include = "#!*'()";

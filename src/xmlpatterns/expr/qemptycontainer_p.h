@@ -50,7 +50,7 @@
 #ifndef Patternist_EmptyContainer_H
 #define Patternist_EmptyContainer_H
 
-#include <private/qexpression_p.h>
+#include <qexpression_p.h>
 
 QT_BEGIN_NAMESPACE
 

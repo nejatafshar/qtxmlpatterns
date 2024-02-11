@@ -42,7 +42,7 @@
 
 #include <QtCore/QMetaType>
 #include <QtCore/QUrl>
-#include <QtXmlPatterns/qtxmlpatternsglobal.h>
+#include <qtxmlpatternsglobal.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -80,7 +80,7 @@ private:
     QUrl m_uri;
 };
 
-Q_XMLPATTERNS_EXPORT uint qHash(const QSourceLocation &location);
+Q_XMLPATTERNS_EXPORT size_t qHash(const QSourceLocation &location);
 
 #ifndef QT_NO_DEBUG_STREAM
 Q_XMLPATTERNS_EXPORT QDebug operator<<(QDebug debug, const QSourceLocation &sourceLocation);

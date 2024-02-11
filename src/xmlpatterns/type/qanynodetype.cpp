@@ -63,7 +63,7 @@ ItemType::Ptr AnyNodeType::atomizedType() const
 
 QString AnyNodeType::displayName(const NamePool::Ptr &) const
 {
-    return QLatin1String("node()");
+    return QLatin1StringView("node()");
 }
 
 ItemType::Ptr AnyNodeType::xdtSuperType() const

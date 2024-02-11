@@ -50,7 +50,7 @@
 #ifndef Patternist_NumericFNs_H
 #define Patternist_NumericFNs_H
 
-#include <private/qaggregator_p.h>
+#include <qaggregator_p.h>
 
 /**
  * @file

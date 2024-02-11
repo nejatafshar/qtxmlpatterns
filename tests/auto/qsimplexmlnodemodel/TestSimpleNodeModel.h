@@ -66,7 +66,7 @@ TestSimpleNodeModel::TestSimpleNodeModel(const QXmlNamePool &np) : QSimpleXmlNod
 
     /* If this fails to compile, QSimpleXmlNodeModel::namePool()
      * does not return a mutable reference. */
-    QXmlName(namePool(), QLatin1String("name"));
+    QXmlName(namePool(), QLatin1StringView("name"));
 }
 
 QXmlNodeModelIndex TestSimpleNodeModel::root() const
@@ -108,7 +108,7 @@ QXmlNodeModelIndex TestSimpleNodeModel::root(const QXmlNodeModelIndex &) const
 QXmlName TestSimpleNodeModel::name(const QXmlNodeModelIndex &) const
 {
     QXmlNamePool np(namePool());
-    return QXmlName(np, QLatin1String("nodeName"));
+    return QXmlName(np, QLatin1StringView("nodeName"));
 }
 
 QVariant TestSimpleNodeModel::typedValue(const QXmlNodeModelIndex&) const

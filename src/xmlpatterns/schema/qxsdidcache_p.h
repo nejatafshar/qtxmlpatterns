@@ -50,7 +50,7 @@
 #ifndef Patternist_XsdIdCache_H
 #define Patternist_XsdIdCache_H
 
-#include <private/qschemacomponent_p.h>
+#include <qschemacomponent_p.h>
 
 #include <QtCore/QExplicitlySharedDataPointer>
 #include <QtCore/QReadWriteLock>

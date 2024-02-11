@@ -55,7 +55,7 @@ bool SortTuple::isAtomicValue() const
 
 QString SortTuple::stringValue() const
 {
-    return QLatin1String("SortTuple");
+    return QLatin1StringView("SortTuple");
 }
 
 bool SortTuple::isNode() const

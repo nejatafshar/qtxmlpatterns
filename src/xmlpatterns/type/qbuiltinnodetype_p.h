@@ -50,9 +50,9 @@
 #ifndef Patternist_BuiltinNodeType_H
 #define Patternist_BuiltinNodeType_H
 
-#include <private/qitem_p.h>
-#include <private/qanynodetype_p.h>
-#include <private/qbuiltintypes_p.h>
+#include <qitem_p.h>
+#include <qanynodetype_p.h>
+#include <qbuiltintypes_p.h>
 
 QT_BEGIN_NAMESPACE
 

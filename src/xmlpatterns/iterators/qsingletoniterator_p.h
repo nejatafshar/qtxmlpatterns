@@ -50,9 +50,9 @@
 #ifndef Patternist_SingletonIterator_H
 #define Patternist_SingletonIterator_H
 
-#include <QtXmlPatterns/private/qabstractxmlforwarditerator_p.h>
+#include <qabstractxmlforwarditerator_p.h>
 
-#include <QtXmlPatterns/private/qprimitives_p.h>
+#include <qprimitives_p.h>
 
 QT_BEGIN_NAMESPACE
 

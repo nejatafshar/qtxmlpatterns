@@ -50,7 +50,7 @@
 #ifndef Patternist_XPath20CoreFunctions_H
 #define Patternist_XPath20CoreFunctions_H
 
-#include <private/qabstractfunctionfactory_p.h>
+#include <qabstractfunctionfactory_p.h>
 
 QT_BEGIN_NAMESPACE
 

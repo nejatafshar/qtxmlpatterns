@@ -70,19 +70,19 @@ AtomicValue::Ptr AbstractFloat<isDouble>::fromLexical(const QString &strNumeric)
 {
     /* QString::toDouble() handles the whitespace facet. */
 
-    if(strNumeric == QLatin1String("NaN"))
+    if(strNumeric == QLatin1StringView("NaN"))
         return isDouble ? CommonValues::DoubleNaN : CommonValues::FloatNaN;
-    else if(strNumeric == QLatin1String("-INF"))
+    else if(strNumeric == QLatin1StringView("-INF"))
         return isDouble ? CommonValues::NegativeInfDouble : CommonValues::NegativeInfFloat;
-    else if(strNumeric == QLatin1String("INF"))
+    else if(strNumeric == QLatin1StringView("INF"))
         return isDouble ? CommonValues::InfDouble : CommonValues::InfFloat;
 
     /* QString::toDouble() supports any case as well as +INF, but we don't. */
     const QString toUpper(strNumeric.toUpper());
-    if(toUpper == QLatin1String("-INF") ||
-       toUpper == QLatin1String("INF")  ||
-       toUpper == QLatin1String("+INF") ||
-       toUpper == QLatin1String("NAN"))
+    if(toUpper == QLatin1StringView("-INF") ||
+       toUpper == QLatin1StringView("INF")  ||
+       toUpper == QLatin1StringView("+INF") ||
+       toUpper == QLatin1StringView("NAN"))
     {
         return ValidationError::createError();
     }
@@ -154,9 +154,9 @@ template <const bool isDouble>
 QString AbstractFloat<isDouble>::stringValue() const
 {
     if(qIsNaN(m_value))
-        return QLatin1String("NaN");
+        return QLatin1StringView("NaN");
     else if(qIsInf(m_value))
-        return internalSignbit(m_value) == 0 ? QLatin1String("INF") : QLatin1String("-INF");
+        return internalSignbit(m_value) == 0 ? QLatin1StringView("INF") : QLatin1StringView("-INF");
     /*
      * If SV has an absolute value that is greater than or equal to 0.000001
      * (one millionth) and less than 1000000 (one million),
@@ -169,7 +169,7 @@ QString AbstractFloat<isDouble>::stringValue() const
      * If SV has the value positive or negative zero, TV is "0" or "-0" respectively.
      */
     else if(isZero())
-        return internalSignbit(m_value) == 0 ? QLatin1String("0") : QLatin1String("-0");
+        return internalSignbit(m_value) == 0 ? QLatin1StringView("0") : QLatin1StringView("-0");
     else
     {
         /*

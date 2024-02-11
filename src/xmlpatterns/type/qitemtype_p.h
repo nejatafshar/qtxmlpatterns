@@ -53,7 +53,7 @@
 #include <QSharedData>
 #include <qcontainerfwd.h>
 
-#include <QtXmlPatterns/private/qnamepool_p.h>
+#include <qnamepool_p.h>
 
 QT_BEGIN_NAMESPACE
 

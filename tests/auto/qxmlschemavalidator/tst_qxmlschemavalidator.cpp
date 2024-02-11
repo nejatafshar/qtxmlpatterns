@@ -150,9 +150,9 @@ void tst_QXmlSchemaValidator::constructorQXmlNamePool() const
 
     QXmlNamePool np = schema.namePool();
 
-    const QXmlName name(np, QLatin1String("localName"),
-                            QLatin1String("http://example.com/"),
-                            QLatin1String("prefix"));
+    const QXmlName name(np, QLatin1StringView("localName"),
+                            QLatin1StringView("http://example.com/"),
+                            QLatin1StringView("prefix"));
 
     QXmlSchemaValidator validator(schema);
 
@@ -171,9 +171,9 @@ void tst_QXmlSchemaValidator::resetSchemaNamePool() const
     QXmlSchema schema1;
     QXmlNamePool np1 = schema1.namePool();
 
-    const QXmlName name1(np1, QLatin1String("localName"),
-                              QLatin1String("http://example.com/"),
-                              QLatin1String("prefix"));
+    const QXmlName name1(np1, QLatin1StringView("localName"),
+                              QLatin1StringView("http://example.com/"),
+                              QLatin1StringView("prefix"));
 
     QXmlSchemaValidator validator(schema1);
 
@@ -187,9 +187,9 @@ void tst_QXmlSchemaValidator::resetSchemaNamePool() const
     QXmlSchema schema2;
     QXmlNamePool np2 = schema2.namePool();
 
-    const QXmlName name2(np2, QLatin1String("remoteName"),
-                              QLatin1String("http://example.com/"),
-                              QLatin1String("suffix"));
+    const QXmlName name2(np2, QLatin1StringView("remoteName"),
+                              QLatin1StringView("http://example.com/"),
+                              QLatin1StringView("suffix"));
 
     // make sure that after re-setting the schema, the new namepool is used
     validator.setSchema(schema2);
@@ -464,7 +464,7 @@ void tst_QXmlSchemaValidator::unionCrash() const
     const QString path = QFINDTESTDATA("testdata/");
     QXmlSchema schema;
 
-    const QString filePath = path + QLatin1String("QTBUG-77620.xsd");
+    const QString filePath = path + QLatin1StringView("QTBUG-77620.xsd");
 
     QFile file(filePath);
     QVERIFY(file.open(QIODevice::ReadOnly));
@@ -475,7 +475,7 @@ void tst_QXmlSchemaValidator::unionCrash() const
     QXmlSchemaValidator validator(schema);
     QEXPECT_FAIL("", "QTBUG-77620: " // Fixed crash, but not underlying problem:
                  "the code fails to record the CUSTOM_KEY's primitive type as pattern_type", Continue);
-    QVERIFY2(validator.validate(QUrl(path + QLatin1String("QTBUG-77620.xml"))),
+    QVERIFY2(validator.validate(QUrl(path + QLatin1StringView("QTBUG-77620.xml"))),
              "Document should be found valid");
 }
 

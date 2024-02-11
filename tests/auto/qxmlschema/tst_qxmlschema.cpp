@@ -129,9 +129,9 @@ void tst_QXmlSchema::constructorQXmlNamePool() const
 
     QXmlNamePool np = schema.namePool();
 
-    const QXmlName name(np, QLatin1String("localName"),
-                            QLatin1String("http://example.com/"),
-                            QLatin1String("prefix"));
+    const QXmlName name(np, QLatin1StringView("localName"),
+                            QLatin1StringView("http://example.com/"),
+                            QLatin1StringView("prefix"));
 
     QXmlNamePool np2(schema.namePool());
     QCOMPARE(name.namespaceUri(np2), QString::fromLatin1("http://example.com/"));

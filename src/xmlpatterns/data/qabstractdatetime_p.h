@@ -51,9 +51,9 @@
 #define Patternist_AbstractDateTime_H
 
 #include <QDateTime>
-#include <QRegExp>
+#include <QRegularExpression>
 
-#include <private/qitem_p.h>
+#include <qitem_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -98,7 +98,7 @@ namespace QPatternist
 
         /**
          * @short Acts as a mapping table for AbstractDateTime::create()
-         * and describes where certain fields in a QRegExp pattern can be found
+         * and describes where certain fields in a QRegularExpression pattern can be found
          * for a particular W3C XML Schema date/time type.
          *
          * @author Frans Englich <frans.englich@nokia.com>
@@ -107,7 +107,7 @@ namespace QPatternist
         class CaptureTable
         {
         public:
-            CaptureTable(const QRegExp &exp,
+            CaptureTable(const QRegularExpression &exp,
                          const qint8 zoneOffsetSignP,
                          const qint8 zoneOffsetHourP,
                          const qint8 zoneOffsetMinuteP,
@@ -136,7 +136,7 @@ namespace QPatternist
                 Q_ASSERT(exp.isValid());
             }
 
-            QRegExp regExp;
+            QRegularExpression regExp;
             const qint8 zoneOffsetSign;
             const qint8 zoneOffsetHour;
             const qint8 zoneOffsetMinute;

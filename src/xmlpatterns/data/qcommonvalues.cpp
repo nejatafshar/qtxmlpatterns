@@ -55,16 +55,16 @@ using namespace QPatternist;
 
 // STATIC DATA
 const AtomicString::Ptr               CommonValues::EmptyString
-                                    (new AtomicString(QLatin1String("")));
+                                    (new AtomicString(QLatin1StringView("")));
 const AtomicString::Ptr               CommonValues::TrueString
-                                    (new AtomicString(QLatin1String("true")));
+                                    (new AtomicString(QLatin1StringView("true")));
 const AtomicString::Ptr               CommonValues::FalseString
-                                    (new AtomicString(QLatin1String("false")));
+                                    (new AtomicString(QLatin1StringView("false")));
 
 const UntypedAtomic::Ptr        CommonValues::UntypedAtomicTrue
-                                    (new UntypedAtomic(QLatin1String("true")));
+                                    (new UntypedAtomic(QLatin1StringView("true")));
 const UntypedAtomic::Ptr        CommonValues::UntypedAtomicFalse
-                                    (new UntypedAtomic(QLatin1String("false")));
+                                    (new UntypedAtomic(QLatin1StringView("false")));
 
 const AtomicValue::Ptr              CommonValues::BooleanTrue
                                     (new Boolean(true));
@@ -80,7 +80,7 @@ const Item                          CommonValues::IntegerZero
                                     (Integer::fromValue(0));
 
 const AtomicValue::Ptr               CommonValues::EmptyAnyURI
-                                    (AnyURI::fromValue(QLatin1String("")));
+                                    (AnyURI::fromValue(QLatin1StringView("")));
 
 const AtomicValue::Ptr               CommonValues::DoubleOne
                                     (Double::fromValue(1));

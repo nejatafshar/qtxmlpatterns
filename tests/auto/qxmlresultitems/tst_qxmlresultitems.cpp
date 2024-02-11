@@ -152,7 +152,7 @@ void tst_QXmlResultItems::evalateWithInstantError() const
     QXmlQuery query;
     MessageSilencer silencer;
     query.setMessageHandler(&silencer);
-    query.setQuery(QLatin1String("fn:error()"));
+    query.setQuery(QLatin1StringView("fn:error()"));
 
     QXmlResultItems result;
     query.evaluateTo(&result);

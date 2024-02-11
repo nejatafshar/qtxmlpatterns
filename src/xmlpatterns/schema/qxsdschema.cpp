@@ -170,7 +170,7 @@ void XsdSchema::addAnonymousType(const SchemaType::Ptr &type)
     // search for not used anonymous type name
     QXmlName typeName = type->name(m_namePool);
     while (m_anonymousTypes.contains(typeName)) {
-        typeName = m_namePool->allocateQName(QString(), QLatin1String("merged_") + m_namePool->stringForLocalName(typeName.localName()), QString());
+        typeName = m_namePool->allocateQName(QString(), QLatin1StringView("merged_") + m_namePool->stringForLocalName(typeName.localName()), QString());
     }
 
     m_anonymousTypes.insert(typeName, type);

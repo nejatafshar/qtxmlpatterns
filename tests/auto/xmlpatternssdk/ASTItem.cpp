@@ -37,7 +37,7 @@ using namespace QPatternistSDK;
 /**
  * This is what the AST rendering is indented with.
  */
-static const QLatin1String astIndent("  ");
+static const QLatin1StringView astIndent("  ");
 // STATIC DATA
 
 ASTItem::ASTItem(ASTItem *p,
@@ -77,7 +77,7 @@ QString ASTItem::toString(const QString &indent) const
     retval += m_name;
     retval += QLatin1Char('(');
     retval += m_details;
-    retval += QLatin1String(")\n");
+    retval += QLatin1StringView(")\n");
 
     const TreeItem::List::const_iterator end(m_children.constEnd());
 

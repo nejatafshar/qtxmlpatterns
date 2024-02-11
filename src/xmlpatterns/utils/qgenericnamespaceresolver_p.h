@@ -52,7 +52,7 @@
 
 #include <QHash>
 
-#include <private/qnamespaceresolver_p.h>
+#include <qnamespaceresolver_p.h>
 
 QT_BEGIN_NAMESPACE
 

@@ -52,9 +52,9 @@
 
 #include <QVector>
 
-#include <private/qdaytimeduration_p.h>
-#include <private/qdelegatingdynamiccontext_p.h>
-#include <private/qexpression_p.h>
+#include <qdaytimeduration_p.h>
+#include <qdelegatingdynamiccontext_p.h>
+#include <qexpression_p.h>
 
 QT_BEGIN_NAMESPACE
 

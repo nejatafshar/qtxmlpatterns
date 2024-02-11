@@ -84,7 +84,7 @@ Item CodepointsToStringFN::evaluateSingleton(const DynamicContext::Ptr &context)
         if(!isValidXML10Char(cp))
         {
             context->error(QtXmlPatterns::tr("%1 is not a valid XML 1.0 character.")
-                                            .arg(formatData(QLatin1String("0x") +
+                                            .arg(formatData(QLatin1StringView("0x") +
                                                           QString::number(cp, 16))),
                                        ReportContext::FOCH0001, this);
 

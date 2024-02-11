@@ -50,10 +50,10 @@
 #ifndef Patternist_XPathHelper_H
 #define Patternist_XPathHelper_H
 
-#include <private/qcommonnamespaces_p.h>
-#include <private/qitem_p.h>
-#include <private/qpatternistlocale_p.h>
-#include <private/qreportcontext_p.h>
+#include <qcommonnamespaces_p.h>
+#include <qitem_p.h>
+#include <qpatternistlocale_p.h>
+#include <qreportcontext_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -111,11 +111,11 @@ namespace QPatternist
             Q_ASSERT(context);
             Q_ASSERT(r);
 
-            if(collation != QLatin1String(CommonNamespaces::UNICODE_COLLATION))
+            if(collation != QLatin1StringView(CommonNamespaces::UNICODE_COLLATION))
             {
                 context->error(QtXmlPatterns::tr("Only the Unicode Codepoint "
                                   "Collation is supported(%1). %2 is unsupported.")
-                                  .arg(formatURI(QLatin1String(CommonNamespaces::UNICODE_COLLATION)))
+                                  .arg(formatURI(QLatin1StringView(CommonNamespaces::UNICODE_COLLATION)))
                                   .arg(formatURI(collation)),
                                code, r);
             }

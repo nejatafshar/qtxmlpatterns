@@ -50,7 +50,7 @@ using namespace QPatternist;
 URILoader::URILoader(QObject *const parent,
                      const NamePool::Ptr &np,
                      const VariableLoader::Ptr &l) : QNetworkAccessManager(parent)
-                                                   , m_variableNS(QLatin1String("tag:trolltech.com,2007:QtXmlPatterns:QIODeviceVariable:"))
+                                                   , m_variableNS(QLatin1StringView("tag:trolltech.com,2007:QtXmlPatterns:QIODeviceVariable:"))
                                                    , m_namePool(np)
                                                    , m_variableLoader(l)
 {

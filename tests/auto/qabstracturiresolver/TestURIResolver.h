@@ -35,7 +35,7 @@
 class TestURIResolver : public QAbstractUriResolver
 {
 public:
-    TestURIResolver(const QUrl &result = QUrl(QLatin1String("http://example.com/")));
+    TestURIResolver(const QUrl &result = QUrl(QLatin1StringView("http://example.com/")));
 
     virtual QUrl resolve(const QUrl &relative, const QUrl &baseURI) const;
 

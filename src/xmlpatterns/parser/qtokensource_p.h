@@ -50,12 +50,12 @@
 #ifndef Patternist_TokenSource_H
 #define Patternist_TokenSource_H
 
-#include <private/qfunctionargument_p.h>
-#include <private/qitem_p.h>
-#include <private/qitemtype_p.h>
-#include <private/qtokenvalue_p.h>
-#include <private/qparsercontext_p.h>
-#include <private/qquerytransformparser_p.h>
+#include <qfunctionargument_p.h>
+#include <qitem_p.h>
+#include <qitemtype_p.h>
+#include <qtokenvalue_p.h>
+#include <qparsercontext_p.h>
+#include <qquerytransformparser_p.h>
 
 QT_BEGIN_NAMESPACE
 

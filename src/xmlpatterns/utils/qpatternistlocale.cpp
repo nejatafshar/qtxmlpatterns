@@ -54,27 +54,27 @@ namespace QPatternist
             {
                 case '<':
                 {
-                    rich += QLatin1String("&lt;");
+                    rich += QLatin1StringView("&lt;");
                     break;
                 }
                 case '>':
                 {
-                    rich += QLatin1String("&gt;");
+                    rich += QLatin1StringView("&gt;");
                     break;
                 }
                 case '&':
                 {
-                    rich += QLatin1String("&amp;");
+                    rich += QLatin1StringView("&amp;");
                     break;
                 }
                 case '"':
                 {
-                    rich += QLatin1String("&quot;");
+                    rich += QLatin1StringView("&quot;");
                     break;
                 }
                 case '\'':
                 {
-                    rich += QLatin1String("&apos;");
+                    rich += QLatin1StringView("&apos;");
                     break;
                 }
                 default:

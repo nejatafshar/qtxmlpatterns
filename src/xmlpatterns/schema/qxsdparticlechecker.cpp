@@ -62,13 +62,13 @@ namespace QPatternist
     QString XsdStateMachine<XsdTerm::Ptr>::transitionTypeToString(XsdTerm::Ptr term) const
     {
         if (!term)
-            return QLatin1String("(empty)");
+            return QLatin1StringView("(empty)");
 
         if (term->isElement()) {
             return XsdElement::Ptr(term)->displayName(m_namePool);
         } else if (term->isWildcard()) {
             const XsdWildcard::Ptr wildcard(term);
-            return QLatin1String("(wildcard)");
+            return QLatin1StringView("(wildcard)");
         } else {
             return QString();
         }
@@ -191,7 +191,7 @@ static bool derivedTermValid(const XsdTerm::Ptr &baseTerm, const XsdTerm::Ptr &d
                     return false;
                 }
 
-                const QSourceLocation dummyLocation(QUrl(QLatin1String("http://dummy.org")), 1, 1);
+                const QSourceLocation dummyLocation(QUrl(QLatin1StringView("http://dummy.org")), 1, 1);
                 const XsdTypeChecker checker(context, QVector<QXmlName>(), dummyLocation);
                 if (!checker.valuesAreEqual(element->valueConstraint()->value(), derivedElement->valueConstraint()->value(), derivedElement->type())) {
                     errorMsg = QtXmlPatterns::tr("Fixed value constraint of element %1 differs from value constraint in base particle.").arg(formatKeyword(derivedElement->displayName(namePool)));
@@ -471,13 +471,13 @@ bool XsdParticleChecker::subsumes(const XsdParticle::Ptr &particle, const XsdPar
     {
         QFile file(QString("/tmp/file_base%1.dot").arg(counter));
         file.open(QIODevice::WriteOnly);
-        baseStateMachine.outputGraph(&file, QLatin1String("Base"));
+        baseStateMachine.outputGraph(&file, QLatin1StringView("Base"));
         file.close();
     }
     {
         QFile file(QString("/tmp/file_derived%1.dot").arg(counter));
         file.open(QIODevice::WriteOnly);
-        derivedStateMachine.outputGraph(&file, QLatin1String("Base"));
+        derivedStateMachine.outputGraph(&file, QLatin1StringView("Base"));
         file.close();
     }
     ::system(QString("dot -Tpng /tmp/file_base%1.dot -o/tmp/file_base%1.png").arg(counter).toLatin1().data());
@@ -499,8 +499,8 @@ bool XsdParticleChecker::subsumes(const XsdParticle::Ptr &particle, const XsdPar
     QList<QPair<XsdStateMachine<XsdTerm::Ptr>::StateId, XsdStateMachine<XsdTerm::Ptr>::StateId> > processedSet;
 
     // 1) fill working set initially with start states
-    workSet.append(qMakePair<XsdStateMachine<XsdTerm::Ptr>::StateId, XsdStateMachine<XsdTerm::Ptr>::StateId>(baseStartState, derivedStartState));
-    processedSet.append(qMakePair<XsdStateMachine<XsdTerm::Ptr>::StateId, XsdStateMachine<XsdTerm::Ptr>::StateId>(baseStartState, derivedStartState));
+    workSet.append(qMakePair(baseStartState, derivedStartState));
+    processedSet.append(qMakePair(baseStartState, derivedStartState));
 
     while (!workSet.isEmpty()) { // while there are state sets to process
 
@@ -517,7 +517,7 @@ bool XsdParticleChecker::subsumes(const XsdParticle::Ptr &particle, const XsdPar
             for (auto baseIt = baseTrans.cbegin(), end = baseTrans.cend(); baseIt != end; ++baseIt) {
                 if (derivedTermValid(baseIt.key(), derivedIt.key(), particlesHash, context, errorMsg)) {
                     const QPair<XsdStateMachine<XsdTerm::Ptr>::StateId, XsdStateMachine<XsdTerm::Ptr>::StateId> endSet =
-                             qMakePair<XsdStateMachine<XsdTerm::Ptr>::StateId, XsdStateMachine<XsdTerm::Ptr>::StateId>(baseIt.value().first(), derivedIt.value().first());
+                             qMakePair(baseIt.value().first(), derivedIt.value().first());
                     if (!processedSet.contains(endSet) && !workSet.contains(endSet)) {
                         workSet.append(endSet);
                         processedSet.append(endSet);

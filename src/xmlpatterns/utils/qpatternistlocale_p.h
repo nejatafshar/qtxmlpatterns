@@ -53,10 +53,11 @@
 #include <QCoreApplication>
 #include <QString>
 #include <QUrl>
+#include <QtCore5Compat/QStringRef>
 
-#include <private/qcardinality_p.h>
-#include <private/qnamepool_p.h>
-#include <private/qprimitives_p.h>
+#include <qcardinality_p.h>
+#include <qnamepool_p.h>
+#include <qprimitives_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -91,9 +92,9 @@ namespace QPatternist
     // don't make this function static, otherwise xlC 7 cannot find it
     inline QString formatKeyword(const QString &keyword)
     {
-        return QLatin1String("<span class='XQuery-keyword'>")   +
+        return QLatin1StringView("<span class='XQuery-keyword'>")   +
                escape(keyword)                                  +
-               QLatin1String("</span>");
+               QLatin1StringView("</span>");
     }
 
     /**
@@ -106,7 +107,7 @@ namespace QPatternist
 
     static inline QString formatKeyword(const char *const keyword)
     {
-        return formatKeyword(QLatin1String(keyword));
+        return formatKeyword(QLatin1StringView(keyword));
     }
 
     static inline QString formatKeyword(const QChar keyword)
@@ -128,7 +129,7 @@ namespace QPatternist
      */
     static inline QString formatElement(const char *const element)
     {
-        return formatElement(QLatin1String(element));
+        return formatElement(QLatin1StringView(element));
     }
 
     /**
@@ -145,7 +146,7 @@ namespace QPatternist
      */
     static inline QString formatAttribute(const char *const attribute)
     {
-        return formatAttribute(QLatin1String(attribute));
+        return formatAttribute(QLatin1StringView(attribute));
     }
 
     /**
@@ -158,9 +159,9 @@ namespace QPatternist
     inline QString formatType(const NamePool::Ptr &np, const T &type)
     {
         Q_ASSERT(type);
-        return QLatin1String("<span class='XQuery-type'>")  +
+        return QLatin1StringView("<span class='XQuery-type'>")  +
                escape(type->displayName(np))                +
-               QLatin1String("</span>");
+               QLatin1StringView("</span>");
     }
 
     /**
@@ -168,9 +169,9 @@ namespace QPatternist
      */
     static inline QString formatType(const NamePool::Ptr &np, const QXmlName &name)
     {
-        return QLatin1String("<span class='XQuery-type'>")  +
+        return QLatin1StringView("<span class='XQuery-type'>")  +
                escape(np->displayName(name))                +
-               QLatin1String("</span>");
+               QLatin1StringView("</span>");
     }
 
     /**
@@ -178,9 +179,9 @@ namespace QPatternist
      */
     static inline QString formatType(const Cardinality &type)
     {
-        return QLatin1String("<span class='XQuery-type'>")                      +
+        return QLatin1StringView("<span class='XQuery-type'>")                      +
                escape(type.displayName(Cardinality::IncludeExplanation))        +
-               QLatin1String("</span>");
+               QLatin1StringView("</span>");
     }
 
     /**
@@ -191,11 +192,11 @@ namespace QPatternist
     {
         const QString normalizedURI(escape(uri.toString(QUrl::RemovePassword)));
 
-        return QLatin1String("<span class='XQuery-filepath'><a href='") +
+        return QLatin1StringView("<span class='XQuery-filepath'><a href='") +
                normalizedURI                                            +
-               QLatin1String("'>")                                      +
+               QLatin1StringView("'>")                                      +
                normalizedURI                                            +
-               QLatin1String("</a></span>");
+               QLatin1StringView("</a></span>");
     }
 
     /**
@@ -206,9 +207,9 @@ namespace QPatternist
      */
     static inline QString formatURI(const QUrl &uri)
     {
-        return QLatin1String("<span class='XQuery-uri'>")       +
+        return QLatin1StringView("<span class='XQuery-uri'>")       +
                escape(uri.toString(QUrl::RemovePassword))       +
-               QLatin1String("</span>");
+               QLatin1StringView("</span>");
     }
 
     /**
@@ -225,9 +226,9 @@ namespace QPatternist
 
     static inline QString formatData(const QString &data)
     {
-        return QLatin1String("<span class='XQuery-data'>")  +
+        return QLatin1StringView("<span class='XQuery-data'>")  +
                escape(data)                                 +
-               QLatin1String("</span>");
+               QLatin1StringView("</span>");
     }
 
     /**
@@ -243,7 +244,7 @@ namespace QPatternist
      */
     static inline QString formatData(const char *const data)
     {
-        return formatData(QLatin1String(data));
+        return formatData(QLatin1StringView(data));
     }
 
     /**
@@ -260,9 +261,9 @@ namespace QPatternist
      */
     static inline QString formatExpression(const QString &expr)
     {
-        return QLatin1String("<span class='XQuery-expression'>")    +
+        return QLatin1StringView("<span class='XQuery-expression'>")    +
                escape(expr)                                         +
-               QLatin1String("</span>");
+               QLatin1StringView("</span>");
     }
 
 }

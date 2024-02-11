@@ -55,9 +55,9 @@
 #include <QString>
 #include <QUrl>
 
-#include <private/qparsercontext_p.h>
-#include <private/qtokensource_p.h>
-#include <private/qtokenvalue_p.h>
+#include <qparsercontext_p.h>
+#include <qtokensource_p.h>
+#include <qtokenvalue_p.h>
 
 /**
  * Macro for the data type of semantic values; int by default.
@@ -65,7 +65,7 @@
  */
 #define XPATHSTYPE QPatternist::TokenValue
 
-#include <private/qquerytransformparser_p.h> /* This inclusion must be after TokenValue. */
+#include <qquerytransformparser_p.h> /* This inclusion must be after TokenValue. */
 
 QT_BEGIN_NAMESPACE
 

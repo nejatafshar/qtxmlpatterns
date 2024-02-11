@@ -77,17 +77,17 @@ QString SystemPropertyFN::retrieveProperty(const QXmlName name)
              */
             return QString::number(1.20);
         case StandardLocalNames::vendor:
-            return QLatin1String("Digia Plc and/or its subsidiary(-ies), a Digia Company");
+            return QLatin1StringView("Digia Plc and/or its subsidiary(-ies), a Digia Company");
         case StandardLocalNames::vendor_url:
-            return QLatin1String("http://qt.digia.com/");
+            return QLatin1StringView("http://qt.digia.com/");
         case StandardLocalNames::product_name:
-            return QLatin1String("QtXmlPatterns");
+            return QLatin1StringView("QtXmlPatterns");
         case StandardLocalNames::product_version:
-            return QLatin1String("0.1");
+            return QLatin1StringView("0.1");
         case StandardLocalNames::is_schema_aware:
         case StandardLocalNames::supports_backwards_compatibility:
         case StandardLocalNames::supports_serialization:
-            return QLatin1String("no");
+            return QLatin1StringView("no");
         default:
             return QString();
     }

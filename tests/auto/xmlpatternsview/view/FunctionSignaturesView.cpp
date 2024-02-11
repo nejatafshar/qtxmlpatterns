@@ -33,9 +33,9 @@
 using namespace QPatternistSDK;
 
 FunctionSignaturesView::FunctionSignaturesView(QWidget *const p)
-    : QDockWidget(QLatin1String("Function Signatures View"), p)
+    : QDockWidget(QLatin1StringView("Function Signatures View"), p)
 {
-    setObjectName(QLatin1String("FunctionSignaturesView"));
+    setObjectName(QLatin1StringView("FunctionSignaturesView"));
     setWidget(new QWidget());
     setupUi(widget());
 

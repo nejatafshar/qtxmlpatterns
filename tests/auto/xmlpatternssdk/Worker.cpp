@@ -120,7 +120,7 @@ void Worker::threadFinished()
 
     if(resultCount < baselineCount)
     {
-        err << qPrintable(QString(QLatin1String("WARNING: Test result contains %1 reports, "
+        err << qPrintable(QString(QLatin1StringView("WARNING: Test result contains %1 reports, "
                                                 "but the baseline contains %2, a DECREASE "
                                                 "of %3 tests.\n"))
                                   .arg(resultCount)
@@ -129,7 +129,7 @@ void Worker::threadFinished()
     }
     else if(resultCount > baselineCount)
     {
-        err << qPrintable(QString(QLatin1String("NOTE: The number of tests run is more than what "
+        err << qPrintable(QString(QLatin1StringView("NOTE: The number of tests run is more than what "
                                                 "the baseline specifies. Run was %1 test cases, the "
                                                 "baseline specifies %2; an increase of %3 tests.\n"))
                                   .arg(resultCount)
@@ -155,9 +155,9 @@ void Worker::threadFinished()
             m_unexpectedPasses.append(itA.key());
     }
 
-    list(err, QLatin1String("Not tested"),           m_notTested);
-    list(err, QLatin1String("Unexpected failures"),  m_unexpectedFailures);
-    list(err, QLatin1String("Unexpected passes"),    m_unexpectedPasses);
+    list(err, QLatin1StringView("Not tested"),           m_notTested);
+    list(err, QLatin1StringView("Unexpected failures"),  m_unexpectedFailures);
+    list(err, QLatin1StringView("Unexpected passes"),    m_unexpectedPasses);
 
     err << "SUMMARY:\n";
     typedef QPair<QString, int> Info;
@@ -171,15 +171,15 @@ void Worker::threadFinished()
     const int percentage    = int((static_cast<double>(totPass) / total) * 100);
 
     Q_ASSERT_X(percentage >= 0 && percentage <= 100, Q_FUNC_INFO,
-               qPrintable(QString(QLatin1String("Percentage was: %1")).arg(percentage)));
+               qPrintable(QString(QLatin1StringView("Percentage was: %1")).arg(percentage)));
 
-    info.append(Info(QLatin1String("Total"),                total));
-    info.append(Info(QLatin1String("Failures"),             totFail));
-    info.append(Info(QLatin1String("Passes"),               totPass));
-    info.append(Info(QLatin1String("Not tested"),           notTested));
-    info.append(Info(QLatin1String("Pass percentage(%)"),   percentage));
-    info.append(Info(QLatin1String("Unexpected failures"),  m_unexpectedFailures.count()));
-    info.append(Info(QLatin1String("Unexpected passes"),    m_unexpectedPasses.count()));
+    info.append(Info(QLatin1StringView("Total"),                total));
+    info.append(Info(QLatin1StringView("Failures"),             totFail));
+    info.append(Info(QLatin1StringView("Passes"),               totPass));
+    info.append(Info(QLatin1StringView("Not tested"),           notTested));
+    info.append(Info(QLatin1StringView("Pass percentage(%)"),   percentage));
+    info.append(Info(QLatin1StringView("Unexpected failures"),  m_unexpectedFailures.count()));
+    info.append(Info(QLatin1StringView("Unexpected passes"),    m_unexpectedPasses.count()));
 
     const InfoList::const_iterator end(info.constEnd());
     InfoList::const_iterator it(info.constBegin());
@@ -232,7 +232,7 @@ void Worker::threadFinished()
     }
     else
     {
-        err << qPrintable(QString(QLatin1String("Encountered error when updating "
+        err << qPrintable(QString(QLatin1StringView("Encountered error when updating "
                                                 "the baseline: %1\n"))
                                   .arg(resultFile.errorString()));
         err.flush();

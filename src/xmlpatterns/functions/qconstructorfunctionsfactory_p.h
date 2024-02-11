@@ -50,8 +50,8 @@
 #ifndef Patternist_ConstructorFunctionsFactory_H
 #define Patternist_ConstructorFunctionsFactory_H
 
-#include <private/qabstractfunctionfactory_p.h>
-#include <private/qschematypefactory_p.h>
+#include <qabstractfunctionfactory_p.h>
+#include <qschematypefactory_p.h>
 
 QT_BEGIN_NAMESPACE
 

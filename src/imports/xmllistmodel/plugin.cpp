@@ -53,7 +53,7 @@ public:
     QmlXmlListModelPlugin(QObject *parent = 0) : QQmlExtensionPlugin(parent) { }
     void registerTypes(const char *uri) override
     {
-        Q_ASSERT(QLatin1String(uri) == QLatin1String("QtQuick.XmlListModel"));
+        Q_ASSERT(QLatin1StringView(uri) == QLatin1StringView("QtQuick.XmlListModel"));
         qmlRegisterType<QQuickXmlListModel>(uri,2,0,"XmlListModel");
         qmlRegisterType<QQuickXmlListModelRole>(uri,2,0,"XmlRole");
 

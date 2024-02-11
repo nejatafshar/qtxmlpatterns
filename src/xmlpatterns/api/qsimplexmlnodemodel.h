@@ -40,8 +40,8 @@
 #ifndef QSIMPLEXMLNODEMODEL_H
 #define QSIMPLEXMLNODEMODEL_H
 
-#include <QtXmlPatterns/QAbstractXmlNodeModel>
-#include <QtXmlPatterns/QXmlQuery>
+#include <qabstractxmlnodemodel.h>
+#include <qxmlquery.h>
 
 QT_BEGIN_NAMESPACE
 

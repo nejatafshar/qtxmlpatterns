@@ -179,7 +179,7 @@ Item AtomicValue::toXDM(const QVariant &value)
                            qPrintable(QString::fromLatin1(
                                "QVariants of type %1 are not supported in "
                                "Patternist, see the documentation")
-                                  .arg(QLatin1String(value.typeName()))));
+                                  .arg(QLatin1StringView(value.typeName()))));
                 return AtomicValue::Ptr();
             }
         }
@@ -199,29 +199,29 @@ ItemType::Ptr AtomicValue::qtToXDMType(const QXmlItem &item)
     Q_ASSERT(item.isAtomicValue());
     const QVariant v(item.toAtomicValue());
 
-    switch(int(v.type()))
+    switch(int(v.typeId()))
     {
-        case QVariant::Char:
-        case QVariant::String:
-        case QVariant::Url:
+        case QMetaType::QChar:
+        case QMetaType::QString:
+        case QMetaType::QUrl:
             return BuiltinTypes::xsString;
-        case QVariant::Bool:
+        case QMetaType::Bool:
             return BuiltinTypes::xsBoolean;
-        case QVariant::ByteArray:
+        case QMetaType::QByteArray:
             return BuiltinTypes::xsBase64Binary;
-        case QVariant::Int:
-        case QVariant::LongLong:
+        case QMetaType::Int:
+        case QMetaType::LongLong:
             return BuiltinTypes::xsInteger;
-        case QVariant::ULongLong:
+        case QMetaType::ULongLong:
             return BuiltinTypes::xsUnsignedLong;
-        case QVariant::Date:
+        case QMetaType::QDate:
             return BuiltinTypes::xsDate;
-        case QVariant::DateTime:
-        case QVariant::Time:
+        case QMetaType::QDateTime:
+        case QMetaType::QTime:
             return BuiltinTypes::xsDateTime;
         case QMetaType::Float:
             return BuiltinTypes::xsFloat;
-        case QVariant::Double:
+        case QMetaType::Double:
             return BuiltinTypes::xsDouble;
         default:
             return ItemType::Ptr();

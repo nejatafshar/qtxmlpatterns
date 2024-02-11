@@ -50,32 +50,32 @@
 #ifndef QXMLQUERY_P_H
 #define QXMLQUERY_P_H
 
-#include <QAbstractMessageHandler>
-#include <QAbstractUriResolver>
+#include <qabstractmessagehandler.h>
+#include <qabstracturiresolver.h>
 #include <QPointer>
-#include <QSourceLocation>
+#include <qsourcelocation.h>
 #include <QUrl>
 #include <QVariant>
-#include <QXmlName>
-#include <QXmlNamePool>
-#include <QXmlQuery>
+#include <qxmlname.h>
+#include <qxmlnamepool.h>
+#include <qxmlquery.h>
 
-#include <private/qacceltreebuilder_p.h>
-#include <private/qacceltreeresourceloader_p.h>
-#include <private/qcoloringmessagehandler_p.h>
-#include <private/qcommonsequencetypes_p.h>
-#include <private/qexpressionfactory_p.h>
-#include <private/qfocus_p.h>
-#include <private/qfunctionfactorycollection_p.h>
-#include <private/qgenericdynamiccontext_p.h>
-#include <private/qgenericstaticcontext_p.h>
-#include <private/qnamepool_p.h>
-#include <private/qnetworkaccessdelegator_p.h>
-#include <private/qreferencecountedvalue_p.h>
-#include <private/qresourcedelegator_p.h>
-#include <private/qstaticfocuscontext_p.h>
-#include <private/quriloader_p.h>
-#include <private/qvariableloader_p.h>
+#include <qacceltreebuilder_p.h>
+#include <qacceltreeresourceloader_p.h>
+#include <qcoloringmessagehandler_p.h>
+#include <qcommonsequencetypes_p.h>
+#include <qexpressionfactory_p.h>
+#include <qfocus_p.h>
+#include <qfunctionfactorycollection_p.h>
+#include <qgenericdynamiccontext_p.h>
+#include <qgenericstaticcontext_p.h>
+#include <qnamepool_p.h>
+#include <qnetworkaccessdelegator_p.h>
+#include <qreferencecountedvalue_p.h>
+#include <qresourcedelegator_p.h>
+#include <qstaticfocuscontext_p.h>
+#include <quriloader_p.h>
+#include <qvariableloader_p.h>
 
 QT_BEGIN_NAMESPACE
 

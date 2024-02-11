@@ -66,14 +66,14 @@ QDateTime AbstractDateTime::create(AtomicValue::Ptr &errorMessage,
                                    const QString &lexicalSource,
                                    const CaptureTable &captTable)
 {
-    QRegExp myExp(captTable.regExp);
+    QRegularExpression myExp(captTable.regExp);
 
-    if(!myExp.exactMatch(lexicalSource))
+    if(!myExp.match(lexicalSource).hasMatch())
     {
         badData(QString());
     }
 
-    const QStringList capts(myExp.capturedTexts());
+    const QStringList capts(myExp.match(lexicalSource).capturedTexts());
     const QString yearStr(getCapt(year));
 
     if(yearStr.size() > 4 && yearStr.at(0) == QLatin1Char('0'))
@@ -116,7 +116,7 @@ QDateTime AbstractDateTime::create(AtomicValue::Ptr &errorMessage,
              * error code: FODT0001 instead of FORG0001. */
             errorMessage = ValidationError::createError(QtXmlPatterns::tr(
                                "Overflow: Can't represent date %1.")
-                               .arg(formatData(QLatin1String("%1-%2-%3"))
+                               .arg(formatData(QLatin1StringView("%1-%2-%3"))
                                     .arg(year).arg(month).arg(day)),
                                ReportContext::FODT0001);
             return QDateTime();
@@ -145,7 +145,7 @@ QDateTime AbstractDateTime::create(AtomicValue::Ptr &errorMessage,
     /* Only deal with time if time is needed. */
     if(captTable.hour == -1)
     {
-        QDateTime result(date);
+        QDateTime result(date,{0,0});
         setUtcOffset(result, zoResult, offset);
         return result;
     }
@@ -207,7 +207,7 @@ ZOTotal AbstractDateTime::parseZoneOffset(ZoneOffsetParseResult &result,
     if(zoneOffsetSignStr.isEmpty())
     {
         const QString zoneOffsetUTCStr(getCapt(zoneOffsetUTCSymbol));
-        Q_ASSERT(zoneOffsetUTCStr.isEmpty() || zoneOffsetUTCStr == QLatin1String("Z"));
+        Q_ASSERT(zoneOffsetUTCStr.isEmpty() || zoneOffsetUTCStr == QLatin1StringView("Z"));
 
         if(zoneOffsetUTCStr.isEmpty())
             result = LocalTime;
@@ -217,7 +217,7 @@ ZOTotal AbstractDateTime::parseZoneOffset(ZoneOffsetParseResult &result,
         return 0;
     }
 
-    Q_ASSERT(zoneOffsetSignStr == QLatin1String("-") || zoneOffsetSignStr == QLatin1String("+"));
+    Q_ASSERT(zoneOffsetSignStr == QLatin1StringView("-") || zoneOffsetSignStr == QLatin1StringView("+"));
 
     const QString zoneOffsetHourStr(getCapt(zoneOffsetHour));
     Q_ASSERT(!zoneOffsetHourStr.isEmpty());
@@ -307,7 +307,7 @@ bool AbstractDateTime::isRangeValid(const QDate &date,
 
 QString AbstractDateTime::dateToString() const
 {
-    return m_dateTime.toString(QLatin1String("yyyy-MM-dd"));
+    return m_dateTime.toString(QLatin1StringView("yyyy-MM-dd"));
 }
 
 QString AbstractDateTime::serializeMSeconds(const MSecondProperty mseconds)
@@ -330,7 +330,7 @@ QString AbstractDateTime::serializeMSeconds(const MSecondProperty mseconds)
 
 QString AbstractDateTime::timeToString() const
 {
-    QString base(m_dateTime.toString(QLatin1String("hh:mm:ss")));
+    QString base(m_dateTime.toString(QLatin1StringView("hh:mm:ss")));
     const MSecondProperty msecs = m_dateTime.time().msec();
 
     if(msecs)
@@ -346,7 +346,7 @@ QString AbstractDateTime::zoneOffsetToString() const
         case Qt::LocalTime:
             return QString();
         case Qt::UTC:
-            return QLatin1String("Z");
+            return QLatin1StringView("Z");
         default:
         {
             Q_ASSERT(m_dateTime.timeSpec() == Qt::OffsetFromUTC);

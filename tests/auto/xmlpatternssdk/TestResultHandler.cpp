@@ -45,7 +45,7 @@ bool TestResultHandler::startElement(const QStringRef &namespaceURI, const QStri
                                      const QStringRef &, const QXmlStreamAttributes &atts)
 {
     /* We only care about 'test-case', ignore everything else. */
-    if(localName != QLatin1String("test-case") ||
+    if(localName != QLatin1StringView("test-case") ||
        namespaceURI != Global::xqtsResultNS)
         return true;
 
@@ -53,13 +53,13 @@ bool TestResultHandler::startElement(const QStringRef &namespaceURI, const QStri
     Q_ASSERT_X(atts.count() == 2 || atts.count() == 3, Q_FUNC_INFO,
                "The input appears to not conform to XQTSResult.xsd");
 
-    Q_ASSERT_X(!m_result.contains(atts.value(QLatin1String("name")).toString()), Q_FUNC_INFO,
+    Q_ASSERT_X(!m_result.contains(atts.value(QLatin1StringView("name")).toString()), Q_FUNC_INFO,
                qPrintable(QString::fromLatin1("A test result for test case %1 has "
                                               "already been read(duplicate entry it seems).")
-                                  .arg(atts.value(QLatin1String("name")))));
+                                  .arg(atts.value(QLatin1StringView("name")))));
 
     m_result.insert(atts.at(0).value().toString(),
-                    TestResult::statusFromString(atts.value(QLatin1String("result")).toString()));
+                    TestResult::statusFromString(atts.value(QLatin1StringView("result")).toString()));
 
     return true;
 }

@@ -50,11 +50,11 @@
 #ifndef Patternist_XsdTypeChecker_H
 #define Patternist_XsdTypeChecker_H
 
-#include <QtXmlPatterns/QSourceLocation>
+#include <qsourcelocation.h>
 
-#include <private/qschematype_p.h>
-#include <private/qsourcelocationreflection_p.h>
-#include <private/qxsdschemacontext_p.h>
+#include <qschematype_p.h>
+#include <qsourcelocationreflection_p.h>
+#include <qxsdschemacontext_p.h>
 
 QT_BEGIN_NAMESPACE
 

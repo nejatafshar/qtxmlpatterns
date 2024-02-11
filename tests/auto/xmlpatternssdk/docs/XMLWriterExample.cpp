@@ -31,20 +31,20 @@ XMLWriter writer(&returnBuffer);
 
 writer.startDocument();
 
-writer.startDTD(QLatin1String("html"), QLatin1String("-//W3C//DTD XHTML 1.0 Strict//EN"),
-                QLatin1String("http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"));
+writer.startDTD(QLatin1StringView("html"), QLatin1StringView("-//W3C//DTD XHTML 1.0 Strict//EN"),
+                QLatin1StringView("http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"));
 writer.endDTD();
 
-writer.startPrefixMapping(QString(), QLatin1String("http://www.w3.org/1999/xhtml"));
+writer.startPrefixMapping(QString(), QLatin1StringView("http://www.w3.org/1999/xhtml"));
 
-writer.startElement(QLatin1String("html"), QXmlAttributes());
-writer.startElement(QLatin1String("body"), QXmlAttributes());
-writer.startElement(QLatin1String("p"), QXmlAttributes());
+writer.startElement(QLatin1StringView("html"), QXmlAttributes());
+writer.startElement(QLatin1StringView("body"), QXmlAttributes());
+writer.startElement(QLatin1StringView("p"), QXmlAttributes());
 
-writer.characters(QLatin1String("Hello World!"));
+writer.characters(QLatin1StringView("Hello World!"));
 
-writer.endElement(QLatin1String("p"));
-writer.endElement(QLatin1String("body"));
-writer.endElement(QLatin1String("html"));
+writer.endElement(QLatin1StringView("p"));
+writer.endElement(QLatin1StringView("body"));
+writer.endElement(QLatin1StringView("html"));
 
 writer.endDocument();

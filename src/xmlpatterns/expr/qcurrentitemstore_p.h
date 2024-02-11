@@ -50,7 +50,7 @@
 #ifndef Patternist_CurrentItemStore_H
 #define Patternist_CurrentItemStore_H
 
-#include <private/qsinglecontainer_p.h>
+#include <qsinglecontainer_p.h>
 
 QT_BEGIN_NAMESPACE
 

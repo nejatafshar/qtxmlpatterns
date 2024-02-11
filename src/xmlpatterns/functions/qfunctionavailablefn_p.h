@@ -50,8 +50,8 @@
 #ifndef Patternist_FunctionAvailableFN_H
 #define Patternist_FunctionAvailableFN_H
 
-#include <private/qstaticnamespacescontainer_p.h>
-#include <private/qfunctionfactory_p.h>
+#include <qstaticnamespacescontainer_p.h>
+#include <qfunctionfactory_p.h>
 
 QT_BEGIN_NAMESPACE
 

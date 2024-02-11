@@ -50,7 +50,7 @@
 #ifndef Patternist_XsdSchemaMerger_H
 #define Patternist_XsdSchemaMerger_H
 
-#include <private/qxsdschema_p.h>
+#include <qxsdschema_p.h>
 
 QT_BEGIN_NAMESPACE
 

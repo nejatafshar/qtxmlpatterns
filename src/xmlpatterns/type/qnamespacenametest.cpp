@@ -71,7 +71,7 @@ bool NamespaceNameTest::itemMatches(const Item &item) const
 
 QString NamespaceNameTest::displayName(const NamePool::Ptr &np) const
 {
-    return QLatin1Char('{') + np->stringForNamespace(m_namespaceURI) + QLatin1String("}:*");
+    return QLatin1Char('{') + np->stringForNamespace(m_namespaceURI) + QLatin1StringView("}:*");
 }
 
 ItemType::InstanceOf NamespaceNameTest::instanceOf() const

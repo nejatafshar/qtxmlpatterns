@@ -50,9 +50,9 @@
 #ifndef Patternist_XsdAttributeGroup_H
 #define Patternist_XsdAttributeGroup_H
 
-#include <private/qxsdannotated_p.h>
-#include <private/qxsdattributeuse_p.h>
-#include <private/qxsdwildcard_p.h>
+#include <qxsdannotated_p.h>
+#include <qxsdattributeuse_p.h>
+#include <qxsdwildcard_p.h>
 
 #include <QtCore/QList>
 

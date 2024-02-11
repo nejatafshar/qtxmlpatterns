@@ -77,7 +77,7 @@ QString ProcessingInstructionConstructor::data(const DynamicContext::Ptr &contex
         /* Perform trimming before validation, to increase speed. */
         const QString value(leftTrimmed(dataArg.stringValue()));
 
-        if(value.contains(QLatin1String("?>")))
+        if(value.contains(QLatin1StringView("?>")))
         {
             context->error(QtXmlPatterns::tr("The data of a processing instruction cannot contain the string %1").arg(formatData("?>")),
                               ReportContext::XQDY0026, this);

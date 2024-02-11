@@ -43,7 +43,7 @@
 using namespace QPatternistSDK;
 using namespace QPatternist;
 
-Q_GLOBAL_STATIC_WITH_ARGS(QRegExp, errorRegExp, (QLatin1String("[A-Z]{4}[0-9]{4}")))
+Q_GLOBAL_STATIC_WITH_ARGS(QRegExp, errorRegExp, (QLatin1StringView("[A-Z]{4}[0-9]{4}")))
 
 TestBaseLine::TestBaseLine(const Type t) : m_type(t)
 {
@@ -128,11 +128,11 @@ void TestBaseLine::toXML(XMLWriter &receiver) const
         case Text:
         {
             QXmlStreamAttributes inspectAtts;
-            inspectAtts.append(QLatin1String("role"), QLatin1String("principal"));
-            inspectAtts.append(QLatin1String("compare"), displayName(m_type));
-            receiver.startElement(QLatin1String("output-file"), inspectAtts);
+            inspectAtts.append(QLatin1StringView("role"), QLatin1StringView("principal"));
+            inspectAtts.append(QLatin1StringView("compare"), displayName(m_type));
+            receiver.startElement(QLatin1StringView("output-file"), inspectAtts);
             receiver.characters(m_details);
-            receiver.endElement(QLatin1String("output-file"));
+            receiver.endElement(QLatin1StringView("output-file"));
             return;
         }
         case Ignore:
@@ -143,18 +143,18 @@ void TestBaseLine::toXML(XMLWriter &receiver) const
         case Inspect:
         {
             QXmlStreamAttributes inspectAtts;
-            inspectAtts.append(QLatin1String("role"), QLatin1String("principal"));
-            inspectAtts.append(QLatin1String("compare"), QLatin1String("Inspect"));
-            receiver.startElement(QLatin1String("output-file"), inspectAtts);
+            inspectAtts.append(QLatin1StringView("role"), QLatin1StringView("principal"));
+            inspectAtts.append(QLatin1StringView("compare"), QLatin1StringView("Inspect"));
+            receiver.startElement(QLatin1StringView("output-file"), inspectAtts);
             receiver.characters(m_details);
-            receiver.endElement(QLatin1String("output-file"));
+            receiver.endElement(QLatin1StringView("output-file"));
             return;
         }
         case ExpectedError:
         {
-            receiver.startElement(QLatin1String("expected-error"));
+            receiver.startElement(QLatin1StringView("expected-error"));
             receiver.characters(m_details);
-            receiver.endElement(QLatin1String("expected-error"));
+            receiver.endElement(QLatin1StringView("expected-error"));
             return;
         }
     }
@@ -308,8 +308,8 @@ TestResult::Status TestBaseLine::verify(const QString &serializedInput) const
 
                 const bool success =
                         output.setContent((m_type == XML ? serializedInput
-                                                         : QLatin1String("<r>") + serializedInput
-                                                           + QLatin1String("</r>"))
+                                                         : QLatin1StringView("<r>") + serializedInput
+                                                           + QLatin1StringView("</r>"))
                                                   .toUtf8());
 
                 if(!success)
@@ -323,7 +323,7 @@ TestResult::Status TestBaseLine::verify(const QString &serializedInput) const
                 QString baselineReadingError;
                 const bool success = baseline.setContent(
                         (m_type == XML ? details()
-                                       : QLatin1String("<r>") + details() + QLatin1String("</r>"))
+                                       : QLatin1StringView("<r>") + details() + QLatin1StringView("</r>"))
                                 .toUtf8(),
                         &baselineReadingError);
                 if(!success)
@@ -340,7 +340,7 @@ TestResult::Status TestBaseLine::verify(const QString &serializedInput) const
                     for(int i = 0; i < len; ++i)
                     {
                         const QDomNode &child = children.at(i);
-                        if(child.isProcessingInstruction() && child.nodeName() == QLatin1String("xml"))
+                        if(child.isProcessingInstruction() && child.nodeName() == QLatin1StringView("xml"))
                         {
                             baseline.removeChild(child);
                             break;
@@ -349,7 +349,7 @@ TestResult::Status TestBaseLine::verify(const QString &serializedInput) const
                 }
 
                 Q_ASSERT_X(baselineReadingError.isNull(), Q_FUNC_INFO,
-                           qPrintable((QLatin1String("Reading the baseline failed: ") + baselineReadingError)));
+                           qPrintable((QLatin1StringView("Reading the baseline failed: ") + baselineReadingError)));
             }
 
             if(isDeepEqual(output, baseline))
@@ -380,18 +380,18 @@ TestBaseLine::Type TestBaseLine::identifierFromString(const QString &string)
      * Output Method as defined in the Serialization specification and section
      * 20 of the XSLT 2.0 specification." We treat it as XML for now, same with
      * xhtml-output. */
-    if(string.compare(QLatin1String("XML"), Qt::CaseInsensitive) == 0 ||
-       string == QLatin1String("html-output") ||
-       string == QLatin1String("xml-output") ||
-       string == QLatin1String("xhtml-output"))
+    if(string.compare(QLatin1StringView("XML"), Qt::CaseInsensitive) == 0 ||
+       string == QLatin1StringView("html-output") ||
+       string == QLatin1StringView("xml-output") ||
+       string == QLatin1StringView("xhtml-output"))
         return XML;
-    else if(string == QLatin1String("Fragment") || string == QLatin1String("xml-frag"))
+    else if(string == QLatin1StringView("Fragment") || string == QLatin1StringView("xml-frag"))
         return Fragment;
-    else if(string.compare(QLatin1String("Text"), Qt::CaseInsensitive) == 0)
+    else if(string.compare(QLatin1StringView("Text"), Qt::CaseInsensitive) == 0)
         return Text;
-    else if(string == QLatin1String("Ignore"))
+    else if(string == QLatin1StringView("Ignore"))
         return Ignore;
-    else if(string.compare(QLatin1String("Inspect"), Qt::CaseInsensitive) == 0)
+    else if(string.compare(QLatin1StringView("Inspect"), Qt::CaseInsensitive) == 0)
         return Inspect;
     else
     {
@@ -407,19 +407,19 @@ QString TestBaseLine::displayName(const Type id)
     switch(id)
     {
         case XML:
-            return QLatin1String("XML");
+            return QLatin1StringView("XML");
         case Fragment:
-            return QLatin1String("Fragment");
+            return QLatin1StringView("Fragment");
         case Text:
-            return QLatin1String("Text");
+            return QLatin1StringView("Text");
         case Ignore:
-            return QLatin1String("Ignore");
+            return QLatin1StringView("Ignore");
         case Inspect:
-            return QLatin1String("Inspect");
+            return QLatin1StringView("Inspect");
         case ExpectedError:
-            return QLatin1String("ExpectedError");
+            return QLatin1StringView("ExpectedError");
         case SchemaIsValid:
-            return QLatin1String("SchemaIsValid");
+            return QLatin1StringView("SchemaIsValid");
     }
 
     Q_ASSERT(false);
@@ -457,7 +457,7 @@ QString TestBaseLine::details() const
     else
     {
         /* We had a file error. */
-        retval.prepend(QLatin1String("Test-suite harness error: "));
+        retval.prepend(QLatin1StringView("Test-suite harness error: "));
         qCritical() << retval;
         return retval;
     }

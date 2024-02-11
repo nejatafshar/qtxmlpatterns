@@ -50,7 +50,7 @@
 #ifndef Patternist_RemovalIterator_H
 #define Patternist_RemovalIterator_H
 
-#include <private/qitem_p.h>
+#include <qitem_p.h>
 
 QT_BEGIN_NAMESPACE
 

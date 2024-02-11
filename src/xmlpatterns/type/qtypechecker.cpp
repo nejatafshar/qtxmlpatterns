@@ -141,7 +141,7 @@ Expression::Ptr TypeChecker::verifyType(const Expression::Ptr &operand,
                 const ItemType::Ptr expectedContextType(operand->expectedContextItemType());
 
                 /* Allow the empty sequence. We don't want to trigger XPTY0020 on ()/... . */
-                if(!expectedContextType->xdtTypeMatches(contextType) && contextType != CommonSequenceTypes::Empty)
+                if(!expectedContextType->xdtTypeMatches(contextType) && contextType != static_cast<ItemType::Ptr>(CommonSequenceTypes::Empty))
                 {
                     context->error(wrongType(context->namePool(), operand->expectedContextItemType(), contextType),
                                             ReportContext::XPTY0020, operand.data());

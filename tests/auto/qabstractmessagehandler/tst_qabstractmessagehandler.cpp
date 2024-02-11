@@ -127,15 +127,15 @@ void tst_QAbstractMessageHandler::message() const
 
     /* Check that the arguments comes out as expected. */
     handler.message(QtDebugMsg,
-                    QLatin1String("A description"),
-                    QUrl(QLatin1String("http://example.com/ID")),
-                    QSourceLocation(QUrl(QLatin1String("http://example.com/Location")), 4, 5));
+                    QLatin1StringView("A description"),
+                    QUrl(QLatin1StringView("http://example.com/ID")),
+                    QSourceLocation(QUrl(QLatin1StringView("http://example.com/Location")), 4, 5));
 
     Received expected;
     expected.type = QtDebugMsg;
-    expected.description = QLatin1String("A description");
-    expected.identifier = QUrl(QLatin1String("http://example.com/ID"));
-    expected.sourceLocation = QSourceLocation(QUrl(QLatin1String("http://example.com/Location")), 4, 5);
+    expected.description = QLatin1StringView("A description");
+    expected.identifier = QUrl(QLatin1StringView("http://example.com/ID"));
+    expected.sourceLocation = QSourceLocation(QUrl(QLatin1StringView("http://example.com/Location")), 4, 5);
 
     QCOMPARE(expected, handler.received.first());
 }
@@ -145,11 +145,11 @@ void tst_QAbstractMessageHandler::messageDefaultArguments() const
     TestMessageHandler handler;
 
     /* The three last arguments in message() are optional. Check that they are what we promise. */
-    handler.message(QtDebugMsg, QLatin1String("A description"));
+    handler.message(QtDebugMsg, QLatin1StringView("A description"));
 
     Received expected;
     expected.type = QtDebugMsg;
-    expected.description = QLatin1String("A description");
+    expected.description = QLatin1StringView("A description");
     expected.identifier = QUrl();
     expected.sourceLocation = QSourceLocation();
 

@@ -52,7 +52,7 @@
 
 #include <QUrl>
 
-#include <private/qpaircontainer_p.h>
+#include <qpaircontainer_p.h>
 
 QT_BEGIN_NAMESPACE
 

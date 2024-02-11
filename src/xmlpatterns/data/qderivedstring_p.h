@@ -50,12 +50,12 @@
 #ifndef Patternist_DerivedString_H
 #define Patternist_DerivedString_H
 
-#include <QRegExp>
+#include <QRegularExpression>
 
-#include <private/qxmlutils_p.h>
-#include <private/qbuiltintypes_p.h>
-#include <private/qpatternistlocale_p.h>
-#include <private/qvalidationerror_p.h>
+#include "private/qxmlutils_p.h"
+#include <qbuiltintypes_p.h>
+#include <qpatternistlocale_p.h>
+#include <qvalidationerror_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -258,10 +258,10 @@ namespace QPatternist
                 {
                     const QString simplified(lexical.trimmed());
 
-                    QRegExp validate(QLatin1String("[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*"));
+                    QRegularExpression validate(QLatin1StringView("[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*"));
                     Q_ASSERT(validate.isValid());
 
-                    if(validate.exactMatch(simplified))
+                    if(validate.match(simplified).hasMatch())
                         return AtomicValue::Ptr(new DerivedString(lexical.simplified()));
                     else
                         return error(np, simplified);

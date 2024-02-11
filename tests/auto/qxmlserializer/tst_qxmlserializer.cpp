@@ -73,7 +73,7 @@ void tst_QXmlSerializer::constructorTriggerWarnings() const
 void tst_QXmlSerializer::constCorrectness() const
 {
     QXmlQuery query;
-    QFile file(QLatin1String("dummy.xml"));
+    QFile file(QLatin1StringView("dummy.xml"));
     file.open(QIODevice::WriteOnly);
     const QXmlSerializer serializer(query, &file);
     /* These functions must be const. */
@@ -89,7 +89,7 @@ void tst_QXmlSerializer::objectSize() const
 
 void tst_QXmlSerializer::setCodec() const
 {
-    QFile file(QLatin1String("dummy.xml"));
+    QFile file(QLatin1StringView("dummy.xml"));
     file.open(QIODevice::WriteOnly);
 
     /* Ensure we can take a const pointer. */
@@ -114,7 +114,7 @@ void tst_QXmlSerializer::setCodec() const
 
 void tst_QXmlSerializer::codec() const
 {
-    QFile file(QLatin1String("dummy.xml"));
+    QFile file(QLatin1StringView("dummy.xml"));
     file.open(QIODevice::WriteOnly);
 
     /* Check default value. */
@@ -127,7 +127,7 @@ void tst_QXmlSerializer::codec() const
 
 void tst_QXmlSerializer::outputDevice() const
 {
-    QFile file(QLatin1String("dummy.xml"));
+    QFile file(QLatin1StringView("dummy.xml"));
     file.open(QIODevice::WriteOnly);
 
     /* Check default value. */
@@ -171,7 +171,7 @@ void tst_QXmlSerializer::serializationError_data() const
 
 void tst_QXmlSerializer::cleanUpTestCase() const
 {
-    QVERIFY(QFile::remove(QLatin1String("dummy.xml")));
+    QVERIFY(QFile::remove(QLatin1StringView("dummy.xml")));
 }
 
 QTEST_MAIN(tst_QXmlSerializer)

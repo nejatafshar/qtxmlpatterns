@@ -72,7 +72,7 @@ ASTItem *DebugExpressionFactory::buildASTTree(const QPatternist::Expression::Ptr
     const ExpressionInfo *const constExprInfo = static_cast<const ExpressionInfo *>(exprInfo.data());
     const QString name(constExprInfo->name());
     const QString details(constExprInfo->details());
-    const QString rType(reqType ? reqType->displayName(Global::namePool()) : QLatin1String("Not specified"));
+    const QString rType(reqType ? reqType->displayName(Global::namePool()) : QLatin1StringView("Not specified"));
 
     /* ---------- Handle its staticType() -------- */
     const QPatternist::SequenceType::Ptr type(expr->staticType());
@@ -81,7 +81,7 @@ ASTItem *DebugExpressionFactory::buildASTTree(const QPatternist::Expression::Ptr
     if(type)
         seqType = type->displayName(Global::namePool());
     else
-        seqType = QLatin1String("no type, null pointer returned");
+        seqType = QLatin1StringView("no type, null pointer returned");
     /* ------------------------------------------- */
 
     ASTItem *const node = new ASTItem(parent, name, details, seqType, rType);
@@ -134,32 +134,32 @@ void DebugExpressionFactory::processTreePass(const QPatternist::Expression::Ptr 
     {
         case QueryBodyInitial:
         {
-            newChild = new ASTItem(m_ast, QLatin1String("Initial Build"));
+            newChild = new ASTItem(m_ast, QLatin1StringView("Initial Build"));
             break;
         }
         case QueryBodyTypeCheck:
         {
-            newChild = new ASTItem(m_ast, QLatin1String("Type Check"));
+            newChild = new ASTItem(m_ast, QLatin1StringView("Type Check"));
             break;
         }
         case QueryBodyCompression:
         {
-            newChild = new ASTItem(m_ast, QLatin1String("Compression"));
+            newChild = new ASTItem(m_ast, QLatin1StringView("Compression"));
             break;
         }
         case UserFunctionTypeCheck:
         {
-            newChild = new ASTItem(m_ast, QLatin1String("User Function Type Check"));
+            newChild = new ASTItem(m_ast, QLatin1StringView("User Function Type Check"));
             break;
         }
         case UserFunctionCompression:
         {
-            newChild = new ASTItem(m_ast, QLatin1String("User Function Compression"));
+            newChild = new ASTItem(m_ast, QLatin1StringView("User Function Compression"));
             break;
         }
         case GlobalVariableTypeCheck:
         {
-            newChild = new ASTItem(m_ast, QLatin1String("Global Variable Type Check"));
+            newChild = new ASTItem(m_ast, QLatin1StringView("Global Variable Type Check"));
             break;
         }
     }
@@ -174,22 +174,22 @@ void DebugExpressionFactory::processTemplateRule(const Expression::Ptr &body,
                                                  const QXmlName &mode,
                                                  const TemplateCompilationStage stage)
 {
-    QString title = QLatin1String("T-Rule ");
+    QString title = QLatin1StringView("T-Rule ");
 
     switch (stage) {
     case TemplateInitial:
-        title += QLatin1String("Initial Build");
+        title += QLatin1StringView("Initial Build");
         break;
     case TemplateTypeCheck:
-        title += QLatin1String("Type Check");
+        title += QLatin1StringView("Type Check");
         break;
     case TemplateCompress:
-        title += QLatin1String("Compression");
+        title += QLatin1StringView("Compression");
         break;
     }
-    title += QLatin1String(" mode: ")
+    title += QLatin1StringView(" mode: ")
         + Global::namePool()->displayName(mode)
-        + QLatin1String(" priority: ")
+        + QLatin1StringView(" priority: ")
         + QString::number(pattern->priority());
 
     ASTItem *const newChild = new ASTItem(m_ast, title);
@@ -207,17 +207,17 @@ void DebugExpressionFactory::processNamedTemplate(const QXmlName &name,
 
     switch (stage) {
     case TemplateInitial:
-        title += QLatin1String("Named Template Initial Build");
+        title += QLatin1StringView("Named Template Initial Build");
         break;
     case TemplateTypeCheck:
-        title += QLatin1String("Named Template Type Check");
+        title += QLatin1StringView("Named Template Type Check");
         break;
     case TemplateCompress:
-        title += QLatin1String("Named Template Compression");
+        title += QLatin1StringView("Named Template Compression");
         break;
     }
 
-    title += QLatin1String(": ") + Global::namePool()->displayName(name);
+    title += QLatin1StringView(": ") + Global::namePool()->displayName(name);
 
     ASTItem *const newChild = new ASTItem(m_ast, title);
 

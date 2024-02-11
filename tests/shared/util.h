@@ -46,11 +46,11 @@ public:
 
     QString testFile(const QString &fileName) const;
     inline QString testFile(const char *fileName) const
-        { return testFile(QLatin1String(fileName)); }
+        { return testFile(QLatin1StringView(fileName)); }
     inline QUrl testFileUrl(const QString &fileName) const
         { return QUrl::fromLocalFile(testFile(fileName)); }
     inline QUrl testFileUrl(const char *fileName) const
-        { return testFileUrl(QLatin1String(fileName)); }
+        { return testFileUrl(QLatin1StringView(fileName)); }
 
     inline QString dataDirectory() const { return m_dataDirectory; }
     inline QUrl dataDirectoryUrl() const { return m_dataDirectoryUrl; }

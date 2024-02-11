@@ -151,8 +151,8 @@ void tst_QXmlName::argumentConstructor_data() const
 void tst_QXmlName::argumentConstructorDefaultArguments() const
 {
     QXmlNamePool np;
-    const QXmlName n1(np, QLatin1String("localName"));
-    const QXmlName n2(np, QLatin1String("localName"), QString(), QString());
+    const QXmlName n1(np, QLatin1StringView("localName"));
+    const QXmlName n2(np, QLatin1StringView("localName"), QString(), QString());
 
     QCOMPARE(n1, n2);
     QCOMPARE(n1.toClarkName(np), QString::fromLatin1("localName"));
@@ -310,19 +310,19 @@ void tst_QXmlName::constCorrectness() const
     QVERIFY(!(name != name));
 
     QXmlNamePool namePool;
-    const QXmlName name2(namePool, QLatin1String("localName"), QLatin1String("http://example.com/"), QLatin1String("prefix"));
+    const QXmlName name2(namePool, QLatin1StringView("localName"), QLatin1StringView("http://example.com/"), QLatin1StringView("prefix"));
 
     /* namespaceUri(). */
-    QCOMPARE(name2.namespaceUri(namePool), QLatin1String("http://example.com/"));
+    QCOMPARE(name2.namespaceUri(namePool), QLatin1StringView("http://example.com/"));
 
     /* localName(). */
-    QCOMPARE(name2.localName(namePool), QLatin1String("localName"));
+    QCOMPARE(name2.localName(namePool), QLatin1StringView("localName"));
 
     /* prefix(). */
-    QCOMPARE(name2.prefix(namePool), QLatin1String("prefix"));
+    QCOMPARE(name2.prefix(namePool), QLatin1StringView("prefix"));
 
     /* toClarkname(). */
-    QCOMPARE(name2.toClarkName(namePool), QLatin1String("{http://example.com/}prefix:localName"));
+    QCOMPARE(name2.toClarkName(namePool), QLatin1StringView("{http://example.com/}prefix:localName"));
 }
 
 void tst_QXmlName::qHash() const
@@ -361,24 +361,24 @@ void tst_QXmlName::toClarkName_data() const
     }
 
     {
-        const QXmlName n(np, QLatin1String("localName"));
+        const QXmlName n(np, QLatin1StringView("localName"));
         QTest::newRow("") << n.toClarkName(np)
                           << QString::fromLatin1("localName");
     }
 
     /* Local name with namespace URI, empty prefix. */
     {
-        const QXmlName n(np, QLatin1String("localName"),
-                             QLatin1String("http://example.com/"));
+        const QXmlName n(np, QLatin1StringView("localName"),
+                             QLatin1StringView("http://example.com/"));
         QTest::newRow("") << n.toClarkName(np)
                           << QString::fromLatin1("{http://example.com/}localName");
     }
 
     /* Local name with namespace URI and prefix. */
     {
-        const QXmlName n(np, QLatin1String("localName"),
-                             QLatin1String("http://example.com/"),
-                             QLatin1String("p"));
+        const QXmlName n(np, QLatin1StringView("localName"),
+                             QLatin1StringView("http://example.com/"),
+                             QLatin1StringView("p"));
         QTest::newRow("") << n.toClarkName(np)
                           << QString::fromLatin1("{http://example.com/}p:localName");
     }
@@ -472,62 +472,62 @@ void tst_QXmlName::fromClarkName_data() const
         << np;
 
     QTest::newRow("An empty string")
-        << QString(QLatin1String(""))
+        << QString(QLatin1StringView(""))
         << QXmlName()
         << np;
 
     QTest::newRow("A single local name")
-        << QString(QLatin1String("foo"))
-        << QXmlName(np, QLatin1String("foo"))
+        << QString(QLatin1StringView("foo"))
+        << QXmlName(np, QLatin1StringView("foo"))
         << np;
 
     QTest::newRow("Has prefix, but no namespace, that's invalid")
-        << QString(QLatin1String("prefix:foo"))
+        << QString(QLatin1StringView("prefix:foo"))
         << QXmlName()
         << np;
 
     QTest::newRow("Namespace, local name, no prefix")
-        << QString(QLatin1String("{def}abc"))
-        << QXmlName(np, QLatin1String("abc"), QLatin1String("def"))
+        << QString(QLatin1StringView("{def}abc"))
+        << QXmlName(np, QLatin1StringView("abc"), QLatin1StringView("def"))
         << np;
 
     QTest::newRow("Namespace, local name, prefix")
-        << QString(QLatin1String("{def}p:abc"))
-        << QXmlName(np, QLatin1String("abc"), QLatin1String("def"), QLatin1String("p"))
+        << QString(QLatin1StringView("{def}p:abc"))
+        << QXmlName(np, QLatin1StringView("abc"), QLatin1StringView("def"), QLatin1StringView("p"))
         << np;
 
     QTest::newRow("Namespace, local name, prefix syntax error")
-        << QString(QLatin1String("{def}:abc"))
+        << QString(QLatin1StringView("{def}:abc"))
         << QXmlName()
         << np;
 
     QTest::newRow("Namespace, local name syntax error, prefix")
-        << QString(QLatin1String("{def}p:"))
+        << QString(QLatin1StringView("{def}p:"))
         << QXmlName()
         << np;
 
     QTest::newRow("Only local name which is invalid")
-        << QString(QLatin1String(":::"))
+        << QString(QLatin1StringView(":::"))
         << QXmlName()
         << np;
 
     QTest::newRow("Namespace, invalid local name")
-        << QString(QLatin1String("{def}a|bc"))
+        << QString(QLatin1StringView("{def}a|bc"))
         << QXmlName()
         << np;
 
     QTest::newRow("Namespace, local name, invalid prefix")
-        << QString(QLatin1String("{def}a|b:c"))
+        << QString(QLatin1StringView("{def}a|b:c"))
         << QXmlName()
         << np;
 
     QTest::newRow("A single left curly, invalid")
-        << QString(QLatin1String("{"))
+        << QString(QLatin1StringView("{"))
         << QXmlName()
         << np;
 
     QTest::newRow("A single left curly, invalid")
-        << QString(QLatin1String("{aaswd"))
+        << QString(QLatin1StringView("{aaswd"))
         << QXmlName()
         << np;
 }

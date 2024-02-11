@@ -50,9 +50,9 @@
 #ifndef Patternist_NamespaceBinding_H
 #define Patternist_NamespaceBinding_H
 
-template<typename T> class QVector;
+//template<typename T> class QVector;
 
-#include <QXmlName>
+#include <qxmlname.h>
 #include <private/qglobal_p.h>
 
 QT_BEGIN_NAMESPACE

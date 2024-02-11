@@ -42,7 +42,7 @@
 
 #include <QtCore/QSharedData>
 #include <QtCore/QString>
-#include <QtXmlPatterns/qtxmlpatternsglobal.h>
+#include <qtxmlpatternsglobal.h>
 
 QT_BEGIN_NAMESPACE
 

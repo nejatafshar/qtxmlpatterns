@@ -1361,7 +1361,7 @@ bool QXmlItem::isNull() const
   QXmlNodeModelIndex::model(). This means the hash key can be used for
   node indexes from different node models.
  */
-uint qHash(const QXmlNodeModelIndex &index)
+size_t qHash(const QXmlNodeModelIndex &index)
 {
     return uint(index.data() + index.additionalData() + quintptr(index.model()));
 }

@@ -48,13 +48,13 @@ using namespace QPatternist;
 
 ColoringMessageHandler::ColoringMessageHandler(QObject *parent) : QAbstractMessageHandler(parent)
 {
-    m_classToColor.insert(QLatin1String("XQuery-data"), Data);
-    m_classToColor.insert(QLatin1String("XQuery-expression"), Keyword);
-    m_classToColor.insert(QLatin1String("XQuery-function"), Keyword);
-    m_classToColor.insert(QLatin1String("XQuery-keyword"), Keyword);
-    m_classToColor.insert(QLatin1String("XQuery-type"), Keyword);
-    m_classToColor.insert(QLatin1String("XQuery-uri"), Data);
-    m_classToColor.insert(QLatin1String("XQuery-filepath"), Data);
+    m_classToColor.insert(QLatin1StringView("XQuery-data"), Data);
+    m_classToColor.insert(QLatin1StringView("XQuery-expression"), Keyword);
+    m_classToColor.insert(QLatin1StringView("XQuery-function"), Keyword);
+    m_classToColor.insert(QLatin1StringView("XQuery-keyword"), Keyword);
+    m_classToColor.insert(QLatin1StringView("XQuery-type"), Keyword);
+    m_classToColor.insert(QLatin1StringView("XQuery-uri"), Data);
+    m_classToColor.insert(QLatin1StringView("XQuery-filepath"), Data);
 
     /* If you're tuning the colors, take it easy laddie. Take into account:
      *
@@ -112,7 +112,7 @@ void ColoringMessageHandler::handleMessage(QtMsgType type,
             QString errorId;
             /* If it's a standard error code, we don't want to output the
              * whole URI. */
-            if(uri.toString() == QLatin1String("http://www.w3.org/2005/xqt-errors"))
+            if(uri.toString() == QLatin1StringView("http://www.w3.org/2005/xqt-errors"))
                 errorId = errorCode;
             else
                 errorId = identifier.toString();
@@ -159,10 +159,10 @@ QString ColoringMessageHandler::colorifyDescription(const QString &in) const
         {
             case QXmlStreamReader::StartElement:
             {
-                if(reader.name() == QLatin1String("span"))
+                if(reader.name() == QLatin1StringView("span"))
                 {
-                    Q_ASSERT(m_classToColor.contains(reader.attributes().value(QLatin1String("class")).toString()));
-                    currentColor = m_classToColor.value(reader.attributes().value(QLatin1String("class")).toString());
+                    Q_ASSERT(m_classToColor.contains(reader.attributes().value(QLatin1StringView("class")).toString()));
+                    currentColor = m_classToColor.value(reader.attributes().value(QLatin1StringView("class")).toString());
                 }
 
                 continue;

@@ -52,13 +52,13 @@
 
 #include <QtCore/QIODevice>
 #include <QtCore/QStack>
-#include <QtCore/QTextCodec>
-#include <QtXmlPatterns/QXmlQuery>
-#include <QtXmlPatterns/QXmlNamePool>
-#include <QtXmlPatterns/QXmlSerializer>
+#include <QtCore5Compat/QTextCodec>
+#include <qxmlquery.h>
+#include <qxmlnamepool.h>
+#include <qxmlserializer.h>
 
-#include <private/qnamepool_p.h>
-#include <private/qabstractxmlreceiver_p.h>
+#include <qnamepool_p.h>
+#include <qabstractxmlreceiver_p.h>
 
 QT_BEGIN_NAMESPACE
 

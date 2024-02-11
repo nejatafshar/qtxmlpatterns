@@ -50,7 +50,7 @@
 #ifndef Patternist_PatternMatchingFNs_H
 #define Patternist_PatternMatchingFNs_H
 
-#include <private/qpatternplatform_p.h>
+#include <qpatternplatform_p.h>
 
 /**
  * @file
@@ -101,7 +101,7 @@ namespace QPatternist
         static inline QString errorAtEnd(const char ch);
 
         /**
-         * Reads the string in the third argument and converts it to a a QRegExp compatible
+         * Reads the string in the third argument and converts it to a a QRegularExpression compatible
          * replacement string, containing sub-group references and so forth.
          */
         QString parseReplacement(const int captureCount,

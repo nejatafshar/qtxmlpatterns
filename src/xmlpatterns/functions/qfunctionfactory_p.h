@@ -54,10 +54,10 @@
 #include <QHash>
 #include <QSharedData>
 
-#include <private/qexpression_p.h>
-#include <private/qfunctionsignature_p.h>
-#include <private/qprimitives_p.h>
-#include <QXmlName>
+#include <qexpression_p.h>
+#include <qfunctionsignature_p.h>
+#include <qprimitives_p.h>
+#include <qxmlname.h>
 
 QT_BEGIN_NAMESPACE
 

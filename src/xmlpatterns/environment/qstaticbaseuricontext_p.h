@@ -50,7 +50,7 @@
 #ifndef Patternist_StaticBaseURIContext_H
 #define Patternist_StaticBaseURIContext_H
 
-#include <private/qdelegatingstaticcontext_p.h>
+#include <qdelegatingstaticcontext_p.h>
 
 QT_BEGIN_NAMESPACE
 

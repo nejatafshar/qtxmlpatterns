@@ -140,8 +140,8 @@ NOTE: Be aware of binary compatibility when using this stylesheet.
 #define Patternist_ReportContext_H
 
 #include <QSharedData>
-#include <QAbstractUriResolver>
-#include <QSourceLocation>
+#include <qabstracturiresolver.h>
+#include <qsourcelocation.h>
 
 #include "qnamepool_p.h"
 #include "qxmlname.h"

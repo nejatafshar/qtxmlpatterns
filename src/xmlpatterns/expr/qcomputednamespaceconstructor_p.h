@@ -50,7 +50,7 @@
 #ifndef Patternist_ComputedNamespaceConstructor_H
 #define Patternist_ComputedNamespaceConstructor_H
 
-#include <private/qpaircontainer_p.h>
+#include <qpaircontainer_p.h>
 
 QT_BEGIN_NAMESPACE
 

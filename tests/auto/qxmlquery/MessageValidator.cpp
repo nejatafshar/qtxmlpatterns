@@ -53,17 +53,17 @@ void MessageValidator::handleMessage(QtMsgType type,
 
     QXmlStreamReader reader(description);
 
-    m_received =   QLatin1String("Type:")
+    m_received =   QLatin1StringView("Type:")
                  + QString::number(type)
-                 + QLatin1String("\nDescription: ")
+                 + QLatin1StringView("\nDescription: ")
                  + description
-                 + QLatin1String("\nIdentifier: ")
+                 + QLatin1StringView("\nIdentifier: ")
                  + identifier.toString()
-                 + QLatin1String("\nLocation: ")
+                 + QLatin1StringView("\nLocation: ")
                  + sourceLocation.uri().toString()
-                 + QLatin1String("#")
+                 + QLatin1StringView("#")
                  + QString::number(sourceLocation.line())
-                 + QLatin1String(",")
+                 + QLatin1StringView(",")
                  + QString::number(sourceLocation.column());
 
     /* We just walk through it, to check that it's valid. */

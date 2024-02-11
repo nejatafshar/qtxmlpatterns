@@ -63,7 +63,7 @@ QNetworkAccessManager *NetworkAccessDelegator::managerFor(const QUrl &uri)
      *
      * Currently the schemes QNetworkAccessManager handles should/will do
      * timeouts for 4.4, but we need to do timeouts for our own. */
-    if(requestedUrl.startsWith(QLatin1String("tag:trolltech.com,2007:QtXmlPatterns:QIODeviceVariable:")))
+    if(requestedUrl.startsWith(QLatin1StringView("tag:trolltech.com,2007:QtXmlPatterns:QIODeviceVariable:")))
         return m_variableURIManager;
     else
     {

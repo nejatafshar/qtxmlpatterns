@@ -53,7 +53,7 @@ GMonthDay::Ptr GMonthDay::fromLexical(const QString &lexical)
 {
     static const CaptureTable captureTable( // STATIC DATA
         /* The extra paranthesis is a build fix for GCC 3.3. */
-        (QRegExp(QLatin1String(
+        (QRegularExpression(QLatin1StringView(
                 "^\\s*"                             /* Any preceding whitespace. */
                 "--"                                /* Delimiter. */
                 "(\\d{2})"                          /* The month part. */
@@ -77,7 +77,7 @@ GMonthDay::Ptr GMonthDay::fromLexical(const QString &lexical)
 
 GMonthDay::Ptr GMonthDay::fromDateTime(const QDateTime &dt)
 {
-    QDateTime result(QDate(DefaultYear, dt.date().month(), dt.date().day()));
+    QDateTime result(QDate(DefaultYear, dt.date().month(), dt.date().day()), {0,0});
     copyTimeSpec(dt, result);
 
     return GMonthDay::Ptr(new GMonthDay(result));
@@ -85,7 +85,7 @@ GMonthDay::Ptr GMonthDay::fromDateTime(const QDateTime &dt)
 
 QString GMonthDay::stringValue() const
 {
-    return m_dateTime.toString(QLatin1String("--MM-dd")) + zoneOffsetToString();
+    return m_dateTime.toString(QLatin1StringView("--MM-dd")) + zoneOffsetToString();
 }
 
 ItemType::Ptr GMonthDay::type() const

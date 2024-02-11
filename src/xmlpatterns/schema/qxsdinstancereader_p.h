@@ -51,8 +51,8 @@
 #define Patternist_XsdInstanceReader_H
 
 #include "qabstractxmlnodemodel.h"
-#include <private/qpullbridge_p.h>
-#include <private/qxsdschemacontext_p.h>
+#include <qpullbridge_p.h>
+#include <qxsdschemacontext_p.h>
 
 QT_BEGIN_NAMESPACE
 

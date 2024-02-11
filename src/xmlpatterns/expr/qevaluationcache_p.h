@@ -50,12 +50,12 @@
 #ifndef Patternist_EvaluationCache_H
 #define Patternist_EvaluationCache_H
 
-#include <private/qcachingiterator_p.h>
-#include <private/qcommonsequencetypes_p.h>
-#include <private/qnodebuilder_p.h>
-#include <private/qoperandsiterator_p.h>
-#include <private/qsinglecontainer_p.h>
-#include <private/qvariabledeclaration_p.h>
+#include <qcachingiterator_p.h>
+#include <qcommonsequencetypes_p.h>
+#include <qnodebuilder_p.h>
+#include <qoperandsiterator_p.h>
+#include <qsinglecontainer_p.h>
+#include <qvariabledeclaration_p.h>
 
 QT_BEGIN_NAMESPACE
 

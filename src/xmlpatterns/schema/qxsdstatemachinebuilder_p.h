@@ -50,9 +50,9 @@
 #ifndef Patternist_XsdStateMachineBuilder_H
 #define Patternist_XsdStateMachineBuilder_H
 
-#include <private/qxsdparticle_p.h>
-#include <private/qxsdstatemachine_p.h>
-#include <private/qxsdterm_p.h>
+#include <qxsdparticle_p.h>
+#include <qxsdstatemachine_p.h>
+#include <qxsdterm_p.h>
 
 #include <QtCore/QExplicitlySharedDataPointer>
 #include <QtCore/QList>

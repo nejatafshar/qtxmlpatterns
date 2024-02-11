@@ -119,9 +119,9 @@ AtomicValue::Ptr Boolean::fromLexical(const QString &lexical)
 {
     const QString val(lexical.trimmed()); /* Apply the whitespace facet. */
 
-    if(val == QLatin1String("true") || val == QChar(QLatin1Char('1')))
+    if(val == QLatin1StringView("true") || val == QChar(QLatin1Char('1')))
         return CommonValues::BooleanTrue;
-    else if(val == QLatin1String("false") || val == QChar(QLatin1Char('0')))
+    else if(val == QLatin1StringView("false") || val == QChar(QLatin1Char('0')))
         return CommonValues::BooleanFalse;
     else
         return ValidationError::createError();

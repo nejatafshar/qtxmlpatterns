@@ -60,7 +60,7 @@ QString CommentConstructor::evaluateContent(const DynamicContext::Ptr &context) 
 
     const QString content(item.stringValue());
 
-    if(content.contains(QLatin1String("--")))
+    if(content.contains(QLatin1StringView("--")))
     {
         context->error(QtXmlPatterns::tr("A comment cannot contain %1")
                        .arg(formatData("--")),

@@ -52,7 +52,7 @@
 
 #include <QList>
 
-#include <private/qitemtype_p.h>
+#include <qitemtype_p.h>
 
 QT_BEGIN_NAMESPACE
 

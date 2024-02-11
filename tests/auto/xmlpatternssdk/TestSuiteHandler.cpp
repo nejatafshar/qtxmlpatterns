@@ -96,9 +96,9 @@ bool TestSuiteHandler::startElement(const QStringRef &namespaceURI, const QStrin
         return true;
     else if(m_isExcluding)
     {
-        if(localName == QLatin1String("test-group"))
+        if(localName == QLatin1StringView("test-group"))
         {
-            m_testGroupName.push(atts.value(QLatin1String("name")).toString());
+            m_testGroupName.push(atts.value(QLatin1StringView("name")).toString());
             return true;
         }
         else
@@ -106,49 +106,49 @@ bool TestSuiteHandler::startElement(const QStringRef &namespaceURI, const QStrin
     }
 
     /* The elements are handled roughly in the order of highest occurrence in the catalog file. */
-    if(localName == QLatin1String("test-case"))
+    if(localName == QLatin1StringView("test-case"))
     {
         XQTSTestCase *const c = new XQTSTestCase(
-                TestCase::scenarioFromString(atts.value(QLatin1String("scenario")).toString()),
+                TestCase::scenarioFromString(atts.value(QLatin1StringView("scenario")).toString()),
                 m_container);
 
-        c->setName(atts.value(QLatin1String("name")).toString());
-        c->setCreator(atts.value(QLatin1String("Creator")).toString());
-        c->setIsXPath(Global::readBoolean(atts.value(QLatin1String("is-XPath2")).toString()));
-        c->setLastModified(QDate::fromString(atts.value(QLatin1String("version-drop")).toString(),
+        c->setName(atts.value(QLatin1StringView("name")).toString());
+        c->setCreator(atts.value(QLatin1StringView("Creator")).toString());
+        c->setIsXPath(Global::readBoolean(atts.value(QLatin1StringView("is-XPath2")).toString()));
+        c->setLastModified(QDate::fromString(atts.value(QLatin1StringView("version-drop")).toString(),
                                              Qt::ISODate));
         Q_ASSERT(c->lastModified().isNull() || c->lastModified().isValid());
 
         m_currentQueryPath =
-                m_queryOffset.resolved(QUrl(atts.value(QLatin1String("FilePath")).toString()));
+                m_queryOffset.resolved(QUrl(atts.value(QLatin1StringView("FilePath")).toString()));
         m_currentBaselinePath =
-                m_baselineOffset.resolved(QUrl(atts.value(QLatin1String("FilePath")).toString()));
+                m_baselineOffset.resolved(QUrl(atts.value(QLatin1StringView("FilePath")).toString()));
 
         m_container->appendChild(c);
         m_tc = c;
      }
-    else if(localName == QLatin1String("query"))
+    else if(localName == QLatin1StringView("query"))
     {
-        m_tc->setQueryPath(m_currentQueryPath.resolved(atts.value(QLatin1String("name")) +
+        m_tc->setQueryPath(m_currentQueryPath.resolved(atts.value(QLatin1StringView("name")) +
                                                        m_xqueryFileExtension));
     }
-    else if(localName == QLatin1String("input-file") ||
-            localName == QLatin1String("input-URI"))
+    else if(localName == QLatin1StringView("input-file") ||
+            localName == QLatin1StringView("input-URI"))
     {
-        m_currentInputVariable = atts.value(QLatin1String("variable")).toString();
+        m_currentInputVariable = atts.value(QLatin1StringView("variable")).toString();
     }
-    else if(localName == QLatin1String("output-file"))
+    else if(localName == QLatin1StringView("output-file"))
     {
         m_baseLine = new TestBaseLine(TestBaseLine::identifierFromString(
-                atts.value(QLatin1String("compare")).toString()));
+                atts.value(QLatin1StringView("compare")).toString()));
     }
-    else if(localName == QLatin1String("expected-error"))
+    else if(localName == QLatin1StringView("expected-error"))
     {
         m_baseLine = new TestBaseLine(TestBaseLine::ExpectedError);
     }
-    else if(localName == QLatin1String("test-group"))
+    else if(localName == QLatin1StringView("test-group"))
     {
-        m_testGroupName.push(atts.value(QLatin1String("name")).toString());
+        m_testGroupName.push(atts.value(QLatin1StringView("name")).toString());
 
         if(m_exclusionList.contains(m_testGroupName.top()))
         {
@@ -165,35 +165,35 @@ bool TestSuiteHandler::startElement(const QStringRef &namespaceURI, const QStrin
             m_container = newGroup;
         }
     }
-    else if(localName == QLatin1String("source"))
+    else if(localName == QLatin1StringView("source"))
     {
         m_sourceMap.insert(
-                atts.value(QLatin1String("ID")).toString(),
-                m_sourceOffset.resolved(QUrl(atts.value(QLatin1String("FileName")).toString())));
+                atts.value(QLatin1StringView("ID")).toString(),
+                m_sourceOffset.resolved(QUrl(atts.value(QLatin1StringView("FileName")).toString())));
     }
-    else if(localName == QLatin1String("test-suite"))
+    else if(localName == QLatin1StringView("test-suite"))
     {
         m_ts = new TestSuite();
-        m_ts->setVersion(atts.value(QLatin1String("version")).toString());
+        m_ts->setVersion(atts.value(QLatin1StringView("version")).toString());
         m_ts->setDesignDate(QDate::fromString(
-                atts.value(QLatin1String("CatalogDesignDate")).toString(), Qt::ISODate));
+                atts.value(QLatin1StringView("CatalogDesignDate")).toString(), Qt::ISODate));
         Q_ASSERT(m_ts->designDate().isValid());
         m_container = m_ts;
 
-        m_xqueryFileExtension = atts.value(QLatin1String("XQueryFileExtension")).toString();
+        m_xqueryFileExtension = atts.value(QLatin1StringView("XQueryFileExtension")).toString();
         m_queryOffset = m_catalogFile.resolved(
-                atts.value(QLatin1String("XQueryQueryOffsetPath")).toString());
+                atts.value(QLatin1StringView("XQueryQueryOffsetPath")).toString());
         m_baselineOffset =
-                m_catalogFile.resolved(atts.value(QLatin1String("ResultOffsetPath")).toString());
+                m_catalogFile.resolved(atts.value(QLatin1StringView("ResultOffsetPath")).toString());
         m_sourceOffset =
-                m_catalogFile.resolved(atts.value(QLatin1String("SourceOffsetPath")).toString());
+                m_catalogFile.resolved(atts.value(QLatin1StringView("SourceOffsetPath")).toString());
     }
-    else if(localName == QLatin1String("input-query"))
+    else if(localName == QLatin1StringView("input-query"))
     {
         m_tcSourceInputs.insert(
-                atts.value(QLatin1String("variable")).toString(),
+                atts.value(QLatin1StringView("variable")).toString(),
                 ExternalSourceLoader::VariableValue(
-                        m_currentQueryPath.resolved(atts.value(QLatin1String("name"))
+                        m_currentQueryPath.resolved(atts.value(QLatin1StringView("name"))
                                                     + m_xqueryFileExtension),
                         ExternalSourceLoader::Query));
     }
@@ -210,7 +210,7 @@ bool TestSuiteHandler::endElement(const QStringRef &namespaceURI,
 
     if(m_isExcluding)
     {
-        if(localName == QLatin1String("test-group"))
+        if(localName == QLatin1StringView("test-group"))
         {
             const QString myName(m_testGroupName.pop());
 
@@ -225,7 +225,7 @@ bool TestSuiteHandler::endElement(const QStringRef &namespaceURI,
     }
 
     /* The elements are handled roughly in the order of highest occurrence in the catalog file. */
-    if(localName == QLatin1String("description"))
+    if(localName == QLatin1StringView("description"))
     {
         if(m_tc)
         {
@@ -236,7 +236,7 @@ bool TestSuiteHandler::endElement(const QStringRef &namespaceURI,
         else
             m_container->setDescription(m_ch.simplified());
     }
-    else if(localName == QLatin1String("test-case"))
+    else if(localName == QLatin1StringView("test-case"))
     {
         Q_ASSERT(m_tc->baseLines().count() >= 1);
         Q_ASSERT(m_resourceLoader);
@@ -253,40 +253,40 @@ bool TestSuiteHandler::endElement(const QStringRef &namespaceURI,
 
         m_tc = 0;
     }
-    else if(localName == QLatin1String("output-file"))
+    else if(localName == QLatin1StringView("output-file"))
     {
         m_baseLine->setDetails(m_currentBaselinePath.resolved(m_ch).toString());
         m_tc->addBaseLine(m_baseLine);
     }
-    else if(localName == QLatin1String("input-file"))
+    else if(localName == QLatin1StringView("input-file"))
     {
         m_tcSourceInputs.insert(m_currentInputVariable, ExternalSourceLoader::VariableValue(m_sourceMap.value(m_ch),
                                                                                             ExternalSourceLoader::Document));
     }
-    else if(localName == QLatin1String("expected-error"))
+    else if(localName == QLatin1StringView("expected-error"))
     {
         m_baseLine->setDetails(m_ch);
         m_tc->addBaseLine(m_baseLine);
     }
-    else if(localName == QLatin1String("title"))
+    else if(localName == QLatin1StringView("title"))
     {
         /* A bit dangerous, the only element with name title in the vocabulary
          * is the child of GroupInfo */
         m_container->setTitle(m_ch.simplified());
     }
-    else if(localName == QLatin1String("test-group"))
+    else if(localName == QLatin1StringView("test-group"))
     {
         m_testGroupName.pop();
         Q_ASSERT(m_container);
         m_container = static_cast<TestContainer *>(m_container->parent());
         Q_ASSERT(m_container);
     }
-    else if(localName == QLatin1String("test-suite"))
+    else if(localName == QLatin1StringView("test-suite"))
     {
         Q_ASSERT(m_container);
         m_container = static_cast<TestContainer *>(m_container->parent());
     }
-    else if(localName == QLatin1String("sources"))
+    else if(localName == QLatin1StringView("sources"))
     {
         const QPatternist::NetworkAccessDelegator::Ptr networkDelegator(new QPatternist::NetworkAccessDelegator(networkAccessManager(), networkAccessManager()));
 
@@ -299,12 +299,12 @@ bool TestSuiteHandler::endElement(const QStringRef &namespaceURI,
         for(; it != end; ++it)
             m_resourceLoader->announceDocument(it.value(), QPatternist::ResourceLoader::WillUse);
     }
-    else if(localName == QLatin1String("input-URI"))
+    else if(localName == QLatin1StringView("input-URI"))
     {
         m_tcSourceInputs.insert(m_currentInputVariable, ExternalSourceLoader::VariableValue(m_sourceMap.value(m_ch),
                                                                                             ExternalSourceLoader::URI));
     }
-    else if(localName == QLatin1String("contextItem"))
+    else if(localName == QLatin1StringView("contextItem"))
         m_contextItemSource = m_ch;
 
     return true;

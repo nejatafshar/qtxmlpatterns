@@ -50,10 +50,10 @@
 #ifndef Patternist_Item_H
 #define Patternist_Item_H
 
-#include <QtXmlPatterns/private/qcppcastinghelper_p.h>
-#include <QtXmlPatterns/private/qitemtype_p.h>
-#include <QtXmlPatterns/private/qsingletoniterator_p.h>
-#include <QtXmlPatterns/QAbstractXmlNodeModel>
+#include <qcppcastinghelper_p.h>
+#include <qitemtype_p.h>
+#include <qsingletoniterator_p.h>
+#include <qabstractxmlnodemodel.h>
 
 #include <QUrl>
 #include <QVariant>

@@ -43,11 +43,11 @@ QString TestResult::displayName(const TestResult::Status stat)
     switch(stat)
     {
         case Pass:
-            return QLatin1String("pass");
+            return QLatin1StringView("pass");
         case Fail:
-            return QLatin1String("fail");
+            return QLatin1StringView("fail");
         case NotTested:
-            return QLatin1String("not tested");
+            return QLatin1StringView("not tested");
         case Unknown:
             Q_ASSERT(false);
     }
@@ -58,11 +58,11 @@ QString TestResult::displayName(const TestResult::Status stat)
 
 TestResult::Status TestResult::statusFromString(const QString &string)
 {
-    if(string == QLatin1String("pass"))
+    if(string == QLatin1StringView("pass"))
         return Pass;
-    else if(string == QLatin1String("fail"))
+    else if(string == QLatin1StringView("fail"))
         return Fail;
-    else if(string == QLatin1String("not tested"))
+    else if(string == QLatin1StringView("not tested"))
         return NotTested;
     else
     {
@@ -95,14 +95,14 @@ TestResult::~TestResult()
 void TestResult::toXML(XMLWriter &receiver) const
 {
     QXmlStreamAttributes atts;
-    atts.append(QLatin1String("name"), m_testName);
-    atts.append(QLatin1String("result"), displayName(m_status));
+    atts.append(QLatin1StringView("name"), m_testName);
+    atts.append(QLatin1StringView("result"), displayName(m_status));
 
     if(!m_comment.isEmpty())
-        atts.append(QLatin1String("comment"), m_comment);
+        atts.append(QLatin1StringView("comment"), m_comment);
 
-    receiver.startElement(QLatin1String("test-case"), atts);
-    receiver.endElement(QLatin1String("test-case"));
+    receiver.startElement(QLatin1StringView("test-case"), atts);
+    receiver.endElement(QLatin1StringView("test-case"));
 }
 
 void TestResult::setComment(const QString &comm)

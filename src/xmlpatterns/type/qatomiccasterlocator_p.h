@@ -50,7 +50,7 @@
 #ifndef Patternist_AtomicCasterLocator_H
 #define Patternist_AtomicCasterLocator_H
 
-#include <private/qatomictypedispatch_p.h>
+#include <qatomictypedispatch_p.h>
 
 QT_BEGIN_NAMESPACE
 

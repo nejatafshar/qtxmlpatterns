@@ -50,7 +50,7 @@
 #ifndef Patternist_SimpleContentConstructor_H
 #define Patternist_SimpleContentConstructor_H
 
-#include <private/qsinglecontainer_p.h>
+#include <qsinglecontainer_p.h>
 
 QT_BEGIN_NAMESPACE
 

@@ -116,13 +116,13 @@ QString CombineNodes::displayName(const Operator op)
     switch(op)
     {
         case Intersect:
-            return QLatin1String("intersect");
+            return QLatin1StringView("intersect");
         case Except:
-            return QLatin1String("except");
+            return QLatin1StringView("except");
         default:
         {
             Q_ASSERT(op == Union);
-            return QLatin1String("union");
+            return QLatin1StringView("union");
         }
     }
 }

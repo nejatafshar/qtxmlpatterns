@@ -50,7 +50,7 @@
 #ifndef Patternist_DocumentProjector_H
 #define Patternist_DocumentProjector_H
 
-#include <private/qprojectedexpression_p.h>
+#include <qprojectedexpression_p.h>
 #include "qabstractxmlreceiver.h"
 
 QT_BEGIN_NAMESPACE

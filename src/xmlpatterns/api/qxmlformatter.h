@@ -40,7 +40,7 @@
 #ifndef QXMLFORMATTER_H
 #define QXMLFORMATTER_H
 
-#include <QtXmlPatterns/QXmlSerializer>
+#include <qxmlserializer.h>
 
 QT_BEGIN_NAMESPACE
 

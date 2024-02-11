@@ -76,14 +76,14 @@ AtomicValue::Ptr AbstractDuration::create(const CaptureTable &captTable,
     SecondCountProperty secCount = 0;
 
     Q_ASSERT(isPositive);
-    QRegExp myExp(captTable.regExp); /* Copy, in order to stay thread safe. */
+    QRegularExpression myExp(captTable.regExp); /* Copy, in order to stay thread safe. */
 
-    if(!myExp.exactMatch(lexical))
+    if(!myExp.match(lexical).hasMatch())
     {
         error(QString());
     }
 
-    const QStringList capts(myExp.capturedTexts());
+    const QStringList capts(myExp.match(lexical).capturedTexts());
 
 
     if(days)

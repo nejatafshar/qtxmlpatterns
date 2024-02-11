@@ -50,7 +50,7 @@
 #ifndef Patternist_ReceiverDynamicContext_H
 #define Patternist_ReceiverDynamicContext_H
 
-#include <private/qdelegatingdynamiccontext_p.h>
+#include <qdelegatingdynamiccontext_p.h>
 
 QT_BEGIN_NAMESPACE
 

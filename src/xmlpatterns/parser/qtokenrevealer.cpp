@@ -72,7 +72,7 @@ Tokenizer::Token TokenRevealer::nextToken(XPATHLTYPE *const sourceLocator)
         case T_CURLY_LBRACE:
         {
             m_result += QLatin1Char('\n') + m_indentationString + asString + QLatin1Char('\n');
-            m_indentationString.append(QLatin1String("    "));
+            m_indentationString.append(QLatin1StringView("    "));
             m_result += m_indentationString;
             break;
         }

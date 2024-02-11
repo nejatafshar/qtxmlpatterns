@@ -50,7 +50,7 @@
 #ifndef Patternist_Duration_H
 #define Patternist_Duration_H
 
-#include <private/qabstractduration_p.h>
+#include <qabstractduration_p.h>
 
 QT_BEGIN_NAMESPACE
 

@@ -54,9 +54,9 @@ static void clearTabWidget(QTabWidget *const widget)
     Q_ASSERT(widget->count() == 0);
 }
 
-TestCaseView::TestCaseView(QWidget *const p) : QDockWidget(QLatin1String("Test Case View"), p)
+TestCaseView::TestCaseView(QWidget *const p) : QDockWidget(QLatin1StringView("Test Case View"), p)
 {
-    setObjectName(QLatin1String("TestCaseView"));
+    setObjectName(QLatin1StringView("TestCaseView"));
     setWidget(new QWidget());
     setupUi(widget());
     displayNone();
@@ -78,11 +78,11 @@ void TestCaseView::displayTestCase(TestCase *const tc)
 
     name->setText(tc->title());
     description->setText(tc->description());
-    isXPath->setText(tc->isXPath() ? QLatin1String("yes") : QLatin1String("no"));
+    isXPath->setText(tc->isXPath() ? QLatin1StringView("yes") : QLatin1StringView("no"));
     author->setText(tc->creator());
     type->setText(TestCase::displayName(tc->scenario()));
     if(tc->lastModified().isNull())
-        lastModified->setText(QLatin1String("Not specified."));
+        lastModified->setText(QLatin1StringView("Not specified."));
     else
         lastModified->setText(tc->lastModified().toString());
 
@@ -95,7 +95,7 @@ void TestCaseView::displayTestCase(TestCase *const tc)
     const QString sourceCode(tc->sourceCode(ok));
 
     if(sourceCode.isEmpty())
-        sourceEdit->setPlainText(QLatin1String("No source code available."));
+        sourceEdit->setPlainText(QLatin1StringView("No source code available."));
     else
         sourceEdit->setPlainText(sourceCode);
 
@@ -130,7 +130,7 @@ void TestCaseView::displayBaseLines(const TestCase *const tc)
         {
             case TestBaseLine::ExpectedError:
             {
-                title += (QLatin1String(": ") + details);
+                title += (QLatin1StringView(": ") + details);
                 /* Fallthrough. */
             }
             case TestBaseLine::Ignore:
@@ -149,15 +149,15 @@ void TestCaseView::displayBaseLines(const TestCase *const tc)
     }
 
     int tabIndex = baselinesTabs->count(); /* The tab we're about to add. */
-    baselinesTabs->addTab(new QWidget(), QLatin1String("AST Baseline"));
+    baselinesTabs->addTab(new QWidget(), QLatin1StringView("AST Baseline"));
     baselinesTabs->setTabToolTip(tabIndex,
-                                 QLatin1String("Expected AST baselines are not yet implemented."));
+                                 QLatin1StringView("Expected AST baselines are not yet implemented."));
     baselinesTabs->setTabEnabled(tabIndex, false);
 
     ++tabIndex; /* Again, the tab we're about to add. */
-    baselinesTabs->addTab(new QWidget(), QLatin1String("Message Baseline"));
+    baselinesTabs->addTab(new QWidget(), QLatin1StringView("Message Baseline"));
     baselinesTabs->setTabToolTip(tabIndex,
-                                 QLatin1String("Expected Message baselines are not yet implemented."));
+                                 QLatin1StringView("Expected Message baselines are not yet implemented."));
     baselinesTabs->setTabEnabled(tabIndex, false);
 
     baselinesTabs->setCurrentIndex(0);

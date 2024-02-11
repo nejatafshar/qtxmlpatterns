@@ -64,13 +64,13 @@ bool AnyType::isAbstract() const
 
 QXmlName AnyType::name(const NamePool::Ptr &np) const
 {
-    return np->allocateQName(StandardNamespaces::xs, QLatin1String("anyType"));
+    return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("anyType"));
 }
 
 QString AnyType::displayName(const NamePool::Ptr &) const
 {
     /* A bit faster than calling name()->displayName() */
-    return QLatin1String("xs:anyType");
+    return QLatin1StringView("xs:anyType");
 }
 
 SchemaType::Ptr AnyType::wxsSuperType() const

@@ -159,11 +159,11 @@ Item::Iterator::Ptr VariableLoader::evaluateSequence(const QXmlName name,
 
     const QVariant v(qvariant_cast<QXmlItem>(variant).toAtomicValue());
 
-    switch(v.type())
+    switch(v.typeId())
     {
-        case QVariant::StringList:
+        case QMetaType::QStringList:
             return Item::Iterator::Ptr(new StringListIterator(v.toStringList()));
-        case QVariant::List:
+        case QMetaType::QVariantList:
             return Item::Iterator::Ptr(new VariantListIterator(v.toList()));
         default:
             return makeSingletonIterator(itemForName(name));
@@ -175,7 +175,7 @@ Item VariableLoader::itemForName(const QXmlName &name) const
     const QVariant &variant = m_bindingHash.value(name);
 
     if(variant.userType() == qMetaTypeId<QIODevice *>())
-        return Item(AnyURI::fromValue(QLatin1String("tag:trolltech.com,2007:QtXmlPatterns:QIODeviceVariable:") + m_namePool->stringForLocalName(name.localName())));
+        return Item(AnyURI::fromValue(QLatin1StringView("tag:trolltech.com,2007:QtXmlPatterns:QIODeviceVariable:") + m_namePool->stringForLocalName(name.localName())));
 
     const QXmlItem item(qvariant_cast<QXmlItem>(variant));
 
@@ -188,7 +188,7 @@ Item VariableLoader::itemForName(const QXmlName &name) const
          * be a QIODevice, since Patternist guarantees to only ask for variables that announceExternalVariable()
          * has accepted. */
         if(atomicValue.isNull())
-            return Item(AnyURI::fromValue(QLatin1String("tag:trolltech.com,2007:QtXmlPatterns:QIODeviceVariable:") + m_namePool->stringForLocalName(name.localName())));
+            return Item(AnyURI::fromValue(QLatin1StringView("tag:trolltech.com,2007:QtXmlPatterns:QIODeviceVariable:") + m_namePool->stringForLocalName(name.localName())));
         else
             return AtomicValue::toXDM(atomicValue);
     }
@@ -217,7 +217,7 @@ bool VariableLoader::isSameType(const QVariant &v1,
         return false;
     }
     else if(i2.isAtomicValue())
-        return i1.toAtomicValue().type() == i2.toAtomicValue().type();
+        return i1.toAtomicValue().typeId() == i2.toAtomicValue().typeId();
     else
     {
         /* One is an atomic, the other is a node or they are null. */

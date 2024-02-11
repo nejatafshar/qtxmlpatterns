@@ -53,10 +53,10 @@
 #include <QUrl>
 #include <QtDebug>
 
-#include <private/qatomicstring_p.h>
-#include <private/qbuiltintypes_p.h>
-#include <private/qpatternistlocale_p.h>
-#include <private/qreportcontext_p.h>
+#include <qatomicstring_p.h>
+#include <qbuiltintypes_p.h>
+#include <qpatternistlocale_p.h>
+#include <qreportcontext_p.h>
 
 QT_BEGIN_NAMESPACE
 

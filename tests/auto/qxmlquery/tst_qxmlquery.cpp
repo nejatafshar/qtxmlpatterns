@@ -255,9 +255,9 @@ void tst_QXmlQuery::checkBaseURI(const QUrl &baseURI, const QString &candidate)
 QStringList tst_QXmlQuery::queries()
 {
     QDir dir;
-    dir.cd(inputFile(m_xmlPatternsDir + QLatin1String("/queries/")));
+    dir.cd(inputFile(m_xmlPatternsDir + QLatin1StringView("/queries/")));
 
-    return dir.entryList(QStringList(QLatin1String("*.xq")));
+    return dir.entryList(QStringList(QLatin1StringView("*.xq")));
 }
 
 void tst_QXmlQuery::defaultConstructor() const
@@ -325,9 +325,9 @@ void tst_QXmlQuery::copyConstructor() const
         query1.setUriResolver(&resolver);
         query1.setNetworkAccessManager(&networkManager);
 
-        const QXmlName name(np1, QLatin1String("localName"),
-                                 QLatin1String("http://example.com/"),
-                                 QLatin1String("prefix"));
+        const QXmlName name(np1, QLatin1StringView("localName"),
+                                 QLatin1StringView("http://example.com/"),
+                                 QLatin1StringView("prefix"));
         query1.setInitialTemplateName(name);
 
         const QXmlQuery query2(query1);
@@ -348,7 +348,7 @@ void tst_QXmlQuery::copyConstructor() const
         QXmlQuery original;
 
         original.setFocus(QXmlItem(4));
-        original.setQuery(QLatin1String("."));
+        original.setQuery(QLatin1StringView("."));
         QVERIFY(original.isValid());
 
         const QXmlQuery copy(original);
@@ -372,9 +372,9 @@ void tst_QXmlQuery::constructorQXmlNamePool() const
     QXmlNamePool np;
 
     QXmlQuery query(np);
-    const QXmlName name(np, QLatin1String("localName"),
-                            QLatin1String("http://example.com/"),
-                            QLatin1String("prefix"));
+    const QXmlName name(np, QLatin1StringView("localName"),
+                            QLatin1StringView("http://example.com/"),
+                            QLatin1StringView("prefix"));
 
     QXmlNamePool np2(query.namePool());
     QCOMPARE(name.namespaceUri(np2), QString::fromLatin1("http://example.com/"));
@@ -393,7 +393,7 @@ void tst_QXmlQuery::constructorQXmlNamePool() const
 void tst_QXmlQuery::constructorQXmlNamePoolQueryLanguage() const
 {
     QXmlNamePool np;
-    QXmlName name(np, QLatin1String("arbitraryName"));
+    QXmlName name(np, QLatin1StringView("arbitraryName"));
 
     QXmlQuery query(QXmlQuery::XQuery10, np);
 
@@ -490,14 +490,14 @@ void tst_QXmlQuery::assignmentOperator() const
         QVERIFY(documentDevice.open(QIODevice::ReadOnly));
 
         QXmlQuery original(namePool);
-        QXmlName testName(namePool, QLatin1String("somethingToCheck"));
+        QXmlName testName(namePool, QLatin1StringView("somethingToCheck"));
 
         original.setMessageHandler(&silencer);
-        original.bindVariable(QLatin1String("var"), QXmlItem(1));
-        original.bindVariable(QLatin1String("device"), &documentDevice);
+        original.bindVariable(QLatin1StringView("var"), QXmlItem(1));
+        original.bindVariable(QLatin1StringView("device"), &documentDevice);
         original.setUriResolver(&returnURI);
         original.setFocus(QXmlItem(3));
-        original.setQuery(QLatin1String("$var, 1 + 1, ., string(doc($device))"));
+        original.setQuery(QLatin1StringView("$var, 1 + 1, ., string(doc($device))"));
 
         /* Do a copy, and check that everything followed on into the copy. No modification
          * of the copy. */
@@ -537,11 +537,11 @@ void tst_QXmlQuery::assignmentOperator() const
 
                 copy.setMessageHandler(&secondSilencer);
                 /* Here we rebind variable values. */
-                copy.bindVariable(QLatin1String("var"), QXmlItem(4));
-                copy.bindVariable(QLatin1String("device"), &documentDeviceCopy);
+                copy.bindVariable(QLatin1StringView("var"), QXmlItem(4));
+                copy.bindVariable(QLatin1StringView("device"), &documentDeviceCopy);
                 copy.setUriResolver(&secondUriResolver);
                 copy.setFocus(QXmlItem(6));
-                copy.setQuery(QLatin1String("$var, 1 + 1, ., string(doc($device))"));
+                copy.setQuery(QLatin1StringView("$var, 1 + 1, ., string(doc($device))"));
 
                 /* Check that the copy picked up the new things. */
                 QVERIFY(copy.isValid());
@@ -598,7 +598,7 @@ void tst_QXmlQuery::sequentialExecution() const
     QBuffer outBuffer(&outArray);
     outBuffer.open(QIODevice::WriteOnly);
 
-    const QString queryString(QLatin1String("doc($inputDocument)"));
+    const QString queryString(QLatin1StringView("doc($inputDocument)"));
     query.setQuery(queryString);
 
     QXmlFormatter formatter(query, &outBuffer);
@@ -623,34 +623,34 @@ void tst_QXmlQuery::bindVariableQString() const
     {
         QXmlQuery query;
         /* Bind with a null QXmlItem. */
-        query.bindVariable(QLatin1String("name"), QXmlItem());
+        query.bindVariable(QLatin1StringView("name"), QXmlItem());
     }
 
     {
         QXmlQuery query;
         /* Bind with a null QVariant. */
-        query.bindVariable(QLatin1String("name"), QXmlItem(QVariant()));
+        query.bindVariable(QLatin1StringView("name"), QXmlItem(QVariant()));
     }
 
     {
         QXmlQuery query;
         /* Bind with a null QXmlNodeModelIndex. */
-        query.bindVariable(QLatin1String("name"), QXmlItem(QXmlNodeModelIndex()));
+        query.bindVariable(QLatin1StringView("name"), QXmlItem(QXmlNodeModelIndex()));
     }
 }
 
 void tst_QXmlQuery::bindVariableQStringNoExternalDeclaration() const
 {
     QXmlQuery query;
-    query.bindVariable(QLatin1String("foo"), QXmlItem(QLatin1String("Variable Value")));
-    query.setQuery(QLatin1String("$foo"));
+    query.bindVariable(QLatin1StringView("foo"), QXmlItem(QLatin1StringView("Variable Value")));
+    query.setQuery(QLatin1StringView("$foo"));
 
     QVERIFY(query.isValid());
 
     QStringList result;
     QVERIFY(query.evaluateTo(&result));
 
-    QCOMPARE(result, QStringList() << QLatin1String("Variable Value"));
+    QCOMPARE(result, QStringList() << QLatin1StringView("Variable Value"));
 }
 
 void tst_QXmlQuery::bindVariableQXmlName() const
@@ -676,7 +676,7 @@ void tst_QXmlQuery::bindVariableQStringQIODeviceWithByteArray() const
 
     query.bindVariable("doc", &device);
 
-    query.setQuery(QLatin1String("declare variable $doc external; $doc"));
+    query.setQuery(QLatin1StringView("declare variable $doc external; $doc"));
 
     QVERIFY(query.isValid());
 
@@ -690,7 +690,7 @@ void tst_QXmlQuery::bindVariableQStringQIODeviceWithByteArray() const
 
     /* Now, actually load the document. We use the same QXmlQuery just to stress recompilation a bit. */
     {
-        query.setQuery(QLatin1String("declare variable $doc external; doc($doc)"));
+        query.setQuery(QLatin1StringView("declare variable $doc external; doc($doc)"));
 
         QByteArray out;
         QBuffer outBuffer(&out);
@@ -715,7 +715,7 @@ void tst_QXmlQuery::bindVariableQStringQIODeviceWithString() const
 
     query.bindVariable("doc", &inDevice);
 
-    query.setQuery(QLatin1String("declare variable $doc external; doc($doc)"));
+    query.setQuery(QLatin1StringView("declare variable $doc external; doc($doc)"));
 
     QByteArray out;
     QBuffer outBuffer(&out);
@@ -736,7 +736,7 @@ void tst_QXmlQuery::bindVariableQStringQIODeviceWithQFile() const
 
     query.bindVariable("doc", &inDevice);
 
-    query.setQuery(QLatin1String("declare variable $doc external; doc($doc)"));
+    query.setQuery(QLatin1StringView("declare variable $doc external; doc($doc)"));
 
     QByteArray out;
     QBuffer outBuffer(&out);
@@ -762,7 +762,7 @@ void tst_QXmlQuery::bindVariableQStringQIODevice() const
             QVERIFY(inDevice1.open(QIODevice::ReadOnly));
 
             query.bindVariable("in", &inDevice1);
-            query.setQuery(QLatin1String("doc($in)"));
+            query.setQuery(QLatin1StringView("doc($in)"));
 
             QByteArray out1;
             QBuffer outDevice1(&out1);
@@ -779,7 +779,7 @@ void tst_QXmlQuery::bindVariableQStringQIODevice() const
             QBuffer inDevice2(&in2);
             QVERIFY(inDevice2.open(QIODevice::ReadOnly));
 
-            query.bindVariable(QLatin1String("in"), &inDevice2);
+            query.bindVariable(QLatin1StringView("in"), &inDevice2);
 
             QByteArray out2;
             QBuffer outDevice2(&out2);
@@ -806,7 +806,7 @@ void tst_QXmlQuery::bindVariableQXmlNameQIODeviceTriggerWarnings() const
 
     QBuffer buffer;
     QTest::ignoreMessage(QtWarningMsg, "A null, or readable QIODevice must be passed.");
-    query.bindVariable(QXmlName(np, QLatin1String("foo")), &buffer);
+    query.bindVariable(QXmlName(np, QLatin1StringView("foo")), &buffer);
 
     QTest::ignoreMessage(QtWarningMsg, "The variable name cannot be null.");
     query.bindVariable(QXmlName(), 0);
@@ -815,36 +815,36 @@ void tst_QXmlQuery::bindVariableQXmlNameQIODeviceTriggerWarnings() const
 void tst_QXmlQuery::bindVariableXSLTSuccess() const
 {
     QXmlQuery stylesheet(QXmlQuery::XSLT20);
-    stylesheet.setInitialTemplateName(QLatin1String("main"));
+    stylesheet.setInitialTemplateName(QLatin1StringView("main"));
 
-    stylesheet.bindVariable(QLatin1String("variableNoSelectNoBodyBoundWithBindVariable"),
-                                          QVariant(QLatin1String("MUST NOT SHOW 1")));
+    stylesheet.bindVariable(QLatin1StringView("variableNoSelectNoBodyBoundWithBindVariable"),
+                                          QVariant(QLatin1StringView("MUST NOT SHOW 1")));
 
-    stylesheet.bindVariable(QLatin1String("variableSelectBoundWithBindVariable"),
-                                          QVariant(QLatin1String("MUST NOT SHOW 2")));
+    stylesheet.bindVariable(QLatin1StringView("variableSelectBoundWithBindVariable"),
+                                          QVariant(QLatin1StringView("MUST NOT SHOW 2")));
 
-    stylesheet.bindVariable(QLatin1String("variableSelectWithTypeIntBoundWithBindVariable"),
-                                          QVariant(QLatin1String("MUST NOT SHOW 3")));
+    stylesheet.bindVariable(QLatin1StringView("variableSelectWithTypeIntBoundWithBindVariable"),
+                                          QVariant(QLatin1StringView("MUST NOT SHOW 3")));
 
-    stylesheet.bindVariable(QLatin1String("paramNoSelectNoBodyBoundWithBindVariable"),
-                                          QVariant(QLatin1String("param1")));
+    stylesheet.bindVariable(QLatin1StringView("paramNoSelectNoBodyBoundWithBindVariable"),
+                                          QVariant(QLatin1StringView("param1")));
 
-    stylesheet.bindVariable(QLatin1String("paramNoSelectNoBodyBoundWithBindVariableRequired"),
-                                          QVariant(QLatin1String("param1")));
+    stylesheet.bindVariable(QLatin1StringView("paramNoSelectNoBodyBoundWithBindVariableRequired"),
+                                          QVariant(QLatin1StringView("param1")));
 
-    stylesheet.bindVariable(QLatin1String("paramSelectBoundWithBindVariable"),
-                                          QVariant(QLatin1String("param2")));
+    stylesheet.bindVariable(QLatin1StringView("paramSelectBoundWithBindVariable"),
+                                          QVariant(QLatin1StringView("param2")));
 
-    stylesheet.bindVariable(QLatin1String("paramSelectBoundWithBindVariableRequired"),
-                                          QVariant(QLatin1String("param3")));
+    stylesheet.bindVariable(QLatin1StringView("paramSelectBoundWithBindVariableRequired"),
+                                          QVariant(QLatin1StringView("param3")));
 
-    stylesheet.bindVariable(QLatin1String("paramSelectWithTypeIntBoundWithBindVariable"),
+    stylesheet.bindVariable(QLatin1StringView("paramSelectWithTypeIntBoundWithBindVariable"),
                                           QVariant(4));
 
-    stylesheet.bindVariable(QLatin1String("paramSelectWithTypeIntBoundWithBindVariableRequired"),
-                                          QVariant(QLatin1String("param5")));
+    stylesheet.bindVariable(QLatin1StringView("paramSelectWithTypeIntBoundWithBindVariableRequired"),
+                                          QVariant(QLatin1StringView("param5")));
 
-    stylesheet.setQuery(QUrl(inputFileAsURI(m_xmlPatternsDir + QLatin1String("/stylesheets/parameters.xsl"))));
+    stylesheet.setQuery(QUrl(inputFileAsURI(m_xmlPatternsDir + QLatin1StringView("/stylesheets/parameters.xsl"))));
 
     QVERIFY(stylesheet.isValid());
 
@@ -926,11 +926,11 @@ void tst_QXmlQuery::evaluateToReceiver()
     QFETCH(QString, inputQuery);
 
     /* This query prints a URI specific to the local system. */
-    if(inputQuery == QLatin1String("static-base-uri.xq"))
+    if(inputQuery == QLatin1StringView("static-base-uri.xq"))
         return;
 
     ++m_pushTestsCount;
-    const QString queryURI(inputFile(m_xmlPatternsDir + QLatin1String("/queries/") + inputQuery));
+    const QString queryURI(inputFile(m_xmlPatternsDir + QLatin1StringView("/queries/") + inputQuery));
     QFile queryFile(queryURI);
 
     QVERIFY(queryFile.exists());
@@ -981,7 +981,7 @@ void tst_QXmlQuery::evaluateToReceiver_data() const
     for (QString const& query : queries_) {
         /* This outputs a URI specific to the environment, so we can't use it for this
          * particular test. */
-        if (query != QLatin1String("staticBaseURI.xq"))
+        if (query != QLatin1StringView("staticBaseURI.xq"))
             QTest::newRow(query.toUtf8().constData()) << query;
     }
 }
@@ -1008,7 +1008,7 @@ void tst_QXmlQuery::evaluateToReceiverOnInvalidQuery() const
 
         QXmlQuery query;
         query.setMessageHandler(&silencer);
-        query.setQuery(QLatin1String("1 + "));
+        query.setQuery(QLatin1StringView("1 + "));
         QXmlSerializer serializer(query, &buffer);
         QVERIFY(!query.evaluateTo(&serializer));
     }
@@ -1022,7 +1022,7 @@ void tst_QXmlQuery::evaluateToReceiverOnInvalidQuery() const
 
         QXmlQuery query;
         query.setMessageHandler(&silencer);
-        query.setQuery(QLatin1String("error()"));
+        query.setQuery(QLatin1StringView("error()"));
         QXmlSerializer serializer(query, &buffer);
         QVERIFY(!query.evaluateTo(&serializer));
     }
@@ -1043,7 +1043,7 @@ void tst_QXmlQuery::evaluateToQStringTriggerError() const
         MessageSilencer silencer;
         query.setMessageHandler(&silencer);
 
-        query.setQuery(QLatin1String("1 + "));
+        query.setQuery(QLatin1StringView("1 + "));
 
         QString out;
         QVERIFY(!query.evaluateTo(&out));
@@ -1055,7 +1055,7 @@ void tst_QXmlQuery::evaluateToQStringTriggerError() const
         MessageSilencer silencer;
         query.setMessageHandler(&silencer);
 
-        query.setQuery(QLatin1String("error()"));
+        query.setQuery(QLatin1StringView("error()"));
 
         QString out;
         QVERIFY(!query.evaluateTo(&out));
@@ -1134,7 +1134,7 @@ void tst_QXmlQuery::evaluateToQXmlResultItemsErrorAtEnd() const
     QXmlQuery query;
     MessageSilencer silencer;
     query.setMessageHandler(&silencer);
-    query.setQuery(QLatin1String("1 to 100, fn:error()"));
+    query.setQuery(QLatin1StringView("1 to 100, fn:error()"));
     QVERIFY(query.isValid());
 
     QXmlResultItems it;
@@ -1160,7 +1160,7 @@ void tst_QXmlQuery::checkGeneratedBaselines() const
 
 void tst_QXmlQuery::basicXQueryToQtTypeCheck() const
 {
-    QFile queryFile(m_xmlPatternsDir + QLatin1String("/queries/") + QString::fromLatin1("allAtomics.xq"));
+    QFile queryFile(m_xmlPatternsDir + QLatin1StringView("/queries/") + QString::fromLatin1("allAtomics.xq"));
     QVERIFY(queryFile.open(QIODevice::ReadOnly));
 
     QXmlQuery query;
@@ -1215,9 +1215,9 @@ void tst_QXmlQuery::basicXQueryToQtTypeCheck() const
     expectedValues.append(QVariant(QByteArray::fromHex(QByteArray("FFFF"))));                   /* xs:hexBinary("FFFF"), */
     expectedValues.append(QVariant(QString::fromLatin1("http://example.com/")));                /* xs:anyURI("http://example.com/"), */
     QXmlNamePool np(query.namePool());
-    expectedValues.append(QVariant::fromValue(QXmlName(np, QLatin1String("localName"),
-                                                           QLatin1String("http://example.com/2"),
-                                                           QLatin1String("prefix"))));
+    expectedValues.append(QVariant::fromValue(QXmlName(np, QLatin1StringView("localName"),
+                                                           QLatin1StringView("http://example.com/2"),
+                                                           QLatin1StringView("prefix"))));
 
     expectedValues.append(QVariant(QString::fromLatin1("An xs:string")));
     expectedValues.append(QVariant(QString::fromLatin1("normalizedString")));
@@ -1276,7 +1276,7 @@ void tst_QXmlQuery::basicXQueryToQtTypeCheck() const
  */
 void tst_QXmlQuery::basicQtToXQueryTypeCheck() const
 {
-    QFile queryFile(m_xmlPatternsDir + QLatin1String("/queries/") + QLatin1String("allAtomicsExternally.xq"));
+    QFile queryFile(m_xmlPatternsDir + QLatin1StringView("/queries/") + QLatin1StringView("allAtomicsExternally.xq"));
     QVERIFY(queryFile.exists());
     QVERIFY(queryFile.open(QIODevice::ReadOnly));
 
@@ -1286,40 +1286,40 @@ void tst_QXmlQuery::basicQtToXQueryTypeCheck() const
 
     QXmlNamePool np(query.namePool());
 
-    const QXmlName name(np, QLatin1String("localname"),
-                            QLatin1String("http://example.com"),
-                            QLatin1String("prefix"));
+    const QXmlName name(np, QLatin1StringView("localname"),
+                            QLatin1StringView("http://example.com"),
+                            QLatin1StringView("prefix"));
 
-    query.bindVariable(QLatin1String("fromQUrl"), QXmlItem(QUrl(QString::fromLatin1("http://example.com/"))));
-    query.bindVariable(QLatin1String("fromQByteArray"), QXmlItem(QByteArray("AAAA")));
-    query.bindVariable(QLatin1String("fromBool"), QXmlItem(bool(true)));
-    query.bindVariable(QLatin1String("fromQDate"), QXmlItem(QDate(2000, 10, 11)));
+    query.bindVariable(QLatin1StringView("fromQUrl"), QXmlItem(QUrl(QString::fromLatin1("http://example.com/"))));
+    query.bindVariable(QLatin1StringView("fromQByteArray"), QXmlItem(QByteArray("AAAA")));
+    query.bindVariable(QLatin1StringView("fromBool"), QXmlItem(bool(true)));
+    query.bindVariable(QLatin1StringView("fromQDate"), QXmlItem(QDate(2000, 10, 11)));
     // TODO Do with different QDateTime time specs
-    query.bindVariable(QLatin1String("fromQDateTime"), QXmlItem(QDateTime(QDate(2001, 9, 10), QTime(1, 2, 3))));
-    query.bindVariable(QLatin1String("fromDouble"), QXmlItem(double(3)));
-    query.bindVariable(QLatin1String("fromFloat"), QXmlItem(float(4)));
-    query.bindVariable(QLatin1String("integer"), QXmlItem(5));
-    query.bindVariable(QLatin1String("fromQString"), QXmlItem(QString::fromLatin1("A QString")));
-    query.bindVariable(QLatin1String("fromQChar"), QXmlItem(QChar::fromLatin1('C')));
+    query.bindVariable(QLatin1StringView("fromQDateTime"), QXmlItem(QDateTime(QDate(2001, 9, 10), QTime(1, 2, 3))));
+    query.bindVariable(QLatin1StringView("fromDouble"), QXmlItem(double(3)));
+    query.bindVariable(QLatin1StringView("fromFloat"), QXmlItem(float(4)));
+    query.bindVariable(QLatin1StringView("integer"), QXmlItem(5));
+    query.bindVariable(QLatin1StringView("fromQString"), QXmlItem(QString::fromLatin1("A QString")));
+    query.bindVariable(QLatin1StringView("fromQChar"), QXmlItem(QChar::fromLatin1('C')));
 
-    query.bindVariable(QLatin1String("fromIntLiteral"), QXmlItem(QVariant(654)));
+    query.bindVariable(QLatin1StringView("fromIntLiteral"), QXmlItem(QVariant(654)));
 
     {
         QVariant ui(uint(5));
         QCOMPARE(ui.type(), QVariant::UInt);
-        query.bindVariable(QLatin1String("fromUInt"), ui);
+        query.bindVariable(QLatin1StringView("fromUInt"), ui);
     }
 
     {
         QVariant ulnglng(qulonglong(6));
         QCOMPARE(ulnglng.type(), QVariant::ULongLong);
-        query.bindVariable(QLatin1String("fromULongLong"), ulnglng);
+        query.bindVariable(QLatin1StringView("fromULongLong"), ulnglng);
     }
 
     {
         QVariant qlnglng(qlonglong(7));
         QCOMPARE(qlnglng.type(), QVariant::LongLong);
-        query.bindVariable(QLatin1String("fromLongLong"), qlnglng);
+        query.bindVariable(QLatin1StringView("fromLongLong"), qlnglng);
     }
 
     query.setQuery(&queryFile);
@@ -1338,12 +1338,12 @@ void tst_QXmlQuery::basicQtToXQueryTypeCheck() const
 
     if(sizeof(qreal) == sizeof(float)) //ARM casts to Float not to double
         QCOMPARE(item.toAtomicValue().toString(),
-                 QLatin1String("4 true 3 654 7 41414141 C 2000-10-11Z 2001-09-10T01:02:03 "
+                 QLatin1StringView("4 true 3 654 7 41414141 C 2000-10-11Z 2001-09-10T01:02:03 "
                                "A QString http://example.com/ 5 6 true false false true true true true true true true "
                                "true true true"));
     else
         QCOMPARE(item.toAtomicValue().toString(),
-                 QLatin1String("4 true 3 654 7 41414141 C 2000-10-11Z 2001-09-10T01:02:03 "
+                 QLatin1StringView("4 true 3 654 7 41414141 C 2000-10-11Z 2001-09-10T01:02:03 "
                                "A QString http://example.com/ 5 6 true true true true true true true true true true "
                                "true true true"));
 
@@ -1354,12 +1354,12 @@ void tst_QXmlQuery::bindNode() const
     QXmlQuery query;
     TestSimpleNodeModel nodeModel(query.namePool());
 
-    query.bindVariable(QLatin1String("node"), nodeModel.root());
+    query.bindVariable(QLatin1StringView("node"), nodeModel.root());
     QByteArray out;
     QBuffer buff(&out);
     QVERIFY(buff.open(QIODevice::WriteOnly));
 
-    query.setQuery(QLatin1String("declare variable $node external; $node"));
+    query.setQuery(QLatin1StringView("declare variable $node external; $node"));
     QXmlSerializer serializer(query, &buff);
 
     QVERIFY(query.evaluateTo(&serializer));
@@ -1372,7 +1372,7 @@ void tst_QXmlQuery::bindNode() const
 void tst_QXmlQuery::relativeBaseURI() const
 {
     QXmlQuery query;
-    query.setQuery(QLatin1String("fn:static-base-uri()"), QUrl(QLatin1String("a/relative/uri.weirdExtension")));
+    query.setQuery(QLatin1StringView("fn:static-base-uri()"), QUrl(QLatin1StringView("a/relative/uri.weirdExtension")));
     QVERIFY(query.isValid());
 
     QByteArray result;
@@ -1402,7 +1402,7 @@ void tst_QXmlQuery::relativeBaseURI() const
 void tst_QXmlQuery::emptyBaseURI() const
 {
     QXmlQuery query;
-    query.setQuery(QLatin1String("fn:static-base-uri()"), QUrl());
+    query.setQuery(QLatin1StringView("fn:static-base-uri()"), QUrl());
     QVERIFY(query.isValid());
 
     QByteArray result;
@@ -1457,7 +1457,7 @@ void tst_QXmlQuery::bindingMissing() const
     MessageSilencer messageHandler;
     query.setMessageHandler(&messageHandler);
 
-    QFile queryFile(m_xmlPatternsDir + QLatin1String("/queries/") + QString::fromLatin1("externalVariable.xq"));
+    QFile queryFile(m_xmlPatternsDir + QLatin1StringView("/queries/") + QString::fromLatin1("externalVariable.xq"));
     QVERIFY(queryFile.open(QIODevice::ReadOnly));
     query.setQuery(&queryFile);
 
@@ -1472,10 +1472,10 @@ void tst_QXmlQuery::bindDefaultConstructedItem() const
     MessageSilencer messageHandler;
     query.setMessageHandler(&messageHandler);
 
-    QFile queryFile(m_xmlPatternsDir + QLatin1String("/queries/") + QString::fromLatin1("externalVariable.xq"));
+    QFile queryFile(m_xmlPatternsDir + QLatin1StringView("/queries/") + QString::fromLatin1("externalVariable.xq"));
     QVERIFY(queryFile.open(QIODevice::ReadOnly));
     query.setQuery(&queryFile);
-    query.bindVariable(QLatin1String("externalVariable"), item);
+    query.bindVariable(QLatin1StringView("externalVariable"), item);
 
     QVERIFY(!query.isValid());
 }
@@ -1498,9 +1498,9 @@ void tst_QXmlQuery::eraseQXmlItemBinding() const
     MessageSilencer messageHandler;
     query.setMessageHandler(&messageHandler);
 
-    QFile queryFile(m_xmlPatternsDir + QLatin1String("/queries/") + QString::fromLatin1("externalVariable.xq"));
+    QFile queryFile(m_xmlPatternsDir + QLatin1StringView("/queries/") + QString::fromLatin1("externalVariable.xq"));
     QVERIFY(queryFile.open(QIODevice::ReadOnly));
-    query.bindVariable(QLatin1String("externalVariable"), QXmlItem(3));
+    query.bindVariable(QLatin1StringView("externalVariable"), QXmlItem(3));
     query.setQuery(&queryFile);
     QVERIFY(query.isValid());
 
@@ -1513,7 +1513,7 @@ void tst_QXmlQuery::eraseQXmlItemBinding() const
 
     QCOMPARE(result, QByteArray("3 6<e>3</e>false"));
 
-    query.bindVariable(QLatin1String("externalVariable"), QXmlItem());
+    query.bindVariable(QLatin1StringView("externalVariable"), QXmlItem());
     QVERIFY(!query.isValid());
 }
 
@@ -1530,11 +1530,11 @@ void tst_QXmlQuery::eraseDeviceBinding() const
         QBuffer buffer(&doc);
         QVERIFY(buffer.open(QIODevice::ReadOnly));
 
-        query.bindVariable(QLatin1String("in"), &buffer);
-        query.setQuery(QLatin1String("$in"));
+        query.bindVariable(QLatin1StringView("in"), &buffer);
+        query.setQuery(QLatin1StringView("$in"));
         QVERIFY(query.isValid());
 
-        query.bindVariable(QLatin1String("in"), 0);
+        query.bindVariable(QLatin1StringView("in"), 0);
         QVERIFY(!query.isValid());
     }
 
@@ -1542,11 +1542,11 @@ void tst_QXmlQuery::eraseDeviceBinding() const
     {
         QXmlQuery query;
 
-        query.bindVariable(QLatin1String("in"), QXmlItem(5));
-        query.setQuery(QLatin1String("$in"));
+        query.bindVariable(QLatin1StringView("in"), QXmlItem(5));
+        query.setQuery(QLatin1StringView("$in"));
         QVERIFY(query.isValid());
 
-        query.bindVariable(QLatin1String("in"), 0);
+        query.bindVariable(QLatin1StringView("in"), 0);
         QVERIFY(!query.isValid());
     }
 }
@@ -1560,10 +1560,10 @@ void tst_QXmlQuery::rebindVariableSameType() const
     MessageSilencer messageHandler;
     query.setMessageHandler(&messageHandler);
 
-    query.bindVariable(QLatin1String("externalVariable"), QXmlItem(3));
+    query.bindVariable(QLatin1StringView("externalVariable"), QXmlItem(3));
 
     {
-        QFile queryFile(m_xmlPatternsDir + QLatin1String("/queries/") + QString::fromLatin1("externalVariable.xq"));
+        QFile queryFile(m_xmlPatternsDir + QLatin1StringView("/queries/") + QString::fromLatin1("externalVariable.xq"));
         QVERIFY(queryFile.open(QIODevice::ReadOnly));
         query.setQuery(&queryFile);
     }
@@ -1582,7 +1582,7 @@ void tst_QXmlQuery::rebindVariableSameType() const
     }
 
     {
-        query.bindVariable(QLatin1String("externalVariable"), QXmlItem(5));
+        query.bindVariable(QLatin1StringView("externalVariable"), QXmlItem(5));
         QByteArray result;
         QBuffer buffer(&result);
         QVERIFY(buffer.open(QIODevice::ReadWrite));
@@ -1600,11 +1600,11 @@ void tst_QXmlQuery::rebindVariableDifferentType() const
     /* Rebind QXmlItem variable with QXmlItem variable. */
     {
         QXmlQuery query;
-        query.bindVariable(QLatin1String("in"), QXmlItem(3));
-        query.setQuery(QLatin1String("$in"));
+        query.bindVariable(QLatin1StringView("in"), QXmlItem(3));
+        query.setQuery(QLatin1StringView("$in"));
         QVERIFY(query.isValid());
 
-        query.bindVariable(QLatin1String("in"), QXmlItem("A string"));
+        query.bindVariable(QLatin1StringView("in"), QXmlItem("A string"));
         QVERIFY(!query.isValid());
     }
 
@@ -1615,11 +1615,11 @@ void tst_QXmlQuery::rebindVariableDifferentType() const
         buffer.setData(QByteArray("<e/>"));
         QVERIFY(buffer.open(QIODevice::ReadOnly));
 
-        query.bindVariable(QLatin1String("in"), &buffer);
-        query.setQuery(QLatin1String("$in"));
+        query.bindVariable(QLatin1StringView("in"), &buffer);
+        query.setQuery(QLatin1StringView("$in"));
         QVERIFY(query.isValid());
 
-        query.bindVariable(QLatin1String("in"), QXmlItem("A string"));
+        query.bindVariable(QLatin1StringView("in"), QXmlItem("A string"));
         QVERIFY(!query.isValid());
     }
 
@@ -1628,14 +1628,14 @@ void tst_QXmlQuery::rebindVariableDifferentType() const
     {
         QXmlQuery query;
 
-        query.bindVariable(QLatin1String("in"), QXmlItem(QLatin1String("A string")));
-        query.setQuery(QLatin1String("$in"));
+        query.bindVariable(QLatin1StringView("in"), QXmlItem(QLatin1StringView("A string")));
+        query.setQuery(QLatin1StringView("$in"));
         QVERIFY(query.isValid());
 
         QBuffer buffer;
         buffer.setData(QByteArray("<e/>"));
         QVERIFY(buffer.open(QIODevice::ReadOnly));
-        query.bindVariable(QLatin1String("in"), &buffer);
+        query.bindVariable(QLatin1StringView("in"), &buffer);
         QVERIFY(!query.isValid());
     }
 }
@@ -1644,15 +1644,15 @@ void tst_QXmlQuery::rebindVariableWithNullItem() const
 {
     QXmlQuery query;
 
-    query.bindVariable(QLatin1String("name"), QXmlItem(5));
-    query.bindVariable(QLatin1String("name"), QXmlItem());
+    query.bindVariable(QLatin1StringView("name"), QXmlItem(5));
+    query.bindVariable(QLatin1StringView("name"), QXmlItem());
 }
 
 void tst_QXmlQuery::constCorrectness() const
 {
     QXmlResultItems result;
     QXmlQuery tmp;
-    tmp.setQuery(QLatin1String("1")); /* Just so we have a valid query. */
+    tmp.setQuery(QLatin1StringView("1")); /* Just so we have a valid query. */
     const QXmlQuery query(tmp);
 
     /* These functions should be const. */
@@ -1710,9 +1710,9 @@ void tst_QXmlQuery::messageXML() const
     MessageValidator messageValidator;
     query.setMessageHandler(&messageValidator);
 
-    query.setQuery(QLatin1String("1basicSyntaxError"));
+    query.setQuery(QLatin1StringView("1basicSyntaxError"));
 
-    QRegExp removeFilename(QLatin1String("Location: file:.*\\#"));
+    QRegExp removeFilename(QLatin1StringView("Location: file:.*\\#"));
     QVERIFY(removeFilename.isValid());
 
     QVERIFY(messageValidator.success());
@@ -1736,7 +1736,7 @@ void tst_QXmlQuery::resultItemsDeallocatedQuery() const
 
     {
         QXmlQuery query;
-        query.setQuery(QLatin1String("1, 2, xs:integer(<e>3</e>)"));
+        query.setQuery(QLatin1StringView("1, 2, xs:integer(<e>3</e>)"));
         query.evaluateTo(&result);
     }
 
@@ -1757,7 +1757,7 @@ void tst_QXmlQuery::shadowedVariables() const
 {
     QXmlQuery query;
     query.bindVariable("varName", QXmlItem(3));
-    query.setQuery(QLatin1String("declare variable $varName := 5; $varName"));
+    query.setQuery(QLatin1StringView("declare variable $varName := 5; $varName"));
 
     QXmlResultItems result;
     query.evaluateTo(&result);
@@ -1790,18 +1790,18 @@ void tst_QXmlQuery::setFocusQUrl() const
 
         query.setMessageHandler(&silencer);
 
-        QVERIFY(!query.setFocus(QUrl(QLatin1String("data/notWellformed.xml"))));
+        QVERIFY(!query.setFocus(QUrl(QLatin1StringView("data/notWellformed.xml"))));
     }
 
     /* Ensure the same URI resolver is used. */
     {
         QXmlQuery query(QXmlQuery::XSLT20);
 
-        const TestURIResolver resolver(QUrl(inputFileAsURI(m_xmlPatternsDir + QLatin1String("/stylesheets/documentElement.xml"))));
+        const TestURIResolver resolver(QUrl(inputFileAsURI(m_xmlPatternsDir + QLatin1StringView("/stylesheets/documentElement.xml"))));
         query.setUriResolver(&resolver);
 
-        QVERIFY(query.setFocus(QUrl(QLatin1String("arbitraryURI"))));
-        query.setQuery(QUrl(inputFileAsURI(m_xmlPatternsDir + QLatin1String("/stylesheets/copyWholeDocument.xsl"))));
+        QVERIFY(query.setFocus(QUrl(QLatin1StringView("arbitraryURI"))));
+        query.setQuery(QUrl(inputFileAsURI(m_xmlPatternsDir + QLatin1StringView("/stylesheets/copyWholeDocument.xsl"))));
         QVERIFY(query.isValid());
 
         QBuffer result;
@@ -1827,7 +1827,7 @@ void tst_QXmlQuery::setFocusQIODevice() const
         focus.setData(QByteArray("<e>abc</e>"));
         QVERIFY(focus.open(QIODevice::ReadOnly));
         query.setFocus(&focus);
-        query.setQuery(QLatin1String("string()"));
+        query.setQuery(QLatin1StringView("string()"));
         QVERIFY(query.isValid());
 
         QString output;
@@ -1866,7 +1866,7 @@ void tst_QXmlQuery::setFocusQIODeviceAvoidVariableClash() const
         QXmlQuery query;
         query.bindVariable(QString(QLatin1Char('u')), QVariant(1));
         query.setFocus(&buffer);
-        query.setQuery(QLatin1String("string()"));
+        query.setQuery(QLatin1StringView("string()"));
 
         QString out;
         query.evaluateTo(&out);
@@ -1880,7 +1880,7 @@ void tst_QXmlQuery::setFocusQIODeviceAvoidVariableClash() const
         QVERIFY(buffer.open(QIODevice::ReadOnly));
         query.setFocus(&buffer);
         query.bindVariable(QString(QLatin1Char('u')), QVariant(1));
-        query.setQuery(QLatin1String("string()"));
+        query.setQuery(QLatin1StringView("string()"));
 
         QString out;
         query.evaluateTo(&out);
@@ -1912,8 +1912,8 @@ void tst_QXmlQuery::setFocusQString() const
 
     /* Basic use of focus. */
     {
-        QVERIFY(query.setFocus(QLatin1String("<e>textNode</e>")));
-        query.setQuery(QLatin1String("string()"));
+        QVERIFY(query.setFocus(QLatin1StringView("<e>textNode</e>")));
+        query.setQuery(QLatin1StringView("string()"));
         QVERIFY(query.isValid());
         QString out;
         query.evaluateTo(&out);
@@ -1922,7 +1922,7 @@ void tst_QXmlQuery::setFocusQString() const
 
     /* Set to a new focus, make sure it changes and works. */
     {
-        QVERIFY(query.setFocus(QLatin1String("<e>newFocus</e>")));
+        QVERIFY(query.setFocus(QLatin1StringView("<e>newFocus</e>")));
         QString out;
         query.evaluateTo(&out);
         QCOMPARE(out, QString::fromLatin1("newFocus\n"));
@@ -1935,7 +1935,7 @@ void tst_QXmlQuery::setFocusQStringFailure() const
     MessageSilencer silencer;
 
     query.setMessageHandler(&silencer);
-    QVERIFY(!query.setFocus(QLatin1String("<notWellformed")));
+    QVERIFY(!query.setFocus(QLatin1StringView("<notWellformed")));
 
     /* Let's try the slight special case of a null string. */
     QVERIFY(!query.setFocus(QString()));
@@ -1992,8 +1992,8 @@ void tst_QXmlQuery::fnDocNetworkAccessSuccess() const
     QVERIFY(uriToOpen.isValid());
 
     QXmlQuery query;
-    query.bindVariable(QLatin1String("uri"), QVariant(uriToOpen));
-    query.setQuery(QLatin1String("declare variable $uri external;\ndoc($uri)"));
+    query.bindVariable(QLatin1StringView("uri"), QVariant(uriToOpen));
+    query.setQuery(QLatin1StringView("declare variable $uri external;\ndoc($uri)"));
     QVERIFY(query.isValid());
 
     QByteArray result;
@@ -2016,7 +2016,7 @@ void tst_QXmlQuery::fnDocNetworkAccessSuccess_data() const
         << QByteArray("<!-- This is just a file for testing. --><input/>");
 
     QTest::newRow("data scheme with ASCII")
-        /* QUrl::toPercentEncoding(QLatin1String("<e/>")) yields "%3Ce%2F%3E". */
+        /* QUrl::toPercentEncoding(QLatin1StringView("<e/>")) yields "%3Ce%2F%3E". */
         << QUrl::fromEncoded("data:application/xml,%3Ce%2F%3E")
         << QByteArray("<e/>");
 
@@ -2059,8 +2059,8 @@ void tst_QXmlQuery::fnDocNetworkAccessFailure() const
     QXmlQuery query;
     MessageSilencer silencer;
     query.setMessageHandler(&silencer);
-    query.bindVariable(QLatin1String("uri"), QVariant(uriToOpen));
-    query.setQuery(QLatin1String("declare variable $uri external;\ndoc($uri)"));
+    query.bindVariable(QLatin1StringView("uri"), QVariant(uriToOpen));
+    query.setQuery(QLatin1StringView("declare variable $uri external;\ndoc($uri)"));
     QVERIFY(query.isValid());
 
     QXmlResultItems result;
@@ -2080,22 +2080,22 @@ void tst_QXmlQuery::fnDocNetworkAccessFailure_data() const
     QTest::addColumn<QUrl>("uriToOpen");
 
     QTest::newRow("data scheme, not-well-formed")
-        << QUrl(QLatin1String("data:application/xml;base64,PGUvg==="));
+        << QUrl(QLatin1StringView("data:application/xml;base64,PGUvg==="));
 
     QTest::newRow("file scheme, non-existent file")
-        << QUrl(QLatin1String("file:///example.com/does/notExist.xml"));
+        << QUrl(QLatin1StringView("file:///example.com/does/notExist.xml"));
 
     QTest::newRow("http scheme, file not found")
-        << QUrl(QLatin1String("http://www.example.com/does/not/exist.xml"));
+        << QUrl(QLatin1StringView("http://www.example.com/does/not/exist.xml"));
 
     QTest::newRow("http scheme, nonexistent host")
-        << QUrl(QLatin1String("http://this.host.does.not.exist.I.SWear"));
+        << QUrl(QLatin1StringView("http://this.host.does.not.exist.I.SWear"));
 
     QTest::newRow("qrc scheme, not well-formed")
-        << QUrl(QLatin1String("qrc:/QXmlQueryTestData/notWellformed.xml"));
+        << QUrl(QLatin1StringView("qrc:/QXmlQueryTestData/notWellformed.xml"));
 
     QTest::newRow("'qrc:/', non-existing file")
-        << QUrl(QLatin1String("qrc:/QXmlQueryTestData/data/thisFileDoesNotExist.xml"));
+        << QUrl(QLatin1StringView("qrc:/QXmlQueryTestData/data/thisFileDoesNotExist.xml"));
 
     if(!m_testNetwork)
         return;
@@ -2107,10 +2107,10 @@ void tst_QXmlQuery::fnDocNetworkAccessFailure_data() const
         << QUrl(QString("https://" + QtNetworkSettings::serverName() + "/qtest/qxmlquery/notWellformedViaHttps.xml"));
 
     QTest::newRow("https scheme, nonexistent host")
-        << QUrl(QLatin1String("https://this.host.does.not.exist.I.SWear"));
+        << QUrl(QLatin1StringView("https://this.host.does.not.exist.I.SWear"));
 
     QTest::newRow("ftp scheme, nonexistent host")
-        << QUrl(QLatin1String("ftp://this.host.does.not.exist.I.SWear"));
+        << QUrl(QLatin1StringView("ftp://this.host.does.not.exist.I.SWear"));
 
     QTest::newRow("ftp scheme, not well-formed")
         << QUrl(QString("ftp://" + QtNetworkSettings::serverName() + "/pub/qxmlquery/notWellFormed.xml"));
@@ -2137,8 +2137,8 @@ void tst_QXmlQuery::fnDocOnQIODeviceTimeout() const
     MessageSilencer silencer;
     query.setMessageHandler(&silencer);
 
-    query.bindVariable(QLatin1String("inDevice"), &client);
-    query.setQuery(QLatin1String("declare variable $inDevice external;\ndoc($inDevice)"));
+    query.bindVariable(QLatin1StringView("inDevice"), &client);
+    query.setQuery(QLatin1StringView("declare variable $inDevice external;\ndoc($inDevice)"));
     QVERIFY(query.isValid());
 
     QXmlResultItems result;
@@ -2163,10 +2163,10 @@ void tst_QXmlQuery::recompilationWithEvaluateToResultFailing() const
     MessageSilencer silencer;
     query.setMessageHandler(&silencer);
 
-    query.setQuery(QLatin1String("1 + 1")); /* An arbitrary valid query. */
+    query.setQuery(QLatin1StringView("1 + 1")); /* An arbitrary valid query. */
     QVERIFY(query.isValid()); /* Trigger query compilation. */
 
-    query.setQuery(QLatin1String("fn:doc('doesNotExist.example.com.xml')")); /* An arbitrary invalid query that make use of a source location. */
+    query.setQuery(QLatin1StringView("fn:doc('doesNotExist.example.com.xml')")); /* An arbitrary invalid query that make use of a source location. */
     QVERIFY(query.isValid()); /* Trigger second compilation. */
 
     QXmlResultItems items;
@@ -2181,10 +2181,10 @@ void tst_QXmlQuery::secondEvaluationWithEvaluateToResultFailing() const
     MessageSilencer silencer;
     query.setMessageHandler(&silencer);
 
-    query.setQuery(QLatin1String("1 + 1")); /* An arbitrary valid query. */
+    query.setQuery(QLatin1StringView("1 + 1")); /* An arbitrary valid query. */
     QVERIFY(query.isValid()); /* Trigger query compilation. */
 
-    query.setQuery(QLatin1String("fn:doc('doesNotExist.example.com.xml')")); /* An arbitrary invalid query that make use of a source location. */
+    query.setQuery(QLatin1StringView("fn:doc('doesNotExist.example.com.xml')")); /* An arbitrary invalid query that make use of a source location. */
     /* We don't call isValid(). */
 QXmlResultItems items;
     query.evaluateTo(&items);
@@ -2201,10 +2201,10 @@ void tst_QXmlQuery::recompilationWithEvaluateToReceiver() const
     MessageSilencer silencer;
     query.setMessageHandler(&silencer);
 
-    query.setQuery(QLatin1String("1 + 1")); /* An arbitrary valid query. */
+    query.setQuery(QLatin1StringView("1 + 1")); /* An arbitrary valid query. */
     QVERIFY(query.isValid()); /* Trigger query compilation. */
 
-    query.setQuery(QLatin1String("fn:doc('doesNotExist.example.com.xml')")); /* An arbitrary invalid query that make use of a source location. */
+    query.setQuery(QLatin1StringView("fn:doc('doesNotExist.example.com.xml')")); /* An arbitrary invalid query that make use of a source location. */
     /* We don't call isValid(). */
 
     QByteArray dummy;
@@ -2234,7 +2234,7 @@ void tst_QXmlQuery::evaluateToQStringListOnInvalidQuery() const
         MessageSilencer silencer;
 
         query.setMessageHandler(&silencer);
-        query.setQuery(QLatin1String("1 + "));
+        query.setQuery(QLatin1StringView("1 + "));
 
         QVERIFY(!query.evaluateTo(&out));
     }
@@ -2244,7 +2244,7 @@ void tst_QXmlQuery::evaluateToQStringListOnInvalidQuery() const
         QXmlQuery query;
         QStringList out;
 
-        query.setQuery(QLatin1String("1"));
+        query.setQuery(QLatin1StringView("1"));
         query.setMessageHandler(&silencer);
         QVERIFY(!query.evaluateTo(&out));
     }
@@ -2254,7 +2254,7 @@ void tst_QXmlQuery::evaluateToQStringListOnInvalidQuery() const
         QXmlQuery query;
         QStringList out;
 
-        query.setQuery(QLatin1String("<e/>"));
+        query.setQuery(QLatin1StringView("<e/>"));
         QVERIFY(!query.evaluateTo(&out));
     }
 
@@ -2263,7 +2263,7 @@ void tst_QXmlQuery::evaluateToQStringListOnInvalidQuery() const
         QXmlQuery query;
         QStringList out;
 
-        query.setQuery(QLatin1String("<e/>, 1, 'a string'"));
+        query.setQuery(QLatin1StringView("<e/>, 1, 'a string'"));
         query.setMessageHandler(&silencer);
         QVERIFY(!query.evaluateTo(&out));
     }
@@ -2273,7 +2273,7 @@ void tst_QXmlQuery::evaluateToQStringListOnInvalidQuery() const
         QXmlQuery query;
         QStringList out;
 
-        query.setQuery(QLatin1String("()"));
+        query.setQuery(QLatin1StringView("()"));
         QVERIFY(!query.evaluateTo(&out));
         QVERIFY(out.isEmpty());
     }
@@ -2314,8 +2314,8 @@ void tst_QXmlQuery::evaluateToQStringList_data() const
 
     {
         QStringList expected;
-        expected << QLatin1String("2");
-        expected << QLatin1String("a string");
+        expected << QLatin1StringView("2");
+        expected << QLatin1StringView("a string");
 
         QTest::newRow("Two atomics")
             << QString::fromLatin1("(1 + 1) cast as xs:string, 'a string'")
@@ -2353,7 +2353,7 @@ void tst_QXmlQuery::evaluateToQIODevice() const
         QVERIFY(out.open(QIODevice::ReadWrite));
 
         QXmlQuery query;
-        query.setQuery(QLatin1String("<a><b/></a>"));
+        query.setQuery(QLatin1StringView("<a><b/></a>"));
         QVERIFY(query.isValid());
         QVERIFY(query.evaluateTo(&out));
         QCOMPARE(out.data(), QByteArray("<a><b/></a>"));
@@ -2398,7 +2398,7 @@ void tst_QXmlQuery::evaluateToQIODeviceOnInvalidQuery() const
         QXmlQuery query;
         MessageSilencer silencer;
         query.setMessageHandler(&silencer);
-        query.setQuery(QLatin1String("1 +"));
+        query.setQuery(QLatin1StringView("1 +"));
         QVERIFY(!query.isValid());
         QVERIFY(!query.evaluateTo(&out));
     }
@@ -2457,7 +2457,7 @@ void tst_QXmlQuery::setQueryQIODeviceQUrl() const
 
         QStringList result;
         query.evaluateTo(&result);
-        QCOMPARE(result, QStringList(QLatin1String("http://www.example.com/QIODeviceQUrl")));
+        QCOMPARE(result, QStringList(QLatin1StringView("http://www.example.com/QIODeviceQUrl")));
     }
 }
 
@@ -2477,7 +2477,7 @@ void tst_QXmlQuery::setQueryQString() const
     /* Basic test. */
     {
         QXmlQuery query;
-        query.setQuery(QLatin1String("1, 2, 2 + 1"));
+        query.setQuery(QLatin1StringView("1, 2, 2 + 1"));
         QVERIFY(query.isValid());
 
         QXmlResultItems result;
@@ -2494,19 +2494,19 @@ void tst_QXmlQuery::setQueryQString() const
         MessageSilencer silencer;
         QXmlQuery query;
         query.setMessageHandler(&silencer);
-        query.setQuery(QLatin1String("1, "));
+        query.setQuery(QLatin1StringView("1, "));
         QVERIFY(!query.isValid());
     }
 
     /* Check that the base URI passes through. */
     {
         QXmlQuery query;
-        query.setQuery(QLatin1String("string(static-base-uri())"), QUrl::fromEncoded("http://www.example.com/QIODeviceQUrl"));
+        query.setQuery(QLatin1StringView("string(static-base-uri())"), QUrl::fromEncoded("http://www.example.com/QIODeviceQUrl"));
         QVERIFY(query.isValid());
 
         QStringList result;
         query.evaluateTo(&result);
-        QCOMPARE(result, QStringList(QLatin1String("http://www.example.com/QIODeviceQUrl")));
+        QCOMPARE(result, QStringList(QLatin1StringView("http://www.example.com/QIODeviceQUrl")));
     }
 }
 
@@ -2548,7 +2548,7 @@ void tst_QXmlQuery::setQueryQUrlSuccess_data() const
         << QByteArray("2");
 
     QTest::newRow("A valid query via the file scheme")
-        << QUrl::fromLocalFile(inputFile(m_xmlPatternsDir + QLatin1String("/queries/") + QLatin1String("onePlusOne.xq")))
+        << QUrl::fromLocalFile(inputFile(m_xmlPatternsDir + QLatin1StringView("/queries/") + QLatin1StringView("onePlusOne.xq")))
         << QByteArray("2");
 
     if(!m_testNetwork)
@@ -2570,7 +2570,7 @@ void tst_QXmlQuery::setQueryQUrlFailSucceed() const
 
     query.setMessageHandler(&silencer);
 
-    query.setQuery(QLatin1String("1 + 1"));
+    query.setQuery(QLatin1StringView("1 + 1"));
     QVERIFY(query.isValid());
 
     query.setQuery(QUrl::fromEncoded("file://example.com/does/not/exist"));
@@ -2607,7 +2607,7 @@ void tst_QXmlQuery::setQueryQUrlFailure_data() const
         << localFileUrl(QStringLiteral("../xmlpatterns/queries/completelyEmptyQuery.xq"));
 
     {
-        const QString name(QLatin1String("nonReadableFile.xq"));
+        const QString name(QLatin1StringView("nonReadableFile.xq"));
         QFile outFile(name);
         QVERIFY(outFile.open(QIODevice::WriteOnly));
         outFile.write(QByteArray("1"));
@@ -2647,7 +2647,7 @@ void tst_QXmlQuery::setQueryQUrlBaseURI() const
 
     QXmlQuery query;
 
-    query.setQuery(QUrl(QLatin1String("qrc:/QXmlQueryTestData/queries/staticBaseURI.xq")), inputBaseURI);
+    query.setQuery(QUrl(QLatin1StringView("qrc:/QXmlQueryTestData/queries/staticBaseURI.xq")), inputBaseURI);
     QVERIFY(query.isValid());
 
     QStringList result;
@@ -2666,15 +2666,15 @@ void tst_QXmlQuery::setQueryQUrlBaseURI_data() const
     QTest::addColumn<QUrl>("expectedBaseURI");
 
     QTest::newRow("absolute HTTP")
-        << QUrl(QLatin1String("http://www.example.com/"))
-        << QUrl(QLatin1String("http://www.example.com/"));
+        << QUrl(QLatin1StringView("http://www.example.com/"))
+        << QUrl(QLatin1StringView("http://www.example.com/"));
 
     QTest::newRow("None, so the query URI is used")
         << QUrl()
-        << QUrl(QLatin1String("qrc:/QXmlQueryTestData/queries/staticBaseURI.xq"));
+        << QUrl(QLatin1StringView("qrc:/QXmlQueryTestData/queries/staticBaseURI.xq"));
 
     QTest::newRow("Relative base URI")
-        << QUrl(QLatin1String("../data/relative.uri"))
+        << QUrl(QLatin1StringView("../data/relative.uri"))
         << QUrl();
 }
 
@@ -2690,7 +2690,7 @@ void tst_QXmlQuery::setQueryWithNonExistentQUrlOnValidQuery() const
     MessageSilencer messageSilencer;
     query.setMessageHandler(&messageSilencer);
 
-    query.setQuery(QLatin1String("1 + 1"));
+    query.setQuery(QLatin1StringView("1 + 1"));
     QVERIFY(query.isValid());
 
     query.setQuery(QUrl::fromEncoded("qrc:/QXmlQueryTestData/DOESNOTEXIST.xq"));
@@ -2709,7 +2709,7 @@ void tst_QXmlQuery::setQueryWithInvalidQueryFromQUrlOnValidQuery() const
     MessageSilencer messageSilencer;
     query.setMessageHandler(&messageSilencer);
 
-    query.setQuery(QLatin1String("1 + 1"));
+    query.setQuery(QLatin1StringView("1 + 1"));
     QVERIFY(query.isValid());
 
     query.setQuery(QUrl::fromEncoded("qrc:/QXmlQueryTestData/queries/syntaxError.xq"));
@@ -2774,9 +2774,9 @@ void tst_QXmlQuery::bindEmptyNullString() const
     MessageSilencer messageHandler;
     QXmlQuery query;
     query.setMessageHandler(&messageHandler);
-    query.setQuery(QLatin1String("declare variable $v external; $v"));
+    query.setQuery(QLatin1StringView("declare variable $v external; $v"));
     /* Here, we effectively pass an invalid QVariant. */
-    query.bindVariable(QLatin1String("v"), QVariant(QString()));
+    query.bindVariable(QLatin1StringView("v"), QVariant(QString()));
     QVERIFY(!query.isValid());
 
     QStringList result;
@@ -2786,8 +2786,8 @@ void tst_QXmlQuery::bindEmptyNullString() const
 void tst_QXmlQuery::bindEmptyString() const
 {
     QXmlQuery query;
-    query.bindVariable(QLatin1String("v"), QVariant(QString(QLatin1String(""))));
-    query.setQuery(QLatin1String("declare variable $v external; $v"));
+    query.bindVariable(QLatin1StringView("v"), QVariant(QString(QLatin1StringView(""))));
+    query.setQuery(QLatin1StringView("declare variable $v external; $v"));
     QVERIFY(query.isValid());
 
     QStringList result;
@@ -2799,7 +2799,7 @@ void tst_QXmlQuery::bindEmptyString() const
 void tst_QXmlQuery::cleanupTestCase() const
 {
     /* Remove a weird file we created. */
-    const QString name(QLatin1String("nonReadableFile.xq"));
+    const QString name(QLatin1StringView("nonReadableFile.xq"));
 
     if(QFile::exists(name))
     {
@@ -2814,7 +2814,7 @@ void tst_QXmlQuery::declareUnavailableExternal() const
     QXmlQuery query;
     MessageSilencer silencer;
     query.setMessageHandler(&silencer);
-    query.setQuery(QLatin1String("declare variable $var external;"
+    query.setQuery(QLatin1StringView("declare variable $var external;"
                                  "1 + 1"));
     /* We do not bind $var with QXmlQuery::bindVariable(). */
     QVERIFY(!query.isValid());
@@ -2827,8 +2827,8 @@ void tst_QXmlQuery::declareUnavailableExternal() const
 void tst_QXmlQuery::msvcCacheIssue() const
 {
     QXmlQuery query;
-    query.bindVariable(QLatin1String("externalVariable"), QXmlItem("Variable Value"));
-    query.setQuery(QUrl::fromLocalFile(m_xmlPatternsDir + QLatin1String("/queries/") + QString::fromLatin1("externalVariableUsedTwice.xq")));
+    query.bindVariable(QLatin1StringView("externalVariable"), QXmlItem("Variable Value"));
+    query.setQuery(QUrl::fromLocalFile(m_xmlPatternsDir + QLatin1StringView("/queries/") + QString::fromLatin1("externalVariableUsedTwice.xq")));
     QStringList result;
     QVERIFY(query.evaluateTo(&result));
 
@@ -2843,7 +2843,7 @@ void tst_QXmlQuery::unavailableExternalVariable() const
     MessageSilencer silencer;
     query.setMessageHandler(&silencer);
 
-    query.setQuery(QLatin1String("declare variable $foo external; 1"));
+    query.setQuery(QLatin1StringView("declare variable $foo external; 1"));
 
     QVERIFY(!query.isValid());
 }
@@ -2862,7 +2862,7 @@ void tst_QXmlQuery::useUriResolver() const
                              const QUrl &baseURI) const
         {
             Q_UNUSED(relative);
-            QString fixedInputFile = inputFile(m_xmlPatternsDir + QLatin1String("/queries/") + QLatin1String("simpleDocument.xml"));
+            QString fixedInputFile = inputFile(m_xmlPatternsDir + QLatin1StringView("/queries/") + QLatin1StringView("simpleDocument.xml"));
 #ifdef Q_OS_WIN
             // A file path with drive letter is not a valid relative URI, so remove the drive letter.
             // Note that can't just use inputFileAsURI() instead of inputFile() as that doesn't
@@ -2878,7 +2878,7 @@ void tst_QXmlQuery::useUriResolver() const
     QXmlQuery query;
 
     query.setUriResolver(&uriResolver);
-    query.setQuery(QLatin1String("let $i := 'http://www.example.com/DoesNotExist'"
+    query.setQuery(QLatin1StringView("let $i := 'http://www.example.com/DoesNotExist'"
                                  "return (string(doc($i)), doc-available($i))"));
 
 
@@ -2896,15 +2896,15 @@ void tst_QXmlQuery::queryWithFocusAndVariable() const
 {
     QXmlQuery query;
     query.setFocus(QXmlItem(5));
-    query.bindVariable(QLatin1String("var"), QXmlItem(2));
+    query.bindVariable(QLatin1StringView("var"), QXmlItem(2));
 
-    query.setQuery(QLatin1String("string(. * $var)"));
+    query.setQuery(QLatin1StringView("string(. * $var)"));
 
     QStringList result;
 
     QVERIFY(query.evaluateTo(&result));
 
-    QCOMPARE(result, QStringList(QLatin1String("10")));
+    QCOMPARE(result, QStringList(QLatin1StringView("10")));
 }
 
 void tst_QXmlQuery::undefinedFocus() const
@@ -2914,7 +2914,7 @@ void tst_QXmlQuery::undefinedFocus() const
     MessageSilencer silencer;
     query.setMessageHandler(&silencer);
 
-    query.setQuery(QLatin1String("."));
+    query.setQuery(QLatin1StringView("."));
     QVERIFY(!query.isValid());
 }
 
@@ -2926,13 +2926,13 @@ void tst_QXmlQuery::basicFocusUsage() const
     query.setMessageHandler(&silencer);
 
     query.setFocus(QXmlItem(5));
-    query.setQuery(QLatin1String("string(. * .)"));
+    query.setQuery(QLatin1StringView("string(. * .)"));
     QVERIFY(query.isValid());
 
     QStringList result;
     QVERIFY(query.evaluateTo(&result));
 
-    QCOMPARE(result, QStringList(QLatin1String("25")));
+    QCOMPARE(result, QStringList(QLatin1StringView("25")));
 }
 
 /*!
@@ -2943,7 +2943,7 @@ void tst_QXmlQuery::copyCheckMessageHandler() const
     QXmlQuery query;
     QCOMPARE(query.messageHandler(), static_cast<QAbstractMessageHandler *>(0));
 
-    query.setQuery(QLatin1String("doc('qrc:/QXmlQueryTestData/data/oneElement.xml')"));
+    query.setQuery(QLatin1StringView("doc('qrc:/QXmlQueryTestData/data/oneElement.xml')"));
     /* By now, we should have set the builtin message handler. */
     const QAbstractMessageHandler *const messageHandler = query.messageHandler();
     QVERIFY(messageHandler);
@@ -3002,13 +3002,13 @@ void tst_QXmlQuery::setInitialTemplateNameQXmlName() const
 {
     QXmlQuery query(QXmlQuery::XSLT20);
     QXmlNamePool np(query.namePool());
-    const QXmlName name(np, QLatin1String("main"));
+    const QXmlName name(np, QLatin1StringView("main"));
 
     query.setInitialTemplateName(name);
 
     QCOMPARE(query.initialTemplateName(), name);
 
-    query.setQuery(QUrl(inputFileAsURI(m_xmlPatternsDir + QLatin1String("/stylesheets/namedTemplate.xsl"))));
+    query.setQuery(QUrl(inputFileAsURI(m_xmlPatternsDir + QLatin1StringView("/stylesheets/namedTemplate.xsl"))));
     QVERIFY(query.isValid());
 
     QBuffer result;
@@ -3025,7 +3025,7 @@ void tst_QXmlQuery::setInitialTemplateNameQXmlNameSignature() const
 {
     QXmlQuery query;
     QXmlNamePool np(query.namePool());
-    const QXmlName name(np, QLatin1String("foo"));
+    const QXmlName name(np, QLatin1StringView("foo"));
 
     /* The signature should take a const reference. */
     query.setInitialTemplateName(name);
@@ -3035,14 +3035,14 @@ void tst_QXmlQuery::setInitialTemplateNameQString() const
 {
     QXmlQuery query;
     QXmlNamePool np(query.namePool());
-    query.setInitialTemplateName(QLatin1String("foo"));
+    query.setInitialTemplateName(QLatin1StringView("foo"));
 
-    QCOMPARE(query.initialTemplateName(), QXmlName(np, QLatin1String("foo")));
+    QCOMPARE(query.initialTemplateName(), QXmlName(np, QLatin1StringView("foo")));
 }
 
 void tst_QXmlQuery::setInitialTemplateNameQStringSignature() const
 {
-    const QString name(QLatin1String("name"));
+    const QString name(QLatin1StringView("name"));
     QXmlQuery query;
 
     /* We should take a const reference. */
@@ -3069,25 +3069,25 @@ void tst_QXmlQuery::setNetworkAccessManager() const
 
     /* Ensure fn:doc() picks up the right QNetworkAccessManager. */
     {
-        NetworkOverrider networkOverrider(QUrl(QLatin1String("tag:example.com:DOESNOTEXIST")),
-                                          QUrl(inputFileAsURI(m_xmlPatternsDir + QLatin1String("/queries/simpleDocument.xml"))));
+        NetworkOverrider networkOverrider(QUrl(QLatin1StringView("tag:example.com:DOESNOTEXIST")),
+                                          QUrl(inputFileAsURI(m_xmlPatternsDir + QLatin1StringView("/queries/simpleDocument.xml"))));
         QVERIFY(networkOverrider.isValid());
 
         QXmlQuery query;
         query.setNetworkAccessManager(&networkOverrider);
-        query.setQuery(QLatin1String("string(doc('tag:example.com:DOESNOTEXIST'))"));
+        query.setQuery(QLatin1StringView("string(doc('tag:example.com:DOESNOTEXIST'))"));
         QVERIFY(query.isValid());
 
         QStringList result;
         QVERIFY(query.evaluateTo(&result));
 
-        QCOMPARE(result, QStringList(QLatin1String("text text node")));
+        QCOMPARE(result, QStringList(QLatin1StringView("text text node")));
     }
 
     /* Ensure setQuery() is using the right network manager. */
     {
-        NetworkOverrider networkOverrider(QUrl(QLatin1String("tag:example.com:DOESNOTEXIST")),
-                                          QUrl(inputFileAsURI(m_xmlPatternsDir + QLatin1String("/queries/concat.xq"))));
+        NetworkOverrider networkOverrider(QUrl(QLatin1StringView("tag:example.com:DOESNOTEXIST")),
+                                          QUrl(inputFileAsURI(m_xmlPatternsDir + QLatin1StringView("/queries/concat.xq"))));
         QVERIFY(networkOverrider.isValid());
 
         QXmlQuery query;
@@ -3098,7 +3098,7 @@ void tst_QXmlQuery::setNetworkAccessManager() const
         QStringList result;
         QVERIFY(query.evaluateTo(&result));
 
-        QCOMPARE(result, QStringList(QLatin1String("abcdef")));
+        QCOMPARE(result, QStringList(QLatin1StringView("abcdef")));
     }
 }
 void tst_QXmlQuery::networkAccessManagerSignature() const
@@ -3145,11 +3145,11 @@ void tst_QXmlQuery::multipleDocsAndFocus() const
 
     /* We use string concatenation, since variable bindings might disturb what
      * we're testing. */
-    query.setQuery(QLatin1String("string(doc('") +
-                   inputFile(m_xmlPatternsDir + QLatin1String("/queries/simpleDocument.xml")) +
-                   QLatin1String("'))"));
-    query.setFocus(QUrl(inputFileAsURI(m_xmlPatternsDir + QLatin1String("/stylesheets/documentElement.xml"))));
-    query.setQuery(QLatin1String("string(.)"));
+    query.setQuery(QLatin1StringView("string(doc('") +
+                   inputFile(m_xmlPatternsDir + QLatin1StringView("/queries/simpleDocument.xml")) +
+                   QLatin1StringView("'))"));
+    query.setFocus(QUrl(inputFileAsURI(m_xmlPatternsDir + QLatin1StringView("/stylesheets/documentElement.xml"))));
+    query.setQuery(QLatin1StringView("string(.)"));
 
     QStringList result;
     QVERIFY(query.evaluateTo(&result));
@@ -3172,11 +3172,11 @@ void tst_QXmlQuery::multipleEvaluationsWithDifferentFocus() const
     QXmlQuery query;
     QStringList result;
 
-    query.setFocus(QUrl(inputFileAsURI(m_xmlPatternsDir + QLatin1String("/stylesheets/documentElement.xml"))));
-    query.setQuery(QLatin1String("string(.)"));
+    query.setFocus(QUrl(inputFileAsURI(m_xmlPatternsDir + QLatin1StringView("/stylesheets/documentElement.xml"))));
+    query.setQuery(QLatin1StringView("string(.)"));
     QVERIFY(query.evaluateTo(&result));
 
-    query.setFocus(QUrl(inputFileAsURI(m_xmlPatternsDir + QLatin1String("/stylesheets/documentElement.xml"))));
+    query.setFocus(QUrl(inputFileAsURI(m_xmlPatternsDir + QLatin1StringView("/stylesheets/documentElement.xml"))));
     QVERIFY(query.evaluateTo(&result));
 }
 
@@ -3246,7 +3246,7 @@ void tst_QXmlQuery::bindVariableQStringQXmlQuerySignature() const
     query1.setQuery("'dummy'");
 
     QXmlQuery query2;
-    const QString name(QLatin1String("name"));
+    const QString name(QLatin1StringView("name"));
 
     /* We should be able to take a const QXmlQuery reference. Evaluation never mutate
      * QXmlQuery, and evaluation is what we do here. */
@@ -3260,7 +3260,7 @@ void tst_QXmlQuery::bindVariableQXmlNameQXmlQuerySignature() const
     query1.setQuery("'dummy'");
 
     QXmlQuery query2;
-    const QXmlName name(np, QLatin1String("name"));
+    const QXmlName name(np, QLatin1StringView("name"));
 
     /* We should be able to take a const QXmlQuery reference. Evaluation never mutate
      * QXmlQuery, and evaluation is what we do here. */
@@ -3274,10 +3274,10 @@ void tst_QXmlQuery::bindVariableQXmlNameQXmlQuery() const
 {
     QXmlNamePool np;
     QXmlQuery query1;
-    query1.setQuery(QLatin1String("1"));
+    query1.setQuery(QLatin1StringView("1"));
 
     QXmlQuery query2(np);
-    query2.bindVariable(QXmlName(np, QLatin1String("theName")), query1);
+    query2.bindVariable(QXmlName(np, QLatin1StringView("theName")), query1);
     query2.setQuery("$theName");
 
     QString result;
@@ -3289,14 +3289,14 @@ void tst_QXmlQuery::bindVariableQXmlNameQXmlQuery() const
 void tst_QXmlQuery::bindVariableQXmlQueryInvalidate() const
 {
     QXmlQuery query;
-    query.bindVariable(QLatin1String("name"), QVariant(1));
+    query.bindVariable(QLatin1StringView("name"), QVariant(1));
     query.setQuery("$name");
     QVERIFY(query.isValid());
 
     QXmlQuery query2;
     query2.setQuery("'query2'");
 
-    query.bindVariable(QLatin1String("name"), query2);
+    query.bindVariable(QLatin1StringView("name"), query2);
     QVERIFY(!query.isValid());
 }
 
@@ -3308,10 +3308,10 @@ void tst_QXmlQuery::unknownSourceLocation() const
 
     MessageSilencer silencer;
     QXmlQuery query;
-    query.bindVariable(QLatin1String("inputDocument"), &b);
+    query.bindVariable(QLatin1StringView("inputDocument"), &b);
     query.setMessageHandler(&silencer);
 
-    query.setQuery(QLatin1String("doc($inputDocument)/a/(let $v := b/string() return if ($v) then $v else ())"));
+    query.setQuery(QLatin1StringView("doc($inputDocument)/a/(let $v := b/string() return if ($v) then $v else ())"));
 
     QString output;
     query.evaluateTo(&output);
@@ -3330,7 +3330,7 @@ void tst_QXmlQuery::identityConstraintSuccess() const
 
         {
             QXmlQuery nodeSource(namePool);
-            nodeSource.setQuery(QLatin1String("<e/>"));
+            nodeSource.setQuery(QLatin1StringView("<e/>"));
 
             nodeSource.evaluateTo(&result);
             node = result.next();
@@ -3341,7 +3341,7 @@ void tst_QXmlQuery::identityConstraintSuccess() const
          * 2. We never evaluate. */
         {
             QXmlQuery query(queryLanguage);
-            query.setQuery(QLatin1String("a"));
+            query.setQuery(QLatin1StringView("a"));
             QVERIFY(query.isValid());
         }
 
@@ -3350,7 +3350,7 @@ void tst_QXmlQuery::identityConstraintSuccess() const
          * 2. We afterwards set the focus. */
         {
             QXmlQuery query(queryLanguage, namePool);
-            query.setQuery(QLatin1String("a"));
+            query.setQuery(QLatin1StringView("a"));
             query.setFocus(node);
             QVERIFY(query.isValid());
         }
@@ -3373,7 +3373,7 @@ void tst_QXmlQuery::identityConstraintSuccess() const
         /* A slightly more complex Field. */
         {
             QXmlQuery query(queryLanguage);
-            query.setQuery(QLatin1String("* | .//xml:*/."));
+            query.setQuery(QLatin1StringView("* | .//xml:*/."));
             QVERIFY(query.isValid());
         }
 
@@ -3381,7 +3381,7 @@ void tst_QXmlQuery::identityConstraintSuccess() const
         if(queryLanguage == QXmlQuery::XmlSchema11IdentityConstraintField)
         {
             QXmlQuery query(QXmlQuery::XmlSchema11IdentityConstraintField);
-            query.setQuery(QLatin1String("@abc"));
+            query.setQuery(QLatin1StringView("@abc"));
             QVERIFY(query.isValid());
         }
 
@@ -3389,14 +3389,14 @@ void tst_QXmlQuery::identityConstraintSuccess() const
         if(queryLanguage == QXmlQuery::XmlSchema11IdentityConstraintField)
         {
             QXmlQuery query(QXmlQuery::XmlSchema11IdentityConstraintField);
-            query.setQuery(QLatin1String("attribute::name | child::name"));
+            query.setQuery(QLatin1StringView("attribute::name | child::name"));
             QVERIFY(query.isValid());
         }
 
         /* Selector allows only child:: .*/
         {
             QXmlQuery query(QXmlQuery::XmlSchema11IdentityConstraintSelector);
-            query.setQuery(QLatin1String("child::name"));
+            query.setQuery(QLatin1StringView("child::name"));
             QVERIFY(query.isValid());
         }
 

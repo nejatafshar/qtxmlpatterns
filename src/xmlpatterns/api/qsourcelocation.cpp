@@ -230,7 +230,7 @@ bool QSourceLocation::isNull() const
 
  \relates QSourceLocation
  */
-uint qHash(const QSourceLocation &location)
+size_t qHash(const QSourceLocation &location)
 {
     /* Not the world's best hash function exactly. */
     return qHash(location.uri().toString()) + location.line() + location.column();

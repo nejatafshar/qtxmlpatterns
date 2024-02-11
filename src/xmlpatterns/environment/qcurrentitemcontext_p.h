@@ -50,7 +50,7 @@
 #ifndef Patternist_CurrentItemContext_H
 #define Patternist_CurrentItemContext_H
 
-#include <private/qdelegatingdynamiccontext_p.h>
+#include <qdelegatingdynamiccontext_p.h>
 
 QT_BEGIN_NAMESPACE
 

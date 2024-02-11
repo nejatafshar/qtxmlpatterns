@@ -87,8 +87,8 @@ private:
 };
 
 tst_XmlPatterns::tst_XmlPatterns() : m_generatedTests(0)
-                                   , m_normalizeTestName(QLatin1String("[\\*\\?#\\-\\/:; ()',&]"))
-                                   , m_command(QLibraryInfo::location(QLibraryInfo::BinariesPath) + QLatin1String("/xmlpatterns"))
+                                   , m_normalizeTestName(QLatin1StringView("[\\*\\?#\\-\\/:; ()',&]"))
+                                   , m_command(QLibraryInfo::location(QLibraryInfo::BinariesPath) + QLatin1StringView("/xmlpatterns"))
                                    , m_dontRun(false)
 {
 }
@@ -119,10 +119,10 @@ void tst_XmlPatterns::initTestCase()
 #ifndef QT_NO_PROCESS
 static QByteArray msgProcessError(const char *what, const QProcess &process)
 {
-    QString result = QLatin1String(what) + QLatin1Char(' ')
+    QString result = QLatin1StringView(what) + QLatin1Char(' ')
         + QDir::toNativeSeparators(process.program())
         + QLatin1Char(' ') + process.arguments().join(QLatin1Char(' '))
-        + QLatin1String(": ") + process.errorString();
+        + QLatin1StringView(": ") + process.errorString();
     return result.toLocal8Bit();
 }
 #endif // !QT_NO_PROCESS
@@ -170,7 +170,7 @@ void tst_XmlPatterns::xquerySupport()
 
     const QString errorFileName(QFINDTESTDATA("stderrBaselines/") +
                                 QString::fromUtf8(QTest::currentDataTag()).remove(m_normalizeTestName) +
-                                QLatin1String(".txt"));
+                                QLatin1StringView(".txt"));
 
     QFile writeErr(errorFileName);
 
@@ -189,7 +189,7 @@ void tst_XmlPatterns::xquerySupport()
         {
             /* There's a wide range of different version strings used. For
              * instance, "4.4.0-rc1". */
-            QRegExp removeVersion(QLatin1String(" Qt \\d\\.\\d.*"));
+            QRegExp removeVersion(QLatin1StringView(" Qt \\d\\.\\d.*"));
             QVERIFY(removeVersion.isValid());
             QCOMPARE(QString(fixedStderr).remove(removeVersion) + QChar('|'), rawExpectedStdErr + QChar('|'));
         }
@@ -241,7 +241,7 @@ void tst_XmlPatterns::xquerySupport_data() const
     QString path = QFINDTESTDATA("queries/");
 
     /* Check one file for existence, to avoid possible false positives. */
-    QVERIFY(QFile::exists(path + QLatin1String("onePlusOne.xq")));
+    QVERIFY(QFile::exists(path + QLatin1StringView("onePlusOne.xq")));
 
     QTest::addColumn<int>("expectedExitCode");
     QTest::addColumn<QByteArray>("expectedQueryOutput");
@@ -252,55 +252,55 @@ void tst_XmlPatterns::xquerySupport_data() const
     QTest::newRow("A simple math query")
         << 0
         << QByteArray("2\n")
-        << QStringList((path + QLatin1String("onePlusOne.xq")))
+        << QStringList((path + QLatin1StringView("onePlusOne.xq")))
         << QString()
         << QString();
 
     QTest::newRow("An unbound external variable")
         << 2
         << QByteArray()
-        << QStringList(path + QLatin1String("externalVariable.xq"))
+        << QStringList(path + QLatin1StringView("externalVariable.xq"))
         << QString()
         << QString();
 
     QTest::newRow("Bind an external variable")
         << 0
         << QByteArray("1 4<e>1</e>true\n")
-        << (QStringList() << path + QLatin1String("externalVariable.xq")
-                          << QLatin1String("-param")
-                          << QLatin1String("externalVariable=1"))
+        << (QStringList() << path + QLatin1StringView("externalVariable.xq")
+                          << QLatin1StringView("-param")
+                          << QLatin1StringView("externalVariable=1"))
         << QString()
         << QString();
 
     QTest::newRow("Bind an external variable, query appearing last")
         << 0
         << QByteArray("1 4<e>1</e>true\n")
-        << (QStringList() << QLatin1String("-param")
-                          << QLatin1String("externalVariable=1")
-                          << path + QLatin1String("externalVariable.xq"))
+        << (QStringList() << QLatin1StringView("-param")
+                          << QLatin1StringView("externalVariable=1")
+                          << path + QLatin1StringView("externalVariable.xq"))
         << QString()
         << QString();
 
     QTest::newRow("Use fn:doc")
         << 0
         << QByteArray("<e xmlns=\"http://example.com\" xmlns:p=\"http://example.com/P\" attr=\"1\" p:attr=\"\">\n    <?target data?>\n    <!-- a comment -->\n    <e/>text <f/>text node</e>\n")
-        << QStringList(path + QLatin1String("openDocument.xq"))
+        << QStringList(path + QLatin1StringView("openDocument.xq"))
         << QString()
         << QString();
 
     QTest::newRow("Use fn:doc, together with -no-format, last")
         << 0
         << QByteArray("<e xmlns=\"http://example.com\" xmlns:p=\"http://example.com/P\" attr=\"1\" p:attr=\"\"><?target data?><!-- a comment --><e/>text <f/>text node</e>")
-        << (QStringList() << path + QLatin1String("openDocument.xq")
-                          << QLatin1String("-no-format"))
+        << (QStringList() << path + QLatin1StringView("openDocument.xq")
+                          << QLatin1StringView("-no-format"))
         << QString()
         << QString();
 
     QTest::newRow("Use fn:doc, together with -no-format, first")
         << 0
         << QByteArray("<e xmlns=\"http://example.com\" xmlns:p=\"http://example.com/P\" attr=\"1\" p:attr=\"\"><?target data?><!-- a comment --><e/>text <f/>text node</e>")
-        << (QStringList() << QLatin1String("-no-format")
-                          << path + QLatin1String("openDocument.xq"))
+        << (QStringList() << QLatin1StringView("-no-format")
+                          << path + QLatin1StringView("openDocument.xq"))
         << QString()
         << QString();
 
@@ -315,35 +315,35 @@ void tst_XmlPatterns::xquerySupport_data() const
     QTest::newRow("Call fn:error()")
         << 2
         << QByteArray()
-        << QStringList(path + QLatin1String("errorFunction.xq"))
+        << QStringList(path + QLatin1StringView("errorFunction.xq"))
         << QString()
         << QString();
 
     QTest::newRow("Evaluate a library module")
         << 2
         << QByteArray()
-        << QStringList(path + QLatin1String("simpleLibraryModule.xq"))
+        << QStringList(path + QLatin1StringView("simpleLibraryModule.xq"))
         << QString()
         << QString();
 
     QTest::newRow("Trigger a static error.")
         << 2
         << QByteArray()
-        << QStringList(path + QLatin1String("staticError.xq"))
+        << QStringList(path + QLatin1StringView("staticError.xq"))
         << QString()
         << QString();
 
     QTest::newRow("Pass -help")
         << 0
         << QByteArray()
-        << QStringList(QLatin1String("-help"))
+        << QStringList(QLatin1StringView("-help"))
         << QString()
         << QString();
 
     QTest::newRow("Open an nonexistent file")
         << 2
         << QByteArray()
-        << QStringList(path + QLatin1String("ThisFileDoesNotExist.xq"))
+        << QStringList(path + QLatin1StringView("ThisFileDoesNotExist.xq"))
         << QString()
         << QString();
 
@@ -352,104 +352,104 @@ void tst_XmlPatterns::xquerySupport_data() const
     QTest::newRow("XQuery-function message markups")
         << 2
         << QByteArray()
-        << QStringList(path + QLatin1String("wrongArity.xq"))
+        << QStringList(path + QLatin1StringView("wrongArity.xq"))
         << QString()
         << QString();
 
     QTest::newRow("XQuery-type message markups")
         << 2
         << QByteArray()
-        << QStringList(path + QLatin1String("typeError.xq"))
+        << QStringList(path + QLatin1StringView("typeError.xq"))
         << QString()
         << QString();
 
     QTest::newRow("XQuery-data & XQuery-keyword message markups")
         << 2
         << QByteArray()
-        << QStringList(path + QLatin1String("zeroDivision.xq"))
+        << QStringList(path + QLatin1StringView("zeroDivision.xq"))
         << QString()
         << QString();
 
     QTest::newRow("XQuery-uri message markups")
         << 2
         << QByteArray()
-        << QStringList(path + QLatin1String("unsupportedCollation.xq"))
+        << QStringList(path + QLatin1StringView("unsupportedCollation.xq"))
         << QString()
         << QString();
 
     QTest::newRow("XQuery-expression message markups")
         << 2
         << QByteArray()
-        << QStringList(path + QLatin1String("invalidRegexp.xq"))
+        << QStringList(path + QLatin1StringView("invalidRegexp.xq"))
         << QString()
         << QString();
 
     QTest::newRow("Print a list of available regexp flags(The available flags are formatted in a complex way.)")
         << 2
         << QByteArray()
-        << QStringList(path + QLatin1String("invalidRegexpFlag.xq"))
+        << QStringList(path + QLatin1StringView("invalidRegexpFlag.xq"))
         << QString()
         << QString();
 
     QTest::newRow("Trigger an assert in QPatternist::ColorOutput. The query naturally contains an error; XPTY0004.")
         << 2
         << QByteArray()
-        << QStringList(path + QLatin1String("flwor.xq"))
+        << QStringList(path + QLatin1StringView("flwor.xq"))
         << QString()
         << QString();
 
     QTest::newRow("Trigger a second assert in QPatternist::ColorOutput. The query naturally contains XPST0003.")
         << 2
         << QByteArray()
-        << QStringList(path + QLatin1String("syntaxError.xq"))
+        << QStringList(path + QLatin1StringView("syntaxError.xq"))
         << QString()
         << QString();
 
     QTest::newRow("-param is missing so multiple queries appear")
         << 2
         << QByteArray()
-        << (QStringList() << path + QLatin1String("reportGlobals.xq")
-                          << QLatin1String("fileToOpen=globals.gccxml"))
+        << (QStringList() << path + QLatin1StringView("reportGlobals.xq")
+                          << QLatin1StringView("fileToOpen=globals.gccxml"))
         << QString()
         << QString();
 
     QTest::newRow("only -no-format")
         << 1
         << QByteArray()
-        << (QStringList() << QLatin1String("-no-format"))
+        << (QStringList() << QLatin1StringView("-no-format"))
         << QString()
         << QString();
 
     QTest::newRow("Basic use of -output, query first")
         << 0
         << QByteArray("2\n")
-        << (QStringList() << path + QLatin1String("onePlusOne.xq")
-                          << QLatin1String("-output")
-                          << QLatin1String("basicOutput.out"))
+        << (QStringList() << path + QLatin1StringView("onePlusOne.xq")
+                          << QLatin1StringView("-output")
+                          << QLatin1StringView("basicOutput.out"))
         << QString()
         << QString::fromLatin1("basicOutput.out");
 
     QTest::newRow("Basic use of -output, query last")
         << 0
         << QByteArray("<e/>\n")
-        << (QStringList() << QLatin1String("-output")
-                          << QLatin1String("basicOutput2.out")
-                          << path + QLatin1String("oneElement.xq"))
+        << (QStringList() << QLatin1StringView("-output")
+                          << QLatin1StringView("basicOutput2.out")
+                          << path + QLatin1StringView("oneElement.xq"))
         << QString()
         << QString::fromLatin1("basicOutput2.out");
 
     QTest::newRow("A single query, that does not exist")
         << 2
         << QByteArray()
-        << (QStringList() << path + QLatin1String("doesNotExist.xq"))
+        << (QStringList() << path + QLatin1StringView("doesNotExist.xq"))
         << QString()
         << QString();
 
     QTest::newRow("Specify two identical query names")
         << 2
         << QByteArray()
-        << (QStringList() << path + QLatin1String("query.xq")
-                          << path + QLatin1String("query.xq"))
+        << (QStringList() << path + QLatin1StringView("query.xq")
+                          << path + QLatin1StringView("query.xq"))
         << QString()
         << QString();
 
@@ -463,10 +463,10 @@ void tst_XmlPatterns::xquerySupport_data() const
     QTest::newRow("Use -output twice")
         << 1
         << QByteArray()
-        << (QStringList() << QLatin1String("-output")
-                          << QLatin1String("output1")
-                          << QLatin1String("-output")
-                          << QLatin1String("output2"))
+        << (QStringList() << QLatin1StringView("-output")
+                          << QLatin1StringView("output1")
+                          << QLatin1StringView("-output")
+                          << QLatin1StringView("output2"))
         << QString()
         << QString();
 
@@ -477,9 +477,9 @@ void tst_XmlPatterns::xquerySupport_data() const
         QTest::newRow("-output with a non-writable file")
             << 1
             << QByteArray()
-            << (QStringList() << QLatin1String("-output")
+            << (QStringList() << QLatin1StringView("-output")
                               << filename
-                              << path + QLatin1String("onePlusOne.xq"))
+                              << path + QLatin1StringView("onePlusOne.xq"))
             << QString()
             << filename;
     }
@@ -494,9 +494,9 @@ void tst_XmlPatterns::xquerySupport_data() const
         QTest::newRow("Use -output on a file with existing content, to ensure we truncate, not append the content we produce.")
             << 0
             << QByteArray("2\n")
-            << (QStringList() << QLatin1String("-output")
+            << (QStringList() << QLatin1StringView("-output")
                               << outName
-                              << path + QLatin1String("onePlusOne.xq"))
+                              << path + QLatin1StringView("onePlusOne.xq"))
             << QString()
             << outName;
     }
@@ -504,155 +504,155 @@ void tst_XmlPatterns::xquerySupport_data() const
     QTest::newRow("one query, and a terminating dash at the end")
         << 0
         << QByteArray("2\n")
-        << (QStringList() << path + QLatin1String("onePlusOne.xq")
-                          << QLatin1String("-"))
+        << (QStringList() << path + QLatin1StringView("onePlusOne.xq")
+                          << QLatin1StringView("-"))
         << QString()
         << QString();
 
     QTest::newRow("one query, with a preceding dash")
         << 0
         << QByteArray("2\n")
-        << (QStringList() << QLatin1String("-")
-                          << path + QLatin1String("onePlusOne.xq"))
+        << (QStringList() << QLatin1StringView("-")
+                          << path + QLatin1StringView("onePlusOne.xq"))
         << QString()
         << QString();
 
     QTest::newRow("A single dash, that's invalid")
         << 1
         << QByteArray()
-        << (QStringList() << QLatin1String("-"))
+        << (QStringList() << QLatin1StringView("-"))
         << QString()
         << QString();
 
     QTest::newRow("Invoke -version")
         << 0
         << QByteArray()
-        << (QStringList() << QLatin1String("-version"))
+        << (QStringList() << QLatin1StringView("-version"))
         << QString()
         << QString();
 
     QTest::newRow("Unknown switch; -unknown-switch")
         << 1
         << QByteArray()
-        << (QStringList() << QLatin1String("-unknown-switch"))
+        << (QStringList() << QLatin1StringView("-unknown-switch"))
         << QString()
         << QString();
 
     QTest::newRow("Unknown switch; -d")
         << 1
         << QByteArray()
-        << (QStringList() << QLatin1String("-d"))
+        << (QStringList() << QLatin1StringView("-d"))
         << QString()
         << QString();
 
     QTest::newRow("Passing a single dash is insufficient")
         << 1
         << QByteArray()
-        << (QStringList() << QLatin1String("-"))
+        << (QStringList() << QLatin1StringView("-"))
         << QString()
         << QString();
 
     QTest::newRow("Passing two dashes, the last is interpreted as a file name")
         << 2
         << QByteArray()
-        << (QStringList() << QLatin1String("-")
-                          << QLatin1String("-"))
+        << (QStringList() << QLatin1StringView("-")
+                          << QLatin1StringView("-"))
         << QString()
         << QString();
 
     QTest::newRow("Pass three dashes, the two last gets interpreted as two query arguments")
         << 2
         << QByteArray()
-        << (QStringList() << QLatin1String("-")
-                          << QLatin1String("-")
-                          << QLatin1String("-"))
+        << (QStringList() << QLatin1StringView("-")
+                          << QLatin1StringView("-")
+                          << QLatin1StringView("-"))
         << QString()
         << QString();
 
     QTest::newRow("Load query via data: scheme")
         << 0
         << QByteArray("<e/>\n")
-        << (QStringList() << QLatin1String("-is-uri") << QLatin1String("data:application/xml,%3Ce%2F%3E"))
+        << (QStringList() << QLatin1StringView("-is-uri") << QLatin1StringView("data:application/xml,%3Ce%2F%3E"))
         << QString()
         << QString();
 
     QTest::newRow("Load query via FTP")
         << 0
         << QByteArray("This was received via FTP\n")
-        << (QStringList() << QLatin1String("-is-uri") << QString("ftp://" + QtNetworkSettings::serverName() + "/pub/qxmlquery/viaFtp.xq"))
+        << (QStringList() << QLatin1StringView("-is-uri") << QString("ftp://" + QtNetworkSettings::serverName() + "/pub/qxmlquery/viaFtp.xq"))
         << QString()
         << QString();
 
     QTest::newRow("Load query via HTTP")
         << 0
         << QByteArray("This was received via HTTP.\n")
-        << (QStringList() << QLatin1String("-is-uri") << QString("http://" + QtNetworkSettings::serverName() + "/qxmlquery/viaHttp.xq"))
+        << (QStringList() << QLatin1StringView("-is-uri") << QString("http://" + QtNetworkSettings::serverName() + "/qxmlquery/viaHttp.xq"))
         << QString()
         << QString();
 
     QTest::newRow("We don't support -format any longer")
         << 1
         << QByteArray()
-        << (QStringList() << QLatin1String("-format"))
+        << (QStringList() << QLatin1StringView("-format"))
         << QString()
         << QString();
 
     QTest::newRow("Run a query which evaluates to the empty sequence.")
         << 0
         << QByteArray("\n")
-        << (QStringList() << path + QLatin1String("emptySequence.xq"))
+        << (QStringList() << path + QLatin1StringView("emptySequence.xq"))
         << QString()
         << QString();
 
     QTest::newRow("Run a query which evaluates to a single document node with no children.")
         << 0
         << QByteArray("\n")
-        << (QStringList() << path + QLatin1String("onlyDocumentNode.xq"))
+        << (QStringList() << path + QLatin1StringView("onlyDocumentNode.xq"))
         << QString()
         << QString();
 
     QTest::newRow("Invoke with invalid -param value.")
         << 1
         << QByteArray()
-        << (QStringList() << path + QLatin1String("externalVariable.xq")
-                          << QLatin1String("-param")
-                          << QLatin1String("EqualSignIsMissing"))
+        << (QStringList() << path + QLatin1StringView("externalVariable.xq")
+                          << QLatin1StringView("-param")
+                          << QLatin1StringView("EqualSignIsMissing"))
         << QString()
         << QString();
 
     QTest::newRow("Invoke with colon in variable name.")
         << 1
         << QByteArray()
-        << (QStringList() << path + QLatin1String("externalVariable.xq")
-                          << QLatin1String("-param")
-                          << QLatin1String("xs:name=value"))
+        << (QStringList() << path + QLatin1StringView("externalVariable.xq")
+                          << QLatin1StringView("-param")
+                          << QLatin1StringView("xs:name=value"))
         << QString()
         << QString();
 
     QTest::newRow("Invoke with missing name in -param arg.")
         << 1
         << QByteArray()
-        << (QStringList() << path + QLatin1String("externalVariable.xq")
-                          << QLatin1String("-param")
-                          << QLatin1String("=value"))
+        << (QStringList() << path + QLatin1StringView("externalVariable.xq")
+                          << QLatin1StringView("-param")
+                          << QLatin1StringView("=value"))
         << QString()
         << QString();
 
     QTest::newRow("Invoke with -param that has two adjacent equal signs.")
         << 0
         << QByteArray("START =text END\n")
-        << (QStringList() << path + QLatin1String("externalStringVariable.xq")
-                          << QLatin1String("-param")
-                          << QLatin1String("externalString==text"))
+        << (QStringList() << path + QLatin1StringView("externalStringVariable.xq")
+                          << QLatin1StringView("-param")
+                          << QLatin1StringView("externalString==text"))
         << QString()
         << QString();
 
     QTest::newRow("Pass in an external variable, but the query doesn't use it.")
         << 0
         << QByteArray("2\n")
-        << (QStringList() << path + QLatin1String("onePlusOne.xq")
-                          << QLatin1String("-param")
-                          << QLatin1String("externalString==text"))
+        << (QStringList() << path + QLatin1StringView("onePlusOne.xq")
+                          << QLatin1StringView("-param")
+                          << QLatin1StringView("externalString==text"))
         << QString()
         << QString();
 
@@ -660,30 +660,30 @@ void tst_XmlPatterns::xquerySupport_data() const
     QTest::newRow("Invoke with -param that has no value.")
         << 0
         << QByteArray("START  END\n")
-        << (QStringList() << path + QLatin1String("externalStringVariable.xq")
-                          << QLatin1String("-param")
-                          << QLatin1String("externalString="))
+        << (QStringList() << path + QLatin1StringView("externalStringVariable.xq")
+                          << QLatin1StringView("-param")
+                          << QLatin1StringView("externalString="))
         << QString()
         << QString();
 
     QTest::newRow("Ensure -is-uri can appear after the query filename")
         << 0
         << QByteArray("<e/>\n")
-        << (QStringList() << QLatin1String("data:application/xml,%3Ce%2F%3E") << QLatin1String("-is-uri"))
+        << (QStringList() << QLatin1StringView("data:application/xml,%3Ce%2F%3E") << QLatin1StringView("-is-uri"))
         << QString()
         << QString();
 
     QTest::newRow("Use a native path")
         << 0
         << QByteArray("2\n")
-        << (QStringList() << QDir::toNativeSeparators(path + QLatin1String("onePlusOne.xq")))
+        << (QStringList() << QDir::toNativeSeparators(path + QLatin1StringView("onePlusOne.xq")))
         << QString()
         << QString();
 
     QTest::newRow("Pass in invalid URI")
         << 2
         << QByteArray()
-        << (QStringList() << QLatin1String("-is-uri") << QLatin1String("data:application/xml;base64,PGUvg==="))
+        << (QStringList() << QLatin1StringView("-is-uri") << QLatin1StringView("data:application/xml;base64,PGUvg==="))
         << QString()
         << QString();
 
@@ -691,8 +691,8 @@ void tst_XmlPatterns::xquerySupport_data() const
     QTest::newRow("A valid, existing query, followed by a bogus one")
         << 1
         << QByteArray()
-        << (QStringList() << path + QLatin1String("onePlusOne.xq")
-                          << path + QLatin1String("doesNotExist.xq"))
+        << (QStringList() << path + QLatin1StringView("onePlusOne.xq")
+                          << path + QLatin1StringView("doesNotExist.xq"))
         << QString()
         << QString();
         */
@@ -701,8 +701,8 @@ void tst_XmlPatterns::xquerySupport_data() const
     QTest::newRow("Specify two different query names")
         << 1
         << QByteArray()
-        << (QStringList() << path + QLatin1String("query1.xq")
-                          << path + QLatin1String("query2.xq"))
+        << (QStringList() << path + QLatin1StringView("query1.xq")
+                          << path + QLatin1StringView("query2.xq"))
         << QString()
         << QString();
         */
@@ -716,53 +716,53 @@ void tst_XmlPatterns::xquerySupport_data() const
     QTest::newRow("Use -param twice")
         << 0
         << QByteArray("param1 param2\n")
-        << (QStringList() << path + QLatin1String("twoVariables.xq")
-                          << QLatin1String("-param")
-                          << QLatin1String("var1=param1")
-                          << QLatin1String("-param")
-                          << QLatin1String("var2=param2"))
+        << (QStringList() << path + QLatin1StringView("twoVariables.xq")
+                          << QLatin1StringView("-param")
+                          << QLatin1StringView("var1=param1")
+                          << QLatin1StringView("-param")
+                          << QLatin1StringView("var2=param2"))
         << QString()
         << QString();
 
     QTest::newRow("Use -param thrice")
         << 0
         << QByteArray("param1 param2 third\n")
-        << (QStringList() << path + QLatin1String("threeVariables.xq")
-                          << QLatin1String("-param")
-                          << QLatin1String("var1=param1")
-                          << QLatin1String("-param")
-                          << QLatin1String("var2=param2")
-                          << QLatin1String("-param")
-                          << QLatin1String("var3=third"))
+        << (QStringList() << path + QLatin1StringView("threeVariables.xq")
+                          << QLatin1StringView("-param")
+                          << QLatin1StringView("var1=param1")
+                          << QLatin1StringView("-param")
+                          << QLatin1StringView("var2=param2")
+                          << QLatin1StringView("-param")
+                          << QLatin1StringView("var3=third"))
         << QString()
         << QString();
 
     QTest::newRow("Specify the same parameter twice, different values")
         << 1
         << QByteArray()
-        << (QStringList() << path + QLatin1String("onePlusOne.xq")
-                          << QLatin1String("-param")
-                          << QLatin1String("duplicated=param1")
-                          << QLatin1String("-param")
-                          << QLatin1String("duplicated=param2"))
+        << (QStringList() << path + QLatin1StringView("onePlusOne.xq")
+                          << QLatin1StringView("-param")
+                          << QLatin1StringView("duplicated=param1")
+                          << QLatin1StringView("-param")
+                          << QLatin1StringView("duplicated=param2"))
         << QString()
         << QString();
 
     QTest::newRow("Specify the same parameter twice, same values")
         << 1
         << QByteArray()
-        << (QStringList() << path + QLatin1String("onePlusOne.xq")
-                          << QLatin1String("-param")
-                          << QLatin1String("duplicated=param1")
-                          << QLatin1String("-param")
-                          << QLatin1String("duplicated=param2"))
+        << (QStringList() << path + QLatin1StringView("onePlusOne.xq")
+                          << QLatin1StringView("-param")
+                          << QLatin1StringView("duplicated=param1")
+                          << QLatin1StringView("-param")
+                          << QLatin1StringView("duplicated=param2"))
         << QString()
         << QString();
 
     QTest::newRow("Open a non-existing collection.")
         << 2
         << QByteArray()
-        << (QStringList() << path + QLatin1String("nonexistingCollection.xq"))
+        << (QStringList() << path + QLatin1StringView("nonexistingCollection.xq"))
         << QString()
         << QString();
 
@@ -826,7 +826,7 @@ void tst_XmlPatterns::stdoutFailure() const
 #else
     return; // TODO It's really hard to write testing code for this.
 
-    const QString outName(QLatin1String("stdoutFailure.out"));
+    const QString outName(QLatin1StringView("stdoutFailure.out"));
     createNonWritable(outName);
 
     QProcess process;
@@ -853,9 +853,9 @@ void tst_XmlPatterns::cleanupTestCase() const
 {
     /* Remove temporaries that we create. */
     QStringList files;
-    files << QLatin1String("existingContent.out")
-          << QLatin1String("notWritable.out")
-          << QLatin1String("output1");
+    files << QLatin1StringView("existingContent.out")
+          << QLatin1StringView("notWritable.out")
+          << QLatin1StringView("output1");
 
     for(int i = 0; i < files.count(); ++i)
     {
@@ -888,136 +888,136 @@ void tst_XmlPatterns::xsltSupport_data() const
     QTest::newRow("Evaluate a stylesheet, with no context document")
         << 1
         << QByteArray()
-        << (QStringList() << QLatin1String("stylesheets/onlyRootTemplate.xsl"))
+        << (QStringList() << QLatin1StringView("stylesheets/onlyRootTemplate.xsl"))
         << QString()
         << QString();
 
     QTest::newRow("Pass in a stylesheet file which contains an XQuery query")
         << 2
         << QByteArray()
-        << (QStringList() << spath + QLatin1String("queryAsStylesheet.xsl")
-                          << qpath + QLatin1String("simpleDocument.xml"))
+        << (QStringList() << spath + QLatin1StringView("queryAsStylesheet.xsl")
+                          << qpath + QLatin1StringView("simpleDocument.xml"))
         << QString()
         << QString();
 
     QTest::newRow("Pass in a stylesheet file and a focus file which doesn't exist")
         << 2
         << QByteArray()
-        << (QStringList() << QLatin1String("stylesheets/onlyRootTemplate.xsl")
-                          << QLatin1String("doesNotExist.Nope.xml"))
+        << (QStringList() << QLatin1StringView("stylesheets/onlyRootTemplate.xsl")
+                          << QLatin1StringView("doesNotExist.Nope.xml"))
         << QString()
         << QString();
 
     QTest::newRow("-initial-template doesn't work with XQueries.")
         << 1
         << QByteArray()
-        << (QStringList() << QLatin1String("-initial-template")
-                          << QLatin1String("name")
-                          << qpath + QLatin1String("onePlusOne.xq"))
+        << (QStringList() << QLatin1StringView("-initial-template")
+                          << QLatin1StringView("name")
+                          << qpath + QLatin1StringView("onePlusOne.xq"))
         << QString()
         << QString();
 
     QTest::newRow("-initial-template must be followed by a value")
         << 1
         << QByteArray()
-        << (QStringList() << QLatin1String("-initial-template")
-                          << QLatin1String("stylesheets/onlyRootTemplate.xsl"))
+        << (QStringList() << QLatin1StringView("-initial-template")
+                          << QLatin1StringView("stylesheets/onlyRootTemplate.xsl"))
         << QString()
         << QString();
 
     QTest::newRow("-initial-template must be followed by a value(#2)")
         << 1
         << QByteArray()
-        << (QStringList() << QLatin1String("stylesheets/onlyRootTemplate.xsl")
-                          << QLatin1String("-initial-template"))
+        << (QStringList() << QLatin1StringView("stylesheets/onlyRootTemplate.xsl")
+                          << QLatin1StringView("-initial-template"))
         << QString()
         << QString();
 
     QTest::newRow("Invalid template name")
         << 1
         << QByteArray()
-        << (QStringList() << QLatin1String("-initial-template")
-                          << QLatin1String("abc:def")
-                          << QLatin1String("stylesheets/onlyRootTemplate.xsl"))
+        << (QStringList() << QLatin1StringView("-initial-template")
+                          << QLatin1StringView("abc:def")
+                          << QLatin1StringView("stylesheets/onlyRootTemplate.xsl"))
         << QString()
         << QString();
 
     QTest::newRow("Specify a named template, that exists")
         << 0
         << QByteArray("named-template")
-        << (QStringList() << QLatin1String("-no-format")
-                          << QLatin1String("-initial-template")
-                          << QLatin1String("main")
-                          << spath + QLatin1String("namedAndRootTemplate.xsl")
-                          << spath + QLatin1String("documentElement.xml"))
+        << (QStringList() << QLatin1StringView("-no-format")
+                          << QLatin1StringView("-initial-template")
+                          << QLatin1StringView("main")
+                          << spath + QLatin1StringView("namedAndRootTemplate.xsl")
+                          << spath + QLatin1StringView("documentElement.xml"))
         << QString()
         << QString();
 
     QTest::newRow("Specify a named template, that does not exists")
         << 0
         << QByteArray("root-template")
-        << (QStringList() << QLatin1String("-no-format")
-                          << QLatin1String("-initial-template")
-                          << QLatin1String("no-template-by-this-name")
-                          << spath + QLatin1String("namedAndRootTemplate.xsl")
-                          << spath + QLatin1String("documentElement.xml"))
+        << (QStringList() << QLatin1StringView("-no-format")
+                          << QLatin1StringView("-initial-template")
+                          << QLatin1StringView("no-template-by-this-name")
+                          << spath + QLatin1StringView("namedAndRootTemplate.xsl")
+                          << spath + QLatin1StringView("documentElement.xml"))
         << QString()
         << QString();
 
     QTest::newRow("Call a named template, and use no focus.")
         << 0
         << QByteArray("named-template")
-        << (QStringList() << QLatin1String("-no-format")
-                          << QLatin1String("-initial-template")
-                          << QLatin1String("main")
-                          << spath + QLatin1String("namedAndRootTemplate.xsl"))
+        << (QStringList() << QLatin1StringView("-no-format")
+                          << QLatin1StringView("-initial-template")
+                          << QLatin1StringView("main")
+                          << spath + QLatin1StringView("namedAndRootTemplate.xsl"))
         << QString()
         << QString();
 
     QTest::newRow("Call a named template, and use no focus.")
         << 0
         << QByteArray("namespaced-template")
-        << (QStringList() << QLatin1String("-no-format")
-                          << QLatin1String("-initial-template")
-                          << QLatin1String("{http://example.com/NS}main")
-                          << spath + QLatin1String("namedAndRootTemplate.xsl"))
+        << (QStringList() << QLatin1StringView("-no-format")
+                          << QLatin1StringView("-initial-template")
+                          << QLatin1StringView("{http://example.com/NS}main")
+                          << spath + QLatin1StringView("namedAndRootTemplate.xsl"))
         << QString()
         << QString();
 
     QTest::newRow("Invoke a template, and use/pass parameters.")
         << 0
         << QByteArray("defParam overridedDefaultedParam implicitlyRequiredValue\n")
-        << (QStringList() << QLatin1String("-initial-template")
-                          << QLatin1String("main")
-                          << spath + QLatin1String("useParameters.xsl")
-                          << QLatin1String("-param")
-                          << QLatin1String("overridedDefaultedParam=overridedDefaultedParam")
-                          << QLatin1String("-param")
-                          << QLatin1String("implicitlyRequiredValue=implicitlyRequiredValue"))
+        << (QStringList() << QLatin1StringView("-initial-template")
+                          << QLatin1StringView("main")
+                          << spath + QLatin1StringView("useParameters.xsl")
+                          << QLatin1StringView("-param")
+                          << QLatin1StringView("overridedDefaultedParam=overridedDefaultedParam")
+                          << QLatin1StringView("-param")
+                          << QLatin1StringView("implicitlyRequiredValue=implicitlyRequiredValue"))
         << QString()
         << QString();
 
     QTest::newRow("Use a simplified stylesheet module")
         << 0
         << QByteArray("<output>some text</output>\n")
-        << (QStringList() << spath + QLatin1String("simplifiedStylesheetModule.xsl")
-                          << spath + QLatin1String("simplifiedStylesheetModule.xml"))
+        << (QStringList() << spath + QLatin1StringView("simplifiedStylesheetModule.xsl")
+                          << spath + QLatin1StringView("simplifiedStylesheetModule.xml"))
         << QString()
         << QString();
 
     QTest::newRow("Not well-formed stylesheet, causes crash in coloring code.")
         << 2
         << QByteArray()
-        << (QStringList() << spath + QLatin1String("notWellformed.xsl")
-                          << qpath + QLatin1String("simpleDocument.xml"))
+        << (QStringList() << spath + QLatin1StringView("notWellformed.xsl")
+                          << qpath + QLatin1StringView("simpleDocument.xml"))
         << QString()
         << QString();
 
     QTest::newRow("Not well-formed instance document, causes crash in coloring code.")
         << 2
         << QByteArray()
-        << (QStringList() << spath + QLatin1String("bool070.xsl")
-                          << spath + QLatin1String("bool070.xml"))
+        << (QStringList() << spath + QLatin1StringView("bool070.xsl")
+                          << spath + QLatin1StringView("bool070.xml"))
         << QString()
         << QString();
 
@@ -1039,12 +1039,12 @@ QString tst_XmlPatterns::filterStderr(const QString &in)
     static const QList<QRegExp> irrelevant = QList<QRegExp>()
 
         // specific filenames
-        << QRegExp(QLatin1String("file:\\/\\/.*(\\.xq|\\.gccxml|\\.xml|\\.xsl|-)(,|:)"))
+        << QRegExp(QLatin1StringView("file:\\/\\/.*(\\.xq|\\.gccxml|\\.xml|\\.xsl|-)(,|:)"))
 
         // warning messages about old-style plugins
-        << QRegExp(QLatin1String("Old plugin format found in lib [^\n]+\n"))
-        << QRegExp(QLatin1String("Qt plugin loader: Compatibility plugin [^\n]+\n"))
-        << QRegExp(QLatin1String("Unimplemented code.\n"))
+        << QRegExp(QLatin1StringView("Old plugin format found in lib [^\n]+\n"))
+        << QRegExp(QLatin1StringView("Qt plugin loader: Compatibility plugin [^\n]+\n"))
+        << QRegExp(QLatin1StringView("Unimplemented code.\n"))
     ;
 
     QString out = in;

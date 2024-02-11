@@ -50,9 +50,9 @@
 #ifndef Patternist_AbstractDuration_H
 #define Patternist_AbstractDuration_H
 
-#include <QRegExp>
+#include <QRegularExpression>
 
-#include <private/qitem_p.h>
+#include <qitem_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -81,7 +81,7 @@ namespace QPatternist
 
         /**
          * @short Acts as a mapping table for AbstractDuration::create()
-         * and describes where certain fields in a QRegExp pattern can be found
+         * and describes where certain fields in a QRegularExpression pattern can be found
          * for a particular W3C XML Schema duration type.
          *
          * @author Frans Englich <frans.englich@nokia.com>
@@ -90,7 +90,7 @@ namespace QPatternist
         class CaptureTable
         {
         public:
-            CaptureTable(const QRegExp &exp,
+            CaptureTable(const QRegularExpression &exp,
                          const qint8 yearP,
                          const qint8 monthP,
                          const qint8 dayP = -1,
@@ -112,7 +112,7 @@ namespace QPatternist
                 Q_ASSERT(yearP == -1 || yearP == 2);
             }
 
-            QRegExp regExp;
+            QRegularExpression regExp;
             const qint8 year;
             const qint8 month;
             const qint8 day;

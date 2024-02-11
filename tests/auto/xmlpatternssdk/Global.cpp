@@ -32,10 +32,10 @@
 
 using namespace QPatternistSDK;
 
-const QString Global::xqtsCatalogNS     (QLatin1String("http://www.w3.org/2005/02/query-test-XQTSCatalog"));
-const QString Global::xqtsResultNS      (QLatin1String("http://www.w3.org/2005/02/query-test-XQTSResult"));
-const QString Global::xsltsCatalogNS    (QLatin1String("http://www.w3.org/2005/05/xslt20-test-catalog"));
-const QString Global::organizationName  (QLatin1String("Patternist Team"));
+const QString Global::xqtsCatalogNS     (QLatin1StringView("http://www.w3.org/2005/02/query-test-XQTSCatalog"));
+const QString Global::xqtsResultNS      (QLatin1StringView("http://www.w3.org/2005/02/query-test-XQTSResult"));
+const QString Global::xsltsCatalogNS    (QLatin1StringView("http://www.w3.org/2005/05/xslt20-test-catalog"));
+const QString Global::organizationName  (QLatin1StringView("Patternist Team"));
 const qint16  Global::versionNumber     (0x01);
 
 static QXmlNamePool s_namePool;
@@ -54,12 +54,12 @@ bool Global::readBoolean(const QString &value)
 {
     const QString normd(value.simplified());
 
-    if(normd == QLatin1String("true") ||
-       normd == QLatin1String("1"))
+    if(normd == QLatin1StringView("true") ||
+       normd == QLatin1StringView("1"))
         return true;
     else if(normd.isEmpty() ||
-            normd == QLatin1String("false") ||
-            normd == QLatin1String("0"))
+            normd == QLatin1StringView("false") ||
+            normd == QLatin1StringView("0"))
         return false;
 
     Q_ASSERT_X(false, Q_FUNC_INFO,

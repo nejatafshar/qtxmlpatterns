@@ -47,9 +47,9 @@ QT_BEGIN_NAMESPACE
 #ifndef Q_XMLPATTERNS_EXPORT
 #  ifndef QT_STATIC
 #    if defined(QT_BUILD_XMLPATTERNS_LIB)
-#      define Q_XMLPATTERNS_EXPORT Q_DECL_EXPORT
+#      define Q_XMLPATTERNS_EXPORT
 #    else
-#      define Q_XMLPATTERNS_EXPORT Q_DECL_IMPORT
+#      define Q_XMLPATTERNS_EXPORT
 #    endif
 #  else
 #    define Q_XMLPATTERNS_EXPORT

@@ -52,8 +52,8 @@
 
 #include <QHash>
 
-#include <private/qcoloroutput_p.h>
-#include <QAbstractMessageHandler>
+#include <qcoloroutput_p.h>
+#include <qabstractmessagehandler.h>
 
 QT_BEGIN_NAMESPACE
 

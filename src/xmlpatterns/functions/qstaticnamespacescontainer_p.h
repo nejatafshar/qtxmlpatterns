@@ -50,7 +50,7 @@
 #ifndef Patternist_StaticNamespacesContainer_H
 #define Patternist_StaticNamespacesContainer_H
 
-#include <private/qfunctioncall_p.h>
+#include <qfunctioncall_p.h>
 
 QT_BEGIN_NAMESPACE
 

@@ -177,7 +177,7 @@ void DocumentProjector::namespaceBinding(const QXmlName &nb)
 
 void DocumentProjector::comment(const QString &value)
 {
-    Q_ASSERT_X(!value.contains(QLatin1String("--")), Q_FUNC_INFO,
+    Q_ASSERT_X(!value.contains(QLatin1StringView("--")), Q_FUNC_INFO,
                "Invalid input; it's the caller's responsibility to ensure the input is correct.");
     Q_UNUSED(value);
 }
@@ -190,7 +190,7 @@ void DocumentProjector::characters(const QStringRef &value)
 void DocumentProjector::processingInstruction(const QXmlName &name,
                                               const QString &value)
 {
-    Q_ASSERT_X(!value.contains(QLatin1String("?>")), Q_FUNC_INFO,
+    Q_ASSERT_X(!value.contains(QLatin1StringView("?>")), Q_FUNC_INFO,
                "Invalid input; it's the caller's responsibility to ensure the input is correct.");
     Q_UNUSED(name);
     Q_UNUSED(value);

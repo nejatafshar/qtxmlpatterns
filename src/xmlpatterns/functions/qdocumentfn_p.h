@@ -50,7 +50,7 @@
 #ifndef Patternist_DocumentFN_H
 #define Patternist_DocumentFN_H
 
-#include <private/qfunctioncall_p.h>
+#include <qfunctioncall_p.h>
 
 QT_BEGIN_NAMESPACE
 

@@ -50,8 +50,8 @@
 #ifndef Patternist_QNameValue_H
 #define Patternist_QNameValue_H
 
-#include <private/qitem_p.h>
-#include <QXmlName>
+#include <qitem_p.h>
+#include <qxmlname.h>
 
 QT_BEGIN_NAMESPACE
 

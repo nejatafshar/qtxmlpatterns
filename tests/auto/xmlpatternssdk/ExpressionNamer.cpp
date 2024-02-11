@@ -105,7 +105,7 @@ using namespace QPatternistSDK;
 QPatternist::ExpressionVisitorResult::Ptr ExpressionNamer::visit(const QPatternist::cls *) const    \
 {                                                                                                   \
     return QPatternist::ExpressionVisitorResult::Ptr                                                \
-           (new ExpressionInfo(QLatin1String(#cls), QString()));                                    \
+           (new ExpressionInfo(QLatin1StringView(#cls), QString()));                                    \
 }
 
 implClass(AndExpression)
@@ -162,8 +162,8 @@ implClass(ValidationError)
 QPatternist::ExpressionVisitorResult::Ptr ExpressionNamer::visit(const QPatternist::name *i) const    \
 {                                                                                                   \
     return QPatternist::ExpressionVisitorResult::Ptr                                                 \
-           (new ExpressionInfo(QLatin1String(#name),                                                \
-                               QString(QLatin1String("Slot: %1")).arg(i->slot())));                 \
+           (new ExpressionInfo(QLatin1StringView(#name),                                                \
+                               QString(QLatin1StringView("Slot: %1")).arg(i->slot())));                 \
 }
 implVarRef(RangeVariableReference)
 implVarRef(ArgumentReference)
@@ -175,7 +175,7 @@ implVarRef(PositionalVariableReference)
 #define implTypeClass(cls)                                                                          \
 QPatternist::ExpressionVisitorResult::Ptr ExpressionNamer::visit(const QPatternist::cls *i) const     \
 {                                                                                                   \
-    return QPatternist::ExpressionVisitorResult::Ptr(new ExpressionInfo(QLatin1String(#cls),         \
+    return QPatternist::ExpressionVisitorResult::Ptr(new ExpressionInfo(QLatin1StringView(#cls),         \
                                                 i->targetType()->displayName(Global::namePool()))); \
 }
 
@@ -186,7 +186,7 @@ implTypeClass(CastableAs)
 /* Type related classes which have a targetType() function. */
 QPatternist::ExpressionVisitorResult::Ptr ExpressionNamer::visit(const QPatternist::CastAs *i) const
 {
-    return QPatternist::ExpressionVisitorResult::Ptr(new ExpressionInfo(QLatin1String("CastAs"),
+    return QPatternist::ExpressionVisitorResult::Ptr(new ExpressionInfo(QLatin1StringView("CastAs"),
                                                 i->targetSequenceType()->displayName(Global::namePool())));
 }
 
@@ -194,7 +194,7 @@ QPatternist::ExpressionVisitorResult::Ptr ExpressionNamer::visit(const QPatterni
 #define implOPClass(cls, compClass)                                                                     \
 QPatternist::ExpressionVisitorResult::Ptr ExpressionNamer::visit(const QPatternist::cls *i) const         \
 {                                                                                                       \
-    return QPatternist::ExpressionVisitorResult::Ptr(new ExpressionInfo(QLatin1String(#cls),             \
+    return QPatternist::ExpressionVisitorResult::Ptr(new ExpressionInfo(QLatin1StringView(#cls),             \
                                                 QPatternist::compClass::displayName(i->operatorID())));  \
 }
 
@@ -208,7 +208,7 @@ implOPClass(CombineNodes,            CombineNodes)
 #define implCompClass(cls, type)                                                                \
 QPatternist::ExpressionVisitorResult::Ptr ExpressionNamer::visit(const QPatternist::cls *i) const \
 {                                                                                               \
-    return QPatternist::ExpressionVisitorResult::Ptr(new ExpressionInfo(QLatin1String(#cls),     \
+    return QPatternist::ExpressionVisitorResult::Ptr(new ExpressionInfo(QLatin1StringView(#cls),     \
                                     QPatternist::AtomicComparator::displayName(i->operatorID(),  \
                                                     QPatternist::AtomicComparator::type)));      \
 }
@@ -220,7 +220,7 @@ implCompClass(ValueComparison,      AsValueComparison)
 QPatternist::ExpressionVisitorResult::Ptr ExpressionNamer::visit(const QPatternist::FunctionCall *i) const
 {
     return QPatternist::ExpressionVisitorResult::Ptr
-           (new ExpressionInfo(QLatin1String("FunctionCall"),
+           (new ExpressionInfo(QLatin1StringView("FunctionCall"),
                                Global::namePool()->displayName(i->signature()->name())));
 }
 
@@ -233,9 +233,9 @@ QPatternist::ExpressionVisitorResult::Ptr ExpressionNamer::visit(const QPatterni
 
 QPatternist::ExpressionVisitorResult::Ptr ExpressionNamer::visit(const QPatternist::AxisStep *i) const
 {
-    return QPatternist::ExpressionVisitorResult::Ptr(new ExpressionInfo(QLatin1String("AxisStep"),
+    return QPatternist::ExpressionVisitorResult::Ptr(new ExpressionInfo(QLatin1StringView("AxisStep"),
                                                                         QPatternist::AxisStep::axisName(i->axis()) +
-                                                                        QLatin1String("::") +
+                                                                        QLatin1StringView("::") +
                                                                         i->nodeTest()->displayName(Global::namePool())));
 
 }
@@ -243,21 +243,21 @@ QPatternist::ExpressionVisitorResult::Ptr ExpressionNamer::visit(const QPatterni
 
 QPatternist::ExpressionVisitorResult::Ptr ExpressionNamer::visit(const QPatternist::EvaluationCache<true> *i) const
 {
-    return QPatternist::ExpressionVisitorResult::Ptr(new ExpressionInfo(QLatin1String("EvaluationCache<IsForGlobal=true>"),
-                                                                        QLatin1String("Slot: ") + QString::number(i->slot())));
+    return QPatternist::ExpressionVisitorResult::Ptr(new ExpressionInfo(QLatin1StringView("EvaluationCache<IsForGlobal=true>"),
+                                                                        QLatin1StringView("Slot: ") + QString::number(i->slot())));
 
 }
 
 QPatternist::ExpressionVisitorResult::Ptr ExpressionNamer::visit(const QPatternist::EvaluationCache<false> *i) const
 {
-    return QPatternist::ExpressionVisitorResult::Ptr(new ExpressionInfo(QLatin1String("EvaluationCache<IsForGlobal=false>"),
-                                                                        QLatin1String("Slot: ") + QString::number(i->slot())));
+    return QPatternist::ExpressionVisitorResult::Ptr(new ExpressionInfo(QLatin1StringView("EvaluationCache<IsForGlobal=false>"),
+                                                                        QLatin1StringView("Slot: ") + QString::number(i->slot())));
 
 }
 
 QPatternist::ExpressionVisitorResult::Ptr ExpressionNamer::visit(const QPatternist::NamespaceConstructor *i) const
 {
-    return QPatternist::ExpressionVisitorResult::Ptr(new ExpressionInfo(QLatin1String("NamespaceConstructor"),
+    return QPatternist::ExpressionVisitorResult::Ptr(new ExpressionInfo(QLatin1StringView("NamespaceConstructor"),
                                                                         Global::namePool()->stringForPrefix(i->namespaceBinding().prefix()) +
                                                                         QLatin1Char('=') +
                                                                         Global::namePool()->stringForNamespace(i->namespaceBinding().namespaceURI())));
@@ -274,29 +274,29 @@ QPatternist::ExpressionVisitorResult::Ptr ExpressionNamer::visit(const QPatterni
     {
         case QPatternist::Path::XSLTForEach:
         {
-            type = QLatin1String("XSLTForEach");
+            type = QLatin1StringView("XSLTForEach");
             break;
         }
         case QPatternist::Path::RegularPath:
         {
-            type = QLatin1String("RegularPath");
+            type = QLatin1StringView("RegularPath");
             break;
         }
         case QPatternist::Path::ForApplyTemplate:
         {
-            type = QLatin1String("ForApplyTemplate");
+            type = QLatin1StringView("ForApplyTemplate");
             break;
         }
     }
 
-    return QPatternist::ExpressionVisitorResult::Ptr(new ExpressionInfo(QLatin1String("Path"), type));
+    return QPatternist::ExpressionVisitorResult::Ptr(new ExpressionInfo(QLatin1StringView("Path"), type));
 }
 
 QPatternist::ExpressionVisitorResult::Ptr ExpressionNamer::visit(const QPatternist::ApplyTemplate *path) const
 {
     const QPatternist::TemplateMode::Ptr mode(path->mode());
     return QPatternist::ExpressionVisitorResult::Ptr
-           (new ExpressionInfo(QLatin1String("ApplyTemplate"), mode ? Global::namePool()->displayName(mode->name()) : QString::fromLatin1("#current")));
+           (new ExpressionInfo(QLatin1StringView("ApplyTemplate"), mode ? Global::namePool()->displayName(mode->name()) : QString::fromLatin1("#current")));
 }
 
 // vim: et:ts=4:sw=4:sts=4

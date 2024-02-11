@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     };
 
     const QCoreApplication app(argc, argv);
-    QCoreApplication::setApplicationName(QLatin1String("xmlpatternsvalidator"));
+    QCoreApplication::setApplicationName(QLatin1StringView("xmlpatternsvalidator"));
 
     QStringList arguments = QCoreApplication::arguments();
     if (arguments.size() != 2 && arguments.size() != 3) {
@@ -75,7 +75,7 @@ int main(int argc, char **argv)
         if (arguments.size() == 2) {
             // either it is a schema or instance document
 
-            if (arguments[1].toLower().endsWith(QLatin1String(".xsd"))) {
+            if (arguments[1].toLower().endsWith(QLatin1StringView(".xsd"))) {
                 schemaUri = url;
                 mode = SchemaOnlyMode;
             } else {

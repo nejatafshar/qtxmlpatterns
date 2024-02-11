@@ -53,10 +53,10 @@
 #include <QHash>
 #include <QUrl>
 #include <QVector>
-#include <QXmlName>
+#include <qxmlname.h>
 
-#include <private/qitem_p.h>
-#include <private/qnamepool_p.h>
+#include <qitem_p.h>
+#include <qnamepool_p.h>
 
 QT_BEGIN_NAMESPACE
 

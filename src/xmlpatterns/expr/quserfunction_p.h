@@ -53,9 +53,9 @@
 #include <QSharedData>
 #include <qcontainerfwd.h>
 
-#include <private/qexpression_p.h>
-#include <private/qfunctionsignature_p.h>
-#include <private/qvariabledeclaration_p.h>
+#include <qexpression_p.h>
+#include <qfunctionsignature_p.h>
+#include <qvariabledeclaration_p.h>
 
 QT_BEGIN_NAMESPACE
 

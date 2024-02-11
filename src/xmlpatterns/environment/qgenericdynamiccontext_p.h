@@ -53,9 +53,9 @@
 #include <QDateTime>
 #include <QVector>
 
-#include <private/qdaytimeduration_p.h>
-#include <private/qstackcontextbase_p.h>
-#include <private/qexpression_p.h>
+#include <qdaytimeduration_p.h>
+#include <qstackcontextbase_p.h>
+#include <qexpression_p.h>
 
 QT_BEGIN_NAMESPACE
 

@@ -51,7 +51,7 @@
 #define Patternist_BuiltinTypesFactory_H
 
 #include <QHash>
-#include <private/qschematypefactory_p.h>
+#include <qschematypefactory_p.h>
 
 QT_BEGIN_NAMESPACE
 

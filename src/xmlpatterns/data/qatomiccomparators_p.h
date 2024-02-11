@@ -50,9 +50,9 @@
 #ifndef Patternist_AtomicComparators_H
 #define Patternist_AtomicComparators_H
 
-#include <private/qabstractfloat_p.h>
-#include <private/qatomiccomparator_p.h>
-#include <private/qprimitives_p.h>
+#include <qabstractfloat_p.h>
+#include <qatomiccomparator_p.h>
+#include <qprimitives_p.h>
 
 /**
  * @file

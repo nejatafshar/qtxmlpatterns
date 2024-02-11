@@ -50,7 +50,7 @@
 #ifndef Patternist_OrExpression_H
 #define Patternist_OrExpression_H
 
-#include <private/qandexpression_p.h>
+#include <qandexpression_p.h>
 
 QT_BEGIN_NAMESPACE
 

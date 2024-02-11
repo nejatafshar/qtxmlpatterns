@@ -63,7 +63,7 @@ bool EmptySequenceType::itemMatches(const Item &) const
 
 QString EmptySequenceType::displayName(const NamePool::Ptr &) const
 {
-    return QLatin1String("empty-sequence()");
+    return QLatin1StringView("empty-sequence()");
 }
 
 ItemType::Ptr EmptySequenceType::xdtSuperType() const

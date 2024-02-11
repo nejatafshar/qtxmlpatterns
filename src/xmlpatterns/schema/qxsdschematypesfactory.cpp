@@ -63,14 +63,14 @@ XsdSchemaTypesFactory::XsdSchemaTypesFactory(const NamePool::Ptr &namePool)
 
     const XsdFacet::Ptr minLengthFacet(new XsdFacet());
     minLengthFacet->setType(XsdFacet::MinimumLength);
-    minLengthFacet->setValue(DerivedInteger<TypeNonNegativeInteger>::fromLexical(namePool, QLatin1String("1")));
+    minLengthFacet->setValue(DerivedInteger<TypeNonNegativeInteger>::fromLexical(namePool, QLatin1StringView("1")));
 
     XsdFacet::Hash facets;
     facets.insert(whiteSpaceFacet->type(), whiteSpaceFacet);
     facets.insert(minLengthFacet->type(), minLengthFacet);
 
     {
-        const QXmlName typeName = m_namePool->allocateQName(CommonNamespaces::WXS, QLatin1String("NMTOKENS"));
+        const QXmlName typeName = m_namePool->allocateQName(CommonNamespaces::WXS, QLatin1StringView("NMTOKENS"));
         const XsdSimpleType::Ptr type(new XsdSimpleType());
         type->setName(typeName);
         type->setWxsSuperType(BuiltinTypes::xsAnySimpleType);
@@ -81,7 +81,7 @@ XsdSchemaTypesFactory::XsdSchemaTypesFactory(const NamePool::Ptr &namePool)
         m_types.insert(typeName, type);
     }
     {
-        const QXmlName typeName = m_namePool->allocateQName(CommonNamespaces::WXS, QLatin1String("IDREFS"));
+        const QXmlName typeName = m_namePool->allocateQName(CommonNamespaces::WXS, QLatin1StringView("IDREFS"));
         const XsdSimpleType::Ptr type(new XsdSimpleType());
         type->setName(typeName);
         type->setWxsSuperType(BuiltinTypes::xsAnySimpleType);
@@ -92,7 +92,7 @@ XsdSchemaTypesFactory::XsdSchemaTypesFactory(const NamePool::Ptr &namePool)
         m_types.insert(typeName, type);
     }
     {
-        const QXmlName typeName = m_namePool->allocateQName(CommonNamespaces::WXS, QLatin1String("ENTITIES"));
+        const QXmlName typeName = m_namePool->allocateQName(CommonNamespaces::WXS, QLatin1StringView("ENTITIES"));
         const XsdSimpleType::Ptr type(new XsdSimpleType());
         type->setName(typeName);
         type->setWxsSuperType(BuiltinTypes::xsAnySimpleType);

@@ -50,7 +50,7 @@
 #ifndef Patternist_Date_H
 #define Patternist_Date_H
 
-#include <private/qabstractdatetime_p.h>
+#include <qabstractdatetime_p.h>
 
 QT_BEGIN_NAMESPACE
 

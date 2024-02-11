@@ -922,10 +922,10 @@ Class QStringView
    base size=16 base align=8
 QStringView (0x0x7fdc39f65420) 0
 
-Class QLatin1String
+Class QLatin1StringView
    size=16 align=8
    base size=16 base align=8
-QLatin1String (0x0x7fdc39fea2a0) 0
+QLatin1StringView (0x0x7fdc39fea2a0) 0
 
 Class QString::Null
    size=1 align=1

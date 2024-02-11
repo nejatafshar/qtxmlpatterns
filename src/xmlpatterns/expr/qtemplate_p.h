@@ -53,11 +53,11 @@
 #include <QSharedData>
 #include <QVector>
 
-#include <private/qdynamiccontext_p.h>
-#include <private/qexpression_p.h>
-#include <private/qsourcelocationreflection_p.h>
-#include <private/qtemplateinvoker_p.h>
-#include <private/qvariabledeclaration_p.h>
+#include <qdynamiccontext_p.h>
+#include <qexpression_p.h>
+#include <qsourcelocationreflection_p.h>
+#include <qtemplateinvoker_p.h>
+#include <qvariabledeclaration_p.h>
 
 QT_BEGIN_NAMESPACE
 

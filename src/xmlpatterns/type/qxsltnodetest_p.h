@@ -50,7 +50,7 @@
 #ifndef Patternist_XSLTNodeTest_H
 #define Patternist_XSLTNodeTest_H
 
-#include <private/qanynodetype_p.h>
+#include <qanynodetype_p.h>
 
 QT_BEGIN_NAMESPACE
 

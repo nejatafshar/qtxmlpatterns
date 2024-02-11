@@ -39,30 +39,30 @@
 
 using namespace QPatternistSDK;
 
-TestResultView::TestResultView(QWidget *const p) : QDockWidget(QLatin1String("Test Result View"), p)
+TestResultView::TestResultView(QWidget *const p) : QDockWidget(QLatin1StringView("Test Result View"), p)
 {
     Q_ASSERT(p);
-    setObjectName(QLatin1String("TestResultView"));
+    setObjectName(QLatin1StringView("TestResultView"));
     setWidget(new QWidget());
     setupUi(widget());
 
     QStringList astColumns;
-    astColumns << QLatin1String("Node Name")
-               << QLatin1String("Details")
-               << QLatin1String("Static Type")
-               << QLatin1String("Required Type");
+    astColumns << QLatin1StringView("Node Name")
+               << QLatin1StringView("Details")
+               << QLatin1StringView("Static Type")
+               << QLatin1StringView("Required Type");
     astView->setModel(new TreeModel(astColumns, this));
 
     QStringList itemColumns;
-    itemColumns << QLatin1String("#")
-                << QLatin1String("Value")
-                << QLatin1String("Type");
+    itemColumns << QLatin1StringView("#")
+                << QLatin1StringView("Value")
+                << QLatin1StringView("Type");
     itemListResult->setModel(new TreeModel(itemColumns, this));
 
     QStringList errColumns;
-    errColumns << QLatin1String("Severity")
-               << QLatin1String("Error Code")
-               << QLatin1String("Message");
+    errColumns << QLatin1StringView("Severity")
+               << QLatin1StringView("Error Code")
+               << QLatin1StringView("Message");
     messageOutput->setModel(new TreeModel(errColumns, this));
     messageOutput->horizontalHeader()->setStretchLastSection(true);
 }
@@ -77,7 +77,7 @@ void TestResultView::displayTestResult(const TestResult *const result)
 
     /* ------- the Test Status Label --------- */
     resultStatus->setText(result->status() ? TestResult::displayName(result->status())
-                                           : QLatin1String("Not Applicable"));
+                                           : QLatin1StringView("Not Applicable"));
     /* --------------------------------------- */
 
     /* ------------ the AST View ------------- */

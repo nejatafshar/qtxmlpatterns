@@ -50,7 +50,7 @@
 #ifndef Patternist_VariableReference_H
 #define Patternist_VariableReference_H
 
-#include <private/qemptycontainer_p.h>
+#include <qemptycontainer_p.h>
 #include <qcontainerfwd.h>
 
 QT_BEGIN_NAMESPACE

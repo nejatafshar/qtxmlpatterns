@@ -40,7 +40,7 @@
 #ifndef QABSTRACTMESSAGEHANDLER_H
 #define QABSTRACTMESSAGEHANDLER_H
 
-#include <QtXmlPatterns/QSourceLocation>
+#include <qsourcelocation.h>
 #include <QtCore/QObject>
 
 QT_BEGIN_NAMESPACE

@@ -57,7 +57,7 @@ MatchesFN::MatchesFN() : PatternPlatform(2)
 
 Item MatchesFN::evaluateSingleton(const DynamicContext::Ptr &context) const
 {
-    QRegExp regexp(pattern(context));
+    QRegularExpression regexp(pattern(context));
     QString input;
 
     const Item arg(m_operands.first()->evaluateSingleton(context));
@@ -73,7 +73,7 @@ ReplaceFN::ReplaceFN() : PatternPlatform(3)
 
 Item ReplaceFN::evaluateSingleton(const DynamicContext::Ptr &context) const
 {
-    QRegExp regexp(pattern(context));
+    QRegularExpression regexp(pattern(context));
     QString input;
 
     const Item arg(m_operands.first()->evaluateSingleton(context));
@@ -113,7 +113,7 @@ QString ReplaceFN::parseReplacement(const int,
         {
             case '$':
             {
-                /* QRegExp uses '\' as opposed to '$' for marking sub groups. */
+                /* QRegularExpression uses '\' as opposed to '$' for marking sub groups. */
                 retval.append(QLatin1Char('\\'));
 
                 ++i;
@@ -217,8 +217,8 @@ Item::Iterator::Ptr TokenizeFN::evaluateSequence(const DynamicContext::Ptr &cont
     if(input.isEmpty())
         return CommonValues::emptyIterator;
 
-    QRegExp regExp(pattern(context));
-    const QStringList result(input.split(regExp, QString::KeepEmptyParts));
+    QRegularExpression regExp(pattern(context));
+    const QStringList result(input.split(regExp, Qt::KeepEmptyParts));
 
     return makeItemMappingIterator<Item>(ConstPtr(this),
                                          makeListIterator(result),

@@ -50,9 +50,9 @@
 #ifndef Patternist_BuiltinAtomicTypes_H
 #define Patternist_BuiltinAtomicTypes_H
 
-#include <private/qatomiccasterlocators_p.h>
-#include <private/qatomiccomparatorlocators_p.h>
-#include <private/qbuiltinatomictype_p.h>
+#include <qatomiccasterlocators_p.h>
+#include <qatomiccomparatorlocators_p.h>
+#include <qbuiltinatomictype_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -393,18 +393,18 @@ namespace QPatternist
         {
             switch(derivedType)
             {
-                case TypeByte:                  return np->allocateQName(StandardNamespaces::xs, QLatin1String("byte"));
-                case TypeInt:                   return np->allocateQName(StandardNamespaces::xs, QLatin1String("int"));
-                case TypeLong:                  return np->allocateQName(StandardNamespaces::xs, QLatin1String("long"));
-                case TypeNegativeInteger:       return np->allocateQName(StandardNamespaces::xs, QLatin1String("negativeInteger"));
-                case TypeNonNegativeInteger:    return np->allocateQName(StandardNamespaces::xs, QLatin1String("nonNegativeInteger"));
-                case TypeNonPositiveInteger:    return np->allocateQName(StandardNamespaces::xs, QLatin1String("nonPositiveInteger"));
-                case TypePositiveInteger:       return np->allocateQName(StandardNamespaces::xs, QLatin1String("positiveInteger"));
-                case TypeShort:                 return np->allocateQName(StandardNamespaces::xs, QLatin1String("short"));
-                case TypeUnsignedByte:          return np->allocateQName(StandardNamespaces::xs, QLatin1String("unsignedByte"));
-                case TypeUnsignedInt:           return np->allocateQName(StandardNamespaces::xs, QLatin1String("unsignedInt"));
-                case TypeUnsignedLong:          return np->allocateQName(StandardNamespaces::xs, QLatin1String("unsignedLong"));
-                case TypeUnsignedShort:         return np->allocateQName(StandardNamespaces::xs, QLatin1String("unsignedShort"));
+                case TypeByte:                  return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("byte"));
+                case TypeInt:                   return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("int"));
+                case TypeLong:                  return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("long"));
+                case TypeNegativeInteger:       return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("negativeInteger"));
+                case TypeNonNegativeInteger:    return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("nonNegativeInteger"));
+                case TypeNonPositiveInteger:    return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("nonPositiveInteger"));
+                case TypePositiveInteger:       return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("positiveInteger"));
+                case TypeShort:                 return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("short"));
+                case TypeUnsignedByte:          return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("unsignedByte"));
+                case TypeUnsignedInt:           return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("unsignedInt"));
+                case TypeUnsignedLong:          return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("unsignedLong"));
+                case TypeUnsignedShort:         return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("unsignedShort"));
             }
 
             Q_ASSERT_X(false, "DerivedIntegerType::name()", "Invalid value in instantiation.");
@@ -715,16 +715,16 @@ namespace QPatternist
         {
             switch(derivedType)
             {
-                case TypeString:            return np->allocateQName(StandardNamespaces::xs, QLatin1String("string"));
-                case TypeNormalizedString:  return np->allocateQName(StandardNamespaces::xs, QLatin1String("normalizedString"));
-                case TypeToken:             return np->allocateQName(StandardNamespaces::xs, QLatin1String("token"));
-                case TypeLanguage:          return np->allocateQName(StandardNamespaces::xs, QLatin1String("language"));
-                case TypeNMTOKEN:           return np->allocateQName(StandardNamespaces::xs, QLatin1String("NMTOKEN"));
-                case TypeName:              return np->allocateQName(StandardNamespaces::xs, QLatin1String("Name"));
-                case TypeNCName:            return np->allocateQName(StandardNamespaces::xs, QLatin1String("NCName"));
-                case TypeID:                return np->allocateQName(StandardNamespaces::xs, QLatin1String("ID"));
-                case TypeIDREF:             return np->allocateQName(StandardNamespaces::xs, QLatin1String("IDREF"));
-                case TypeENTITY:            return np->allocateQName(StandardNamespaces::xs, QLatin1String("ENTITY"));
+                case TypeString:            return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("string"));
+                case TypeNormalizedString:  return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("normalizedString"));
+                case TypeToken:             return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("token"));
+                case TypeLanguage:          return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("language"));
+                case TypeNMTOKEN:           return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("NMTOKEN"));
+                case TypeName:              return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("Name"));
+                case TypeNCName:            return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("NCName"));
+                case TypeID:                return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("ID"));
+                case TypeIDREF:             return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("IDREF"));
+                case TypeENTITY:            return np->allocateQName(StandardNamespaces::xs, QLatin1StringView("ENTITY"));
             }
 
             Q_ASSERT_X(false, "DerivedStringType::name()", "Invalid value in instantiation.");

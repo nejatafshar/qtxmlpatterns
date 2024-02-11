@@ -50,9 +50,9 @@
 #ifndef Patternist_XsdAssertion_H
 #define Patternist_XsdAssertion_H
 
-#include <private/qnamedschemacomponent_p.h>
-#include <private/qxsdannotated_p.h>
-#include <private/qxsdxpathexpression_p.h>
+#include <qnamedschemacomponent_p.h>
+#include <qxsdannotated_p.h>
+#include <qxsdxpathexpression_p.h>
 
 #include <QtCore/QList>
 

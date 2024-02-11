@@ -50,9 +50,9 @@
 #ifndef Patternist_UntypedAtomicConverter_H
 #define Patternist_UntypedAtomicConverter_H
 
-#include <private/qitem_p.h>
-#include <private/qsinglecontainer_p.h>
-#include <private/qcastingplatform_p.h>
+#include <qitem_p.h>
+#include <qsinglecontainer_p.h>
+#include <qcastingplatform_p.h>
 
 QT_BEGIN_NAMESPACE
 

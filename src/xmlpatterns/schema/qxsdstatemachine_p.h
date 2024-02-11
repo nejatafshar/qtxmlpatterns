@@ -50,7 +50,7 @@
 #ifndef Patternist_XsdStateMachine_H
 #define Patternist_XsdStateMachine_H
 
-#include <private/qnamepool_p.h>
+#include <qnamepool_p.h>
 
 #include <QtCore/QHash>
 #include <QtCore/QSet>

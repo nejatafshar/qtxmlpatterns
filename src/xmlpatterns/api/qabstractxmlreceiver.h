@@ -42,7 +42,8 @@
 
 #include <QtCore/QVariant>
 #include <QtCore/QScopedPointer>
-#include <QtXmlPatterns/QXmlNodeModelIndex>
+#include <QtCore5Compat/QStringRef>
+#include <qabstractxmlnodemodel.h>
 
 QT_BEGIN_NAMESPACE
 

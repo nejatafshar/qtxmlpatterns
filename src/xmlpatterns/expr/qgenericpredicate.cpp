@@ -205,7 +205,7 @@ Expression::Properties GenericPredicate::properties() const
 
 QString GenericPredicate::description() const
 {
-    return QLatin1String("predicate");
+    return QLatin1StringView("predicate");
 }
 
 Expression::ID GenericPredicate::id() const

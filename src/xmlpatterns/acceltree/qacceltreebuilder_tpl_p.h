@@ -442,7 +442,7 @@ template <bool FromDocument>
 QSourceLocation AccelTreeBuilder<FromDocument>::sourceLocation() const
 {
     if(m_documentURI.isEmpty())
-        return QSourceLocation(QUrl(QLatin1String("AnonymousNodeTree")));
+        return QSourceLocation(QUrl(QLatin1StringView("AnonymousNodeTree")));
     else
         return QSourceLocation(m_documentURI);
 }

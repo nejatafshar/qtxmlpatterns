@@ -39,7 +39,7 @@
 
 #include <QUrl>
 #include <QVector>
-#include <QXmlNamePool>
+#include <qxmlnamepool.h>
 
 #include "qabstractxmlnodemodel_p.h"
 #include "qemptyiterator_p.h"

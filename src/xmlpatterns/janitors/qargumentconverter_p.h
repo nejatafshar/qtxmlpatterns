@@ -50,7 +50,7 @@
 #ifndef Patternist_ArgumentConverter_H
 #define Patternist_ArgumentConverter_H
 
-#include <private/quntypedatomicconverter_p.h>
+#include <quntypedatomicconverter_p.h>
 
 QT_BEGIN_NAMESPACE
 

@@ -50,7 +50,7 @@
 #ifndef Patternist_UnparsedEntityPublicID_H
 #define Patternist_UnparsedEntityPublicID_H
 
-#include <private/qcontextnodechecker_p.h>
+#include <qcontextnodechecker_p.h>
 
 QT_BEGIN_NAMESPACE
 

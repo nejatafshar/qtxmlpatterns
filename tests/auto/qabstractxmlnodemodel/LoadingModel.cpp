@@ -218,7 +218,7 @@ inline void Loader::adjustSiblings(LoadingModel::Node *const justBorn)
 
 void Loader::load()
 {
-    QFile in(QLatin1String("tree.xml"));
+    QFile in(QLatin1StringView("tree.xml"));
 
     /* LoadingModel::m_result will be null, signalling failure. */
     if(!in.open(QIODevice::ReadOnly))

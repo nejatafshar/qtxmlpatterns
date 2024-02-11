@@ -53,7 +53,7 @@ GDay::Ptr GDay::fromLexical(const QString &lexical)
 {
     static const CaptureTable captureTable( // STATIC DATA
         /* The extra paranthesis is a build fix for GCC 3.3. */
-        (QRegExp(QLatin1String(
+        (QRegularExpression(QLatin1StringView(
                 "^\\s*"                                 /* Any preceding whitespace. */
                 "---"                                   /* Delimiter. */
                 "(\\d{2})"                              /* The day part, "03". */
@@ -75,7 +75,7 @@ GDay::Ptr GDay::fromLexical(const QString &lexical)
 
 GDay::Ptr GDay::fromDateTime(const QDateTime &dt)
 {
-    QDateTime result(QDate(DefaultYear, DefaultMonth, dt.date().day()));
+    QDateTime result(QDate(DefaultYear, DefaultMonth, dt.date().day()), {0,0});
     copyTimeSpec(dt, result);
 
     return GDay::Ptr(new GDay(result));
@@ -83,7 +83,7 @@ GDay::Ptr GDay::fromDateTime(const QDateTime &dt)
 
 QString GDay::stringValue() const
 {
-    return m_dateTime.toString(QLatin1String("---dd")) + zoneOffsetToString();
+    return m_dateTime.toString(QLatin1StringView("---dd")) + zoneOffsetToString();
 }
 
 ItemType::Ptr GDay::type() const

@@ -44,7 +44,7 @@ using namespace QPatternistSDK;
 tst_SuiteTest::tst_SuiteTest(const SuiteType suiteType,
                              const bool alwaysRun) : m_existingBaseline(QFINDTESTDATA("Baseline.xml"))
                                                    , m_candidateBaseline(QDir::current().filePath("CandidateBaseline.xml"))
-                                                   , m_abortRun(!alwaysRun && !QFile::exists(QLatin1String("runTests")))
+                                                   , m_abortRun(!alwaysRun && !QFile::exists(QLatin1StringView("runTests")))
                                                    , m_suiteType(suiteType)
 {
 }

@@ -269,13 +269,13 @@ bool XsdStateMachine<TransitionType>::outputGraph(QIODevice *device, const QStri
 
         QString style;
         if (it.value() == StartState) {
-            style = QLatin1String("shape=circle, style=filled, color=blue");
+            style = QLatin1StringView("shape=circle, style=filled, color=blue");
         } else if (it.value() == StartEndState) {
-            style = QLatin1String("shape=doublecircle, style=filled, color=blue");
+            style = QLatin1StringView("shape=doublecircle, style=filled, color=blue");
         } else if (it.value() == InternalState) {
-            style = QLatin1String("shape=circle, style=filled, color=red");
+            style = QLatin1StringView("shape=circle, style=filled, color=red");
         } else if (it.value() == EndState) {
-            style = QLatin1String("shape=doublecircle, style=filled, color=green");
+            style = QLatin1StringView("shape=doublecircle, style=filled, color=green");
         }
 
         s << "  " << it.key() << " [" << style << "]\n";
@@ -310,7 +310,7 @@ typename XsdStateMachine<TransitionType>::StateId XsdStateMachine<TransitionType
     StateType type = InternalState;
     bool hasStartState = false;
     bool hasEndState = false;
-    for (const StateId state : qAsConst(nfaState)) {
+    for (const StateId state : std::as_const(nfaState)) {
         if (m_states.value(state) == EndState) {
             hasEndState = true;
         } else if (m_states.value(state) == StartState) {
@@ -330,7 +330,7 @@ typename XsdStateMachine<TransitionType>::StateId XsdStateMachine<TransitionType
     const StateId dfaState = dfa.addState(type);
 
     // add the new DFA state to the lookup table
-    stateTable.append(qMakePair<QSet<StateId>, StateId>(nfaState, dfaState));
+    stateTable.append(qMakePair(nfaState, dfaState));
 
     return dfaState;
 }

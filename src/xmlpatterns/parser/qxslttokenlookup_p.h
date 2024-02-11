@@ -55,6 +55,7 @@
 
 #include <QtCore/QString>
 #include <QtCore/private/qglobal_p.h>
+#include <QStringRef>
 
 QT_BEGIN_NAMESPACE
 

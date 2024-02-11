@@ -178,88 +178,88 @@
 
 #include <QUrl>
 
-#include <private/qabstractfloat_p.h>
-#include <private/qandexpression_p.h>
-#include <private/qanyuri_p.h>
-#include <private/qapplytemplate_p.h>
-#include <private/qargumentreference_p.h>
-#include <private/qarithmeticexpression_p.h>
-#include <private/qatomicstring_p.h>
-#include <private/qattributeconstructor_p.h>
-#include <private/qattributenamevalidator_p.h>
-#include <private/qaxisstep_p.h>
-#include <private/qbuiltintypes_p.h>
-#include <private/qcalltemplate_p.h>
-#include <private/qcastableas_p.h>
-#include <private/qcastas_p.h>
-#include <private/qcombinenodes_p.h>
-#include <private/qcommentconstructor_p.h>
-#include <private/qcommonnamespaces_p.h>
-#include <private/qcommonsequencetypes_p.h>
-#include <private/qcommonvalues_p.h>
-#include <private/qcomputednamespaceconstructor_p.h>
-#include <private/qcontextitem_p.h>
-#include <private/qcopyof_p.h>
-#include <private/qcurrentitemstore_p.h>
+#include <qabstractfloat_p.h>
+#include <qandexpression_p.h>
+#include <qanyuri_p.h>
+#include <qapplytemplate_p.h>
+#include <qargumentreference_p.h>
+#include <qarithmeticexpression_p.h>
+#include <qatomicstring_p.h>
+#include <qattributeconstructor_p.h>
+#include <qattributenamevalidator_p.h>
+#include <qaxisstep_p.h>
+#include <qbuiltintypes_p.h>
+#include <qcalltemplate_p.h>
+#include <qcastableas_p.h>
+#include <qcastas_p.h>
+#include <qcombinenodes_p.h>
+#include <qcommentconstructor_p.h>
+#include <qcommonnamespaces_p.h>
+#include <qcommonsequencetypes_p.h>
+#include <qcommonvalues_p.h>
+#include <qcomputednamespaceconstructor_p.h>
+#include <qcontextitem_p.h>
+#include <qcopyof_p.h>
+#include <qcurrentitemstore_p.h>
 #include <private/qdebug_p.h>
-#include <private/qdelegatingnamespaceresolver_p.h>
-#include <private/qdocumentconstructor_p.h>
-#include <private/qelementconstructor_p.h>
-#include <private/qemptysequence_p.h>
-#include <private/qemptysequencetype_p.h>
-#include <private/qevaluationcache_p.h>
-#include <private/qexpressionfactory_p.h>
-#include <private/qexpressionsequence_p.h>
-#include <private/qexpressionvariablereference_p.h>
-#include <private/qexternalvariablereference_p.h>
-#include <private/qforclause_p.h>
-#include <private/qfunctioncall_p.h>
-#include <private/qfunctionfactory_p.h>
-#include <private/qfunctionsignature_p.h>
-#include <private/qgeneralcomparison_p.h>
-#include <private/qgenericpredicate_p.h>
-#include <private/qgenericsequencetype_p.h>
-#include <private/qifthenclause_p.h>
-#include <private/qinstanceof_p.h>
-#include <private/qletclause_p.h>
-#include <private/qliteral_p.h>
-#include <private/qlocalnametest_p.h>
-#include <private/qnamespaceconstructor_p.h>
-#include <private/qnamespacenametest_p.h>
-#include <private/qncnameconstructor_p.h>
-#include <private/qnodecomparison_p.h>
-#include <private/qnodesort_p.h>
-#include <private/qorderby_p.h>
-#include <private/qorexpression_p.h>
-#include <private/qparsercontext_p.h>
-#include <private/qpath_p.h>
-#include <private/qpatternistlocale_p.h>
-#include <private/qpositionalvariablereference_p.h>
-#include <private/qprocessinginstructionconstructor_p.h>
-#include <private/qqnameconstructor_p.h>
-#include <private/qqnametest_p.h>
-#include <private/qqnamevalue_p.h>
-#include <private/qquantifiedexpression_p.h>
-#include <private/qrangeexpression_p.h>
-#include <private/qrangevariablereference_p.h>
-#include <private/qreturnorderby_p.h>
-#include <private/qschemanumeric_p.h>
-#include <private/qschematypefactory_p.h>
-#include <private/qsimplecontentconstructor_p.h>
-#include <private/qstaticbaseuristore_p.h>
-#include <private/qstaticcompatibilitystore_p.h>
-#include <private/qtemplateparameterreference_p.h>
-#include <private/qtemplate_p.h>
-#include <private/qtextnodeconstructor_p.h>
-#include <private/qtokenizer_p.h>
-#include <private/qtreatas_p.h>
-#include <private/qtypechecker_p.h>
-#include <private/qunaryexpression_p.h>
-#include <private/qunresolvedvariablereference_p.h>
-#include <private/quserfunctioncallsite_p.h>
-#include <private/qvaluecomparison_p.h>
-#include <private/qxpathhelper_p.h>
-#include <private/qxsltsimplecontentconstructor_p.h>
+#include <qdelegatingnamespaceresolver_p.h>
+#include <qdocumentconstructor_p.h>
+#include <qelementconstructor_p.h>
+#include <qemptysequence_p.h>
+#include <qemptysequencetype_p.h>
+#include <qevaluationcache_p.h>
+#include <qexpressionfactory_p.h>
+#include <qexpressionsequence_p.h>
+#include <qexpressionvariablereference_p.h>
+#include <qexternalvariablereference_p.h>
+#include <qforclause_p.h>
+#include <qfunctioncall_p.h>
+#include <qfunctionfactory_p.h>
+#include <qfunctionsignature_p.h>
+#include <qgeneralcomparison_p.h>
+#include <qgenericpredicate_p.h>
+#include <qgenericsequencetype_p.h>
+#include <qifthenclause_p.h>
+#include <qinstanceof_p.h>
+#include <qletclause_p.h>
+#include <qliteral_p.h>
+#include <qlocalnametest_p.h>
+#include <qnamespaceconstructor_p.h>
+#include <qnamespacenametest_p.h>
+#include <qncnameconstructor_p.h>
+#include <qnodecomparison_p.h>
+#include <qnodesort_p.h>
+#include <qorderby_p.h>
+#include <qorexpression_p.h>
+#include <qparsercontext_p.h>
+#include <qpath_p.h>
+#include <qpatternistlocale_p.h>
+#include <qpositionalvariablereference_p.h>
+#include <qprocessinginstructionconstructor_p.h>
+#include <qqnameconstructor_p.h>
+#include <qqnametest_p.h>
+#include <qqnamevalue_p.h>
+#include <qquantifiedexpression_p.h>
+#include <qrangeexpression_p.h>
+#include <qrangevariablereference_p.h>
+#include <qreturnorderby_p.h>
+#include <qschemanumeric_p.h>
+#include <qschematypefactory_p.h>
+#include <qsimplecontentconstructor_p.h>
+#include <qstaticbaseuristore_p.h>
+#include <qstaticcompatibilitystore_p.h>
+#include <qtemplateparameterreference_p.h>
+#include <qtemplate_p.h>
+#include <qtextnodeconstructor_p.h>
+#include <qtokenizer_p.h>
+#include <qtreatas_p.h>
+#include <qtypechecker_p.h>
+#include <qunaryexpression_p.h>
+#include <qunresolvedvariablereference_p.h>
+#include <quserfunctioncallsite_p.h>
+#include <qvaluecomparison_p.h>
+#include <qxpathhelper_p.h>
+#include <qxsltsimplecontentconstructor_p.h>
 
 /*
  * The cpp generated with bison 2.1 wants to
@@ -345,13 +345,13 @@ static void allowedIn(const QueryLanguages allowedLanguages,
         switch(parseInfo->languageAccent)
         {
             case QXmlQuery::XPath20:
-                langName = QLatin1String("XPath 2.0");
+                langName = QLatin1StringView("XPath 2.0");
                 break;
             case QXmlQuery::XSLT20:
-                langName = QLatin1String("XSL-T 2.0");
+                langName = QLatin1StringView("XSL-T 2.0");
                 break;
             case QXmlQuery::XQuery10:
-                langName = QLatin1String("XQuery 1.0");
+                langName = QLatin1StringView("XQuery 1.0");
                 break;
             case QXmlQuery::XmlSchema11IdentityConstraintSelector:
                 langName = QtXmlPatterns::tr("W3C XML Schema identity constraint selector");
@@ -526,7 +526,7 @@ static int XPatherror(YYLTYPE *sourceLocator, const ParserContext *const parseIn
     Q_UNUSED(sourceLocator);
     Q_ASSERT(parseInfo);
 
-    parseInfo->staticContext->error(escape(QLatin1String(msg)), ReportContext::XPST0003, fromYYLTYPE(*sourceLocator, parseInfo));
+    parseInfo->staticContext->error(escape(QLatin1StringView(msg)), ReportContext::XPST0003, fromYYLTYPE(*sourceLocator, parseInfo));
     return 1;
 }
 
@@ -3569,7 +3569,7 @@ yyreduce:
     || defined(YYLLOC_DEFAULT)
 #endif
 
-        if((yyvsp[-2].sval) != QLatin1String("1.0"))
+        if((yyvsp[-2].sval) != QLatin1StringView("1.0"))
         {
             const ReflectYYLTYPE ryy((yyloc), parseInfo);
 
@@ -3585,9 +3585,9 @@ yyreduce:
   case 7:
 #line 1468 "querytransformparser.ypp" /* yacc.c:1652  */
     {
-        const QRegExp encNameRegExp(QLatin1String("[A-Za-z][A-Za-z0-9._\\-]*"));
+        const QRegularExpression encNameRegExp(QLatin1StringView("[A-Za-z][A-Za-z0-9._\\-]*"));
 
-        if(!encNameRegExp.exactMatch((yyvsp[0].sval)))
+        if(!encNameRegExp.match((yyvsp[0].sval)).hasMatch())
         {
             parseInfo->staticContext->error(QtXmlPatterns::tr("The encoding %1 is invalid. "
                                                "It must contain Latin characters only, "
@@ -3609,9 +3609,9 @@ yyreduce:
         if(parseInfo->isXSLT())
         {
             typedef QHash<QXmlName, Expression::Ptr> Hash;
-            const Hash::const_iterator end(parseInfo->unresolvedVariableReferences.constEnd());
+            const auto & end = parseInfo->unresolvedVariableReferences.constEnd();
 
-            for(Hash::const_iterator it(parseInfo->unresolvedVariableReferences.constBegin()); it != end; ++it)
+            for(auto it = parseInfo->unresolvedVariableReferences.constBegin(); it != end; ++it)
             {
                 const Expression::Ptr body(resolveVariable(it.key(), (yyloc), parseInfo, true)); // TODO source locations vaise
                 Q_ASSERT(body);
@@ -3850,7 +3850,7 @@ yyreduce:
             if(modeName == QXmlName(StandardNamespaces::InternalXSLT, StandardLocalNames::all) && (yyvsp[-5].qNameVector).count() > 1)
             {
                 parseInfo->staticContext->error(QtXmlPatterns::tr("The keyword %1 cannot occur with any other mode name.")
-                                                                 .arg(formatKeyword(QLatin1String("#all"))),
+                                                                 .arg(formatKeyword(QLatin1StringView("#all"))),
                                                 ReportContext::XTSE0530,
                                                 fromYYLTYPE((yyloc), parseInfo));
             }
@@ -3879,7 +3879,7 @@ yyreduce:
         if(val->hasError())
         {
             parseInfo->staticContext->error(QtXmlPatterns::tr("The value of attribute %1 must be of type %2, which %3 isn't.")
-                                                             .arg(formatKeyword(QLatin1String("priority")),
+                                                             .arg(formatKeyword(QLatin1StringView("priority")),
                                                                   formatType(parseInfo->staticContext->namePool(), BuiltinTypes::xsDecimal),
                                                                   formatData((yyvsp[0].sval))),
                                             ReportContext::XTSE0530,
@@ -3945,13 +3945,13 @@ yyreduce:
         if(!(yyvsp[-1].enums.Bool))
             allowedIn(QXmlQuery::XQuery10, parseInfo, (yyloc));
 
-        if((yyvsp[-4].sval) == QLatin1String("xmlns"))
+        if((yyvsp[-4].sval) == QLatin1StringView("xmlns"))
         {
             parseInfo->staticContext->error(QtXmlPatterns::tr("It is not possible to redeclare prefix %1.")
-                                               .arg(formatKeyword(QLatin1String("xmlns"))),
+                                               .arg(formatKeyword(QLatin1StringView("xmlns"))),
                                             ReportContext::XQST0070, fromYYLTYPE((yyloc), parseInfo));
         }
-        else if ((yyvsp[-2].sval) == CommonNamespaces::XML || (yyvsp[-4].sval) == QLatin1String("xml"))
+        else if ((yyvsp[-2].sval) == CommonNamespaces::XML || (yyvsp[-4].sval) == QLatin1StringView("xml"))
         {
              parseInfo->staticContext->error(QtXmlPatterns::tr(
                                             "The prefix %1 can not be bound. By default, it is already bound "
@@ -4924,11 +4924,11 @@ yyreduce:
   case 121:
 #line 2614 "querytransformparser.ypp" /* yacc.c:1652  */
     {
-        if((yyvsp[0].sval) == QLatin1String("#current"))
+        if((yyvsp[0].sval) == QLatin1StringView("#current"))
             (yyval.qName) = QXmlName(StandardNamespaces::InternalXSLT, StandardLocalNames::current);
-        else if((yyvsp[0].sval) == QLatin1String("#default"))
+        else if((yyvsp[0].sval) == QLatin1StringView("#default"))
             (yyval.qName) = QXmlName(StandardNamespaces::InternalXSLT, StandardLocalNames::Default);
-        else if((yyvsp[0].sval) == QLatin1String("#all"))
+        else if((yyvsp[0].sval) == QLatin1StringView("#all"))
             (yyval.qName) = QXmlName(StandardNamespaces::InternalXSLT, StandardLocalNames::all);
         else
         {

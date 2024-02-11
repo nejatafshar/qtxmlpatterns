@@ -50,7 +50,7 @@
 #ifndef Patternist_UnresolvedVariableReference_H
 #define Patternist_UnresolvedVariableReference_H
 
-#include <private/qemptycontainer_p.h>
+#include <qemptycontainer_p.h>
 
 QT_BEGIN_NAMESPACE
 

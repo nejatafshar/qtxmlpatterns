@@ -66,7 +66,7 @@ const ItemType &NoneType::operator|(const ItemType &other) const
 
 QString NoneType::displayName(const NamePool::Ptr &) const
 {
-    return QLatin1String("none");
+    return QLatin1StringView("none");
 }
 
 Cardinality NoneType::cardinality() const

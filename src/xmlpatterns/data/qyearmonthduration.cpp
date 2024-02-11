@@ -59,7 +59,7 @@ YearMonthDuration::Ptr YearMonthDuration::fromLexical(const QString &lexical)
 {
     static const CaptureTable captureTable(
         /* The extra paranthesis is a build fix for GCC 3.3. */
-        (QRegExp(QLatin1String(
+        (QRegularExpression(QLatin1StringView(
                 "^\\s*"         /* Any preceding whitespace. */
                 "(-)?"          /* Sign, if any. */
                 "P"             /* Delimiter. */
@@ -116,7 +116,7 @@ QString YearMonthDuration::stringValue() const
             retval.append(QLatin1Char('M'));
         }
         else
-            return QLatin1String("P0M"); /* Ensure the canonical form. */
+            return QLatin1StringView("P0M"); /* Ensure the canonical form. */
     }
 
     return retval;

@@ -55,6 +55,7 @@
 
 #include <QtCore/QString>
 #include <QtCore/private/qglobal_p.h>
+#include <QtCore5Compat/QStringRef>
 
 QT_BEGIN_NAMESPACE
 
@@ -162,8 +163,9 @@ XmlLanguage,
 Xpath
                 };
 
-                static inline NodeName toToken(const QString &value);
+static inline NodeName toToken(const QString &value);
 static inline NodeName toToken(const QStringRef &value);
+static inline NodeName toToken(QStringView value);
 static NodeName toToken(const QChar *data, int length);
 static QString toString(NodeName token);
 
@@ -198,6 +200,11 @@ static inline NodeName classifier32(const QChar *data);
                 }
 
                 inline XsdSchemaToken::NodeName XsdSchemaToken::toToken(const QStringRef &value)
+                {
+                    return toToken(value.constData(), value.length());
+                }
+
+                inline XsdSchemaToken::NodeName XsdSchemaToken::toToken(QStringView value)
                 {
                     return toToken(value.constData(), value.length());
                 }

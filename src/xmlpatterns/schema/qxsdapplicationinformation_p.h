@@ -50,9 +50,9 @@
 #ifndef Patternist_XsdApplicationInformation_H
 #define Patternist_XsdApplicationInformation_H
 
-#include <private/qanytype_p.h>
-#include <private/qanyuri_p.h>
-#include <private/qnamedschemacomponent_p.h>
+#include <qanytype_p.h>
+#include <qanyuri_p.h>
+#include <qnamedschemacomponent_p.h>
 
 QT_BEGIN_NAMESPACE
 

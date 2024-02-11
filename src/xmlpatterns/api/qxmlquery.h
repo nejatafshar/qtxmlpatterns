@@ -41,9 +41,9 @@
 #define QXMLQUERY_H
 
 #include <QtCore/QUrl>
-#include <QtXmlPatterns/QAbstractXmlNodeModel>
-#include <QtXmlPatterns/QAbstractXmlReceiver>
-#include <QtXmlPatterns/QXmlNamePool>
+#include <qabstractxmlnodemodel.h>
+#include <qabstractxmlreceiver.h>
+#include <qxmlnamepool.h>
 
 QT_BEGIN_NAMESPACE
 

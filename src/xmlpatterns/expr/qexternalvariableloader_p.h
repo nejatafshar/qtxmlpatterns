@@ -50,9 +50,9 @@
 #ifndef Patternist_ExternalVariableLoader_H
 #define Patternist_ExternalVariableLoader_H
 
-#include <private/qitem_p.h>
-#include <private/qsequencetype_p.h>
-#include <QXmlName>
+#include <qitem_p.h>
+#include <qsequencetype_p.h>
+#include <qxmlname.h>
 
 QT_BEGIN_NAMESPACE
 

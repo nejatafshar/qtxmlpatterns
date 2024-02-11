@@ -65,7 +65,7 @@ QString MultiItemType::displayName(const NamePool::Ptr &np) const
         ++it;
 
         if(it != m_end)
-            result += QLatin1String(" | ");
+            result += QLatin1StringView(" | ");
         else
             break;
     }

@@ -51,7 +51,7 @@
 #define Patternist_XsdSchemaTypesFactory_H
 
 #include <QtCore/QHash>
-#include <private/qschematypefactory_p.h>
+#include <qschematypefactory_p.h>
 
 QT_BEGIN_NAMESPACE
 

@@ -52,8 +52,8 @@
 
 #include <QHash>
 
-#include <private/qnamespaceresolver_p.h>
-#include <private/qitem_p.h>
+#include <qnamespaceresolver_p.h>
+#include <qitem_p.h>
 
 QT_BEGIN_NAMESPACE
 

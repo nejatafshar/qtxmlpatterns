@@ -59,7 +59,7 @@
 QT_BEGIN_NAMESPACE
 
 
-template<typename T> class QVector;
+//template<typename T> class QVector;
 
 /* In this file we in some cases do not use QAbstractXmlForwardIterator's Ptr typedef.
  * This is a compiler workaround for MS VS 6.0. */

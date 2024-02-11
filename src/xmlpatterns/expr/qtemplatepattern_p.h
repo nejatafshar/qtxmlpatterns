@@ -50,7 +50,7 @@
 #ifndef Patternist_TemplatePattern_H
 #define Patternist_TemplatePattern_H
 
-#include <private/qtemplate_p.h>
+#include <qtemplate_p.h>
 
 QT_BEGIN_NAMESPACE
 

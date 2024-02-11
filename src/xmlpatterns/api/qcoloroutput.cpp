@@ -336,13 +336,13 @@ QString ColorOutput::colorify(const QString &message, int colorID) const
 
         if(foregroundCode)
         {
-            finalMessage.append(ColorOutputPrivate::escapeCode(QLatin1String(ColorOutputPrivate::foregrounds[foregroundCode - 1])));
+            finalMessage.append(ColorOutputPrivate::escapeCode(QLatin1StringView(ColorOutputPrivate::foregrounds[foregroundCode - 1])));
             closureNeeded = true;
         }
 
         if(backgroundCode)
         {
-            finalMessage.append(ColorOutputPrivate::escapeCode(QLatin1String(ColorOutputPrivate::backgrounds[backgroundCode - 1])));
+            finalMessage.append(ColorOutputPrivate::escapeCode(QLatin1StringView(ColorOutputPrivate::backgrounds[backgroundCode - 1])));
             closureNeeded = true;
         }
 
@@ -351,7 +351,7 @@ QString ColorOutput::colorify(const QString &message, int colorID) const
         if(closureNeeded)
         {
             finalMessage.append(QChar(0x1B));
-            finalMessage.append(QLatin1String("[0m"));
+            finalMessage.append(QLatin1StringView("[0m"));
         }
 
         return finalMessage;

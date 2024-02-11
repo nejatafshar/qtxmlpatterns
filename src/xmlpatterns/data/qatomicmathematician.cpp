@@ -52,17 +52,17 @@ QString AtomicMathematician::displayName(const AtomicMathematician::Operator op)
     switch(op)
     {
         case AtomicMathematician::Div:
-            return QLatin1String("div");
+            return QLatin1StringView("div");
         case AtomicMathematician::IDiv:
-            return QLatin1String("idiv");
+            return QLatin1StringView("idiv");
         case AtomicMathematician::Substract:
-            return QLatin1String("-");
+            return QLatin1StringView("-");
         case AtomicMathematician::Mod:
-            return QLatin1String("mod");
+            return QLatin1StringView("mod");
         case AtomicMathematician::Multiply:
-            return QLatin1String("*");
+            return QLatin1StringView("*");
         case AtomicMathematician::Add:
-            return QLatin1String("+");
+            return QLatin1StringView("+");
     }
 
     return QString(); /* Silence GCC warning. */

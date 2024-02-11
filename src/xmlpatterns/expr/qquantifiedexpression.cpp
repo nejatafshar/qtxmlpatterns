@@ -104,11 +104,11 @@ bool QuantifiedExpression::evaluateEBV(const DynamicContext::Ptr &context) const
 QString QuantifiedExpression::displayName(const Operator quantifier)
 {
     if(quantifier == Some)
-        return QLatin1String("some");
+        return QLatin1StringView("some");
     else
     {
         Q_ASSERT(quantifier == Every);
-        return QLatin1String("every");
+        return QLatin1StringView("every");
     }
 }
 

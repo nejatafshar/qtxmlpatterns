@@ -50,7 +50,7 @@
 #ifndef Patternist_Integer_H
 #define Patternist_Integer_H
 
-#include <private/qschemanumeric_p.h>
+#include <qschemanumeric_p.h>
 
 QT_BEGIN_NAMESPACE
 

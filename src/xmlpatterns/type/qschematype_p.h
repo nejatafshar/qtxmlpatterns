@@ -50,9 +50,9 @@
 #ifndef Patternist_SchemaType_H
 #define Patternist_SchemaType_H
 
-#include <private/qnamepool_p.h>
-#include <private/qschemacomponent_p.h>
-#include <QXmlName>
+#include <qnamepool_p.h>
+#include <qschemacomponent_p.h>
+#include <qxmlname.h>
 #include <qcontainerfwd.h>
 
 QT_BEGIN_NAMESPACE

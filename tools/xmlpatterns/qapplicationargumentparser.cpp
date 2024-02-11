@@ -359,7 +359,7 @@ void QApplicationArgumentParserPrivate::displayHelp() const
     out << Qt::endl
         << QString(IndentPadding, QLatin1Char(' '))
         << QCoreApplication::applicationName()
-        << QLatin1String(" -- ")
+        << QLatin1StringView(" -- ")
         << applicationDescription
         << Qt::endl;
     // TODO synopsis
@@ -375,7 +375,7 @@ void QApplicationArgumentParserPrivate::displayHelp() const
         const QApplicationArgument &at = allArgs.at(i);
         /* "  -name ". Indent a bit first, inspired by Qt's moc. */
         const QString &name = at.name();
-        QString prolog(QLatin1String("  "));
+        QString prolog(QLatin1StringView("  "));
 
         /* We have a special case for the single dash. */
         if(name == QChar::fromLatin1('-'))
@@ -472,13 +472,13 @@ QList<QApplicationArgument> QApplicationArgumentParserPrivate::builtinArguments(
 {
     QList<QApplicationArgument> result;
 
-    result.append(QApplicationArgument(QLatin1String("help"),
-                                       QLatin1String("Displays this help.")));
-    result.append(QApplicationArgument(QLatin1String("version"),
-                                       QLatin1String("Displays version information.")));
+    result.append(QApplicationArgument(QLatin1StringView("help"),
+                                       QLatin1StringView("Displays this help.")));
+    result.append(QApplicationArgument(QLatin1StringView("version"),
+                                       QLatin1StringView("Displays version information.")));
 
-    result.append(QApplicationArgument(QLatin1String("-"),
-                                       QLatin1String("When appearing, any following options are not interpreted as switches.")));
+    result.append(QApplicationArgument(QLatin1StringView("-"),
+                                       QLatin1StringView("When appearing, any following options are not interpreted as switches.")));
     return result;
 }
 
@@ -660,13 +660,13 @@ bool QApplicationArgumentParser::parse()
         {
             const QString name(in.mid(1));
 
-            if(name == QLatin1String("help"))
+            if(name == QLatin1StringView("help"))
             {
                 setExitCode(Success);
                 d->displayHelp();
                 return false;
             }
-            else if(name == QLatin1String("version"))
+            else if(name == QLatin1StringView("version"))
             {
                 setExitCode(Success);
                 d->displayVersion();
@@ -788,9 +788,9 @@ QVariant QApplicationArgumentParser::convertToValue(const QApplicationArgument &
     {
         case QVariant::Bool:
         {
-            if(input == QLatin1String("true") || input == QChar::fromLatin1('1'))
+            if(input == QLatin1StringView("true") || input == QChar::fromLatin1('1'))
                 return QVariant(true);
-            else if(input == QLatin1String("false") || input == QChar::fromLatin1('0'))
+            else if(input == QLatin1StringView("false") || input == QChar::fromLatin1('0'))
                 return QVariant(false);
             else
                 return QApplicationArgumentParserPrivate::conversionError(typeToName(argument), input);
@@ -848,9 +848,9 @@ QString QApplicationArgumentParser::typeToName(const QApplicationArgument &argum
         case QVariant::RegExp:
             return QApplicationArgumentParserPrivate::tr("regular expression");
         case QVariant::Url:
-            return QLatin1String("URI");
+            return QLatin1StringView("URI");
         case QVariant::String:
-            return QLatin1String("string");
+            return QLatin1StringView("string");
         default:
         {
             return QString::fromLatin1(QMetaType::typeName(type));

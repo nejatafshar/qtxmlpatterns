@@ -296,10 +296,10 @@ Class __pthread_cleanup_class
    base size=24 base align=8
 __pthread_cleanup_class (0x0x7fa9cc1b7240) 0
 
-Class QLatin1String
+Class QLatin1StringView
    size=16 align=8
    base size=16 base align=8
-QLatin1String (0x0x7fa9cc1b7960) 0
+QLatin1StringView (0x0x7fa9cc1b7960) 0
 
 Class QStringDataPtr
    size=8 align=8

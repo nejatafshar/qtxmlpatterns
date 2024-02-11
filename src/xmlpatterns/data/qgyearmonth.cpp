@@ -53,7 +53,7 @@ GYearMonth::Ptr GYearMonth::fromLexical(const QString &lexical)
 {
     static const CaptureTable captureTable( // STATIC DATA
         /* The extra paranthesis is a build fix for GCC 3.3. */
-        (QRegExp(QLatin1String(
+        (QRegularExpression(QLatin1StringView(
                 "^\\s*"                             /* Any preceding whitespace. */
                 "(-?)"                              /* Any preceding minus. */
                 "(\\d{4,})"                         /* The year part. */
@@ -82,7 +82,7 @@ GYearMonth::Ptr GYearMonth::fromLexical(const QString &lexical)
 
 GYearMonth::Ptr GYearMonth::fromDateTime(const QDateTime &dt)
 {
-    QDateTime result(QDate(dt.date().year(), dt.date().month(), DefaultDay));
+    QDateTime result(QDate(dt.date().year(), dt.date().month(), DefaultDay), {0,0});
     copyTimeSpec(dt, result);
 
     return GYearMonth::Ptr(new GYearMonth(result));
@@ -90,7 +90,7 @@ GYearMonth::Ptr GYearMonth::fromDateTime(const QDateTime &dt)
 
 QString GYearMonth::stringValue() const
 {
-    return m_dateTime.toString(QLatin1String("yyyy-MM")) + zoneOffsetToString();
+    return m_dateTime.toString(QLatin1StringView("yyyy-MM")) + zoneOffsetToString();
 }
 
 ItemType::Ptr GYearMonth::type() const

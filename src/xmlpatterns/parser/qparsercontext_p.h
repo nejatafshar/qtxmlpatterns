@@ -55,16 +55,16 @@
 #include <QStack>
 #include <QStringList>
 #include <QtGlobal>
-#include <QXmlQuery>
+#include <qxmlquery.h>
 
-#include <private/qbuiltintypes_p.h>
-#include <private/qfunctionsignature_p.h>
-#include <private/qorderby_p.h>
-#include <private/qtemplatemode_p.h>
-#include <private/quserfunctioncallsite_p.h>
-#include <private/quserfunction_p.h>
-#include <private/qvariabledeclaration_p.h>
-#include <private/qtokenvalue_p.h>
+#include <qbuiltintypes_p.h>
+#include <qfunctionsignature_p.h>
+#include <qorderby_p.h>
+#include <qtemplatemode_p.h>
+#include <quserfunctioncallsite_p.h>
+#include <quserfunction_p.h>
+#include <qvariabledeclaration_p.h>
+#include <qtokenvalue_p.h>
 
 QT_BEGIN_NAMESPACE
 

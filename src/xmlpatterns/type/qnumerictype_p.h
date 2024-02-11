@@ -50,7 +50,7 @@
 #ifndef Patternist_NumericType_H
 #define Patternist_NumericType_H
 
-#include <private/qatomictype_p.h>
+#include <qatomictype_p.h>
 
 QT_BEGIN_NAMESPACE
 

@@ -50,7 +50,7 @@
 #ifndef Patternist_LocalNameTest_H
 #define Patternist_LocalNameTest_H
 
-#include <private/qabstractnodetest_p.h>
+#include <qabstractnodetest_p.h>
 
 QT_BEGIN_NAMESPACE
 

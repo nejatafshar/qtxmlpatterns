@@ -50,8 +50,8 @@
 #ifndef Patternist_AccelIterators_H
 #define Patternist_AccelIterators_H
 
-#include <private/qacceltree_p.h>
-#include <private/qitem_p.h>
+#include <qacceltree_p.h>
+#include <qitem_p.h>
 
 QT_BEGIN_NAMESPACE
 

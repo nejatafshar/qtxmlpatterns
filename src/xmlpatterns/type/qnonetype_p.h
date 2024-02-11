@@ -50,8 +50,8 @@
 #ifndef Patternist_NoneType_H
 #define Patternist_NoneType_H
 
-#include <private/qatomictype_p.h>
-#include <private/qsequencetype_p.h>
+#include <qatomictype_p.h>
+#include <qsequencetype_p.h>
 
 QT_BEGIN_NAMESPACE
 
