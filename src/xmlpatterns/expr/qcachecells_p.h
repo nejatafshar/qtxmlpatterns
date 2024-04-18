@@ -143,8 +143,8 @@ namespace QPatternist
     };
 }
 
-Q_DECLARE_TYPEINFO(QPatternist::ItemCacheCell, Q_MOVABLE_TYPE);
-Q_DECLARE_TYPEINFO(QPatternist::ItemSequenceCacheCell, Q_MOVABLE_TYPE);
+Q_DECLARE_TYPEINFO(QPatternist::ItemCacheCell, Q_RELOCATABLE_TYPE);
+Q_DECLARE_TYPEINFO(QPatternist::ItemSequenceCacheCell, Q_RELOCATABLE_TYPE);
 
 QT_END_NAMESPACE
 

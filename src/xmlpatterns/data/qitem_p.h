@@ -517,8 +517,8 @@ namespace QPatternist
             m_atomicValue->ref.ref();
     }
 
-Q_DECLARE_TYPEINFO(QPatternist::Item::Iterator::Ptr, Q_MOVABLE_TYPE);
-Q_DECLARE_TYPEINFO(QPatternist::AtomicValue, Q_MOVABLE_TYPE);
+Q_DECLARE_TYPEINFO(QPatternist::Item::Iterator::Ptr, Q_RELOCATABLE_TYPE);
+//Q_DECLARE_TYPEINFO(QPatternist::AtomicValue, Q_RELOCATABLE_TYPE);
 
 QT_END_NAMESPACE
 

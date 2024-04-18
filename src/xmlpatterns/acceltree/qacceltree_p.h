@@ -391,7 +391,7 @@ namespace QPatternist
     };
 }
 
-Q_DECLARE_TYPEINFO(QPatternist::AccelTree::BasicNodeData, Q_MOVABLE_TYPE);
+Q_DECLARE_TYPEINFO(QPatternist::AccelTree::BasicNodeData, Q_RELOCATABLE_TYPE);
 
 QT_END_NAMESPACE
 

@@ -124,7 +124,7 @@ namespace QPatternist
     };
 }
 
-Q_DECLARE_TYPEINFO(QPatternist::SequenceType::Ptr, Q_MOVABLE_TYPE);
+Q_DECLARE_TYPEINFO(QPatternist::SequenceType::Ptr, Q_RELOCATABLE_TYPE);
 
 QT_END_NAMESPACE
 

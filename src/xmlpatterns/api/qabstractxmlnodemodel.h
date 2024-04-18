@@ -361,7 +361,7 @@ private:
     Q_DISABLE_COPY(QAbstractXmlNodeModel)
 };
 
-Q_DECLARE_TYPEINFO(QXmlNodeModelIndex, Q_MOVABLE_TYPE);
+Q_DECLARE_TYPEINFO(QXmlNodeModelIndex, Q_RELOCATABLE_TYPE);
 
 template<typename T> class QAbstractXmlForwardIterator;
 #include <QtCore/qcontainerfwd.h>
@@ -422,7 +422,7 @@ inline bool qIsForwardIteratorEnd(const QXmlItem &item)
     return item.isNull();
 }
 
-Q_DECLARE_TYPEINFO(QXmlItem, Q_MOVABLE_TYPE);
+Q_DECLARE_TYPEINFO(QXmlItem, Q_RELOCATABLE_TYPE);
 
 QT_END_NAMESPACE
 

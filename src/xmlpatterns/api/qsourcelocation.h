@@ -86,7 +86,7 @@ Q_XMLPATTERNS_EXPORT size_t qHash(const QSourceLocation &location);
 Q_XMLPATTERNS_EXPORT QDebug operator<<(QDebug debug, const QSourceLocation &sourceLocation);
 #endif
 
-Q_DECLARE_TYPEINFO(QSourceLocation, Q_MOVABLE_TYPE);
+Q_DECLARE_TYPEINFO(QSourceLocation, Q_RELOCATABLE_TYPE);
 
 QT_END_NAMESPACE
 

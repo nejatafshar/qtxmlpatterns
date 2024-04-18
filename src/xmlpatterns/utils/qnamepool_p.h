@@ -543,7 +543,7 @@ inline QXmlName::QXmlName(const NamespaceCode uri,
 }
 
 
-Q_DECLARE_TYPEINFO(QPatternist::NamePool::Ptr, Q_MOVABLE_TYPE);
+Q_DECLARE_TYPEINFO(QPatternist::NamePool::Ptr, Q_RELOCATABLE_TYPE);
 
 QT_END_NAMESPACE
 

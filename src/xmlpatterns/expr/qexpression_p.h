@@ -899,7 +899,7 @@ namespace QPatternist
     }
 }
 
-Q_DECLARE_TYPEINFO(QPatternist::Expression::Ptr, Q_MOVABLE_TYPE);
+Q_DECLARE_TYPEINFO(QPatternist::Expression::Ptr, Q_RELOCATABLE_TYPE);
 
 QT_END_NAMESPACE
 
