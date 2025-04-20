@@ -52,6 +52,7 @@
 
 #include <QtCore/QtGlobal>
 #include <QtCore/private/qglobal_p.h>
+#include <QtCore/QExplicitlySharedDataPointer>
 
 QT_BEGIN_NAMESPACE
 
@@ -149,6 +150,13 @@ namespace QPatternist
          */
         inline CppCastingHelper() {}
     };
+
+
+    template <typename To, typename From>
+    QExplicitlySharedDataPointer<To> qCast(const QExplicitlySharedDataPointer<From>& from)
+    {
+        return QExplicitlySharedDataPointer<To>(static_cast<To*>(from.data()));
+    }
 }
 
 QT_END_NAMESPACE

@@ -79,14 +79,14 @@ namespace QPatternist
     bool XsdStateMachine<XsdTerm::Ptr>::inputEqualsTransition<QXmlName>(QXmlName name, XsdTerm::Ptr term) const
     {
         if (term->isElement()) {
-            return (XsdElement::Ptr(term)->name(m_namePool) == name);
+            return (qCast<XsdElement>(term)->name(m_namePool) == name);
         } else if (term->isWildcard()) {
             // wildcards using XsdWildcard::absentNamespace, so we have to fix that here
             if (name.namespaceURI() == StandardNamespaces::empty) {
                 name.setNamespaceURI(m_namePool->allocateNamespace(XsdWildcard::absentNamespace()));
             }
 
-            return XsdSchemaHelper::wildcardAllowsExpandedName(name, XsdWildcard::Ptr(term), m_namePool);
+            return XsdSchemaHelper::wildcardAllowsExpandedName(name, qCast<XsdWildcard>(term), m_namePool);
         }
 
         return false;
@@ -314,7 +314,7 @@ bool XsdValidatingInstanceReader::validate(bool &hasStateMachine, XsdElement::Pt
 
         const XsdTerm::Ptr term = m_stateMachines.top().lastTransition();
         if (term->isElement()) {
-            const XsdElement::Ptr element(term);
+            const XsdElement::Ptr element(qCast<XsdElement>(term));
 
             // rememeber the element we process
             processedElement = element;
@@ -323,7 +323,7 @@ bool XsdValidatingInstanceReader::validate(bool &hasStateMachine, XsdElement::Pt
                 return false;
 
         } else {
-            const XsdWildcard::Ptr wildcard(term);
+            const XsdWildcard::Ptr wildcard(qCast<XsdWildcard>(term));
             if (wildcard->processContents() != XsdWildcard::Skip) {
                 XsdElement::Ptr elementDeclaration = elementByName(name());
                 if (!elementDeclaration) {
@@ -519,7 +519,7 @@ bool XsdValidatingInstanceReader::validateElementType(const XsdElement::Ptr &dec
 
     // 2
     if (type->isComplexType() && type->isDefinedBySchema()) {
-        if (XsdComplexType::Ptr(type)->isAbstract()) {
+        if (qCast<XsdComplexType>(type)->isAbstract()) {
             error(QtXmlPatterns::tr("Complex type %1 is not allowed to be abstract.").arg(formatType(m_namePool, type)));
             return false;
         }
@@ -567,7 +567,7 @@ bool XsdValidatingInstanceReader::validateElementSimpleType(const XsdElement::Pt
         AnySimpleType::Ptr boundType;
 
         const XsdTypeChecker checker(m_context, namespaceBindings(item().toNodeModelIndex()), sourceLocation());
-        if (!checker.isValidString(actualValue, type, errorMsg, &boundType)) {
+        if (!checker.isValidString(actualValue, qCast<AnySimpleType>(type), errorMsg, &boundType)) {
             error(QtXmlPatterns::tr("Content of element %1 does not match its type definition: %2.").arg(formatKeyword(declaration->displayName(m_namePool))).arg(errorMsg));
             return false;
         }
@@ -575,7 +575,7 @@ bool XsdValidatingInstanceReader::validateElementSimpleType(const XsdElement::Pt
         // additional check
         if (declaration->valueConstraint() && declaration->valueConstraint()->variety() == XsdElement::ValueConstraint::Fixed) {
             const QString actualConstraintValue = XsdTypeChecker::normalizedValue(declaration->valueConstraint()->value(), facets);
-            if (!text().isEmpty() && !checker.valuesAreEqual(actualValue, actualConstraintValue, type)) {
+            if (!text().isEmpty() && !checker.valuesAreEqual(actualValue, actualConstraintValue, qCast<AnySimpleType>(type))) {
                 error(QtXmlPatterns::tr("Content of element %1 does not match defined value constraint.").arg(formatKeyword(declaration->displayName(m_namePool))));
                 return false;
             }
@@ -626,7 +626,7 @@ bool XsdValidatingInstanceReader::validateElementComplexType(const XsdElement::P
         XsdComplexType::Ptr complexType;
 
         if (type->isDefinedBySchema()) {
-            complexType = XsdComplexType::Ptr(type);
+            complexType = qCast<XsdComplexType>(type);
         } else {
             if (type->name(m_namePool) == BuiltinTypes::xsAnyType->name(m_namePool))
                 complexType = anyType();
@@ -719,7 +719,7 @@ bool XsdValidatingInstanceReader::validateElementComplexType(const XsdElement::P
     }
 
     if (type->isDefinedBySchema()) {
-        const XsdComplexType::Ptr complexType(type);
+        const XsdComplexType::Ptr complexType(qCast<XsdComplexType>(type));
 
         // create a lookup hash for faster access
         QHash<QXmlName, XsdAttributeUse::Ptr> attributeUseHash;
@@ -1118,7 +1118,7 @@ bool XsdValidatingInstanceReader::selectNodeSets(const XsdElement::Ptr&, const Q
                 bool typeOk = true;
                 if (type->isComplexType()) {
                     if (type->isDefinedBySchema()) {
-                        if (XsdComplexType::Ptr(type)->contentType()->variety() != XsdComplexType::ContentType::Simple)
+                        if (qCast<XsdComplexType>(type)->contentType()->variety() != XsdComplexType::ContentType::Simple)
                             typeOk = false;
                     } else {
                         typeOk = false;
@@ -1134,9 +1134,9 @@ bool XsdValidatingInstanceReader::selectNodeSets(const XsdElement::Ptr&, const Q
 
                 if (type->isDefinedBySchema()) {
                     if (type->isSimpleType())
-                        targetType = XsdSimpleType::Ptr(type)->primitiveType();
+                        targetType = qCast<XsdSimpleType>(type)->primitiveType();
                     else
-                        targetType = XsdComplexType::Ptr(type)->contentType()->simpleType();
+                        targetType = qCast<XsdComplexType>(type)->contentType()->simpleType();
 
                     if (!targetType) {
                         // QTBUG-77620: pattern type within a union doesn't get

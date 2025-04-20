@@ -200,7 +200,7 @@ bool UserFunctionCallsite::configureRecursion(const CallTargetDescription::Ptr &
 {
     Q_ASSERT(sign);
 
-    setIsRecursive(isSignatureValid(sign));
+    setIsRecursive(isSignatureValid(qCast<FunctionSignature>(sign)));
     return isRecursive();
 }
 

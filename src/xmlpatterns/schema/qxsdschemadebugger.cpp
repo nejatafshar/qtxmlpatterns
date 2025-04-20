@@ -56,9 +56,9 @@ void XsdSchemaDebugger::dumpParticle(const XsdParticle::Ptr &particle, int level
                                qPrintable(particle->maximumOccursUnbounded() ? QLatin1StringView("unbounded") : QString::number(particle->maximumOccurs())));
 
     if (particle->term()->isElement()) {
-        qDebug("%selement (%s)", qPrintable(prefix), qPrintable(XsdElement::Ptr(particle->term())->displayName(m_namePool)));
+        qDebug("%selement (%s)", qPrintable(prefix), qPrintable(qCast<XsdElement>(particle->term())->displayName(m_namePool)));
     } else if (particle->term()->isModelGroup()) {
-        const XsdModelGroup::Ptr group(particle->term());
+        const XsdModelGroup::Ptr group(qCast<XsdModelGroup>(particle->term()));
         if (group->compositor() == XsdModelGroup::SequenceCompositor) {
             qDebug("%ssequence", qPrintable(prefix));
         } else if (group->compositor() == XsdModelGroup::AllCompositor) {
@@ -70,7 +70,7 @@ void XsdSchemaDebugger::dumpParticle(const XsdParticle::Ptr &particle, int level
         for (int i = 0; i < group->particles().count(); ++i)
             dumpParticle(group->particles().at(i), level + 5);
     } else if (particle->term()->isWildcard()) {
-        XsdWildcard::Ptr wildcard(particle->term());
+        XsdWildcard::Ptr wildcard(qCast<XsdWildcard>(particle->term()));
         qDebug("%swildcard (process=%d)", qPrintable(prefix), wildcard->processContents());
     }
 }
@@ -105,7 +105,7 @@ void XsdSchemaDebugger::dumpWildcard(const XsdWildcard::Ptr &wildcard)
 void XsdSchemaDebugger::dumpType(const SchemaType::Ptr &type)
 {
     if (type->isComplexType()) {
-        const XsdComplexType::Ptr complexType(type);
+        const XsdComplexType::Ptr complexType(qCast<XsdComplexType>(type));
         qDebug("\n+++ Complex Type +++");
         qDebug("Name: %s (abstract: %s)", qPrintable(complexType->displayName(m_namePool)), complexType->isAbstract() ? "yes" : "no");
         if (complexType->wxsSuperType())
@@ -144,7 +144,7 @@ void XsdSchemaDebugger::dumpType(const SchemaType::Ptr &type)
         qDebug("\n+++ Simple Type +++");
         qDebug("Name: %s", qPrintable(type->displayName(m_namePool)));
         if (type->isDefinedBySchema()) {
-            const XsdSimpleType::Ptr simpleType(type);
+            const XsdSimpleType::Ptr simpleType(qCast<XsdSimpleType>(type));
             if (simpleType->primitiveType())
                 qDebug("  primitive type: %s", qPrintable(simpleType->primitiveType()->displayName(m_namePool)));
             else

@@ -211,7 +211,7 @@ ArithmeticExpression::fetchMathematician(Expression::Ptr &op1,
     }
 
     const AtomicMathematician::Ptr comp
-        (static_cast<const AtomicType *>(t2.data())->accept(locator, op, reflection));
+        (qCast<AtomicMathematician>(static_cast<const AtomicType *>(t2.data())->accept(locator, op, reflection)));
 
     if(comp)
         return comp;

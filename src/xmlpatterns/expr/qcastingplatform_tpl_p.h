@@ -63,7 +63,7 @@ Item CastingPlatform<TSubClass, issueError>::castWithCaster(const Item &sourceVa
     Q_ASSERT(caster);
     Q_ASSERT(context);
 
-    const Item retval(caster->castFrom(sourceValue, context));
+    const Item retval(caster->castFrom(sourceValue, qCast<DynamicContext>(context)));
 
     if(issueError)
     {
@@ -136,8 +136,8 @@ AtomicCaster::Ptr CastingPlatform<TSubClass, issueError>::locateCaster(const Ite
     Q_ASSERT(sourceType);
     Q_ASSERT(targetType);
 
-    const AtomicCasterLocator::Ptr locator(static_cast<AtomicType *>(
-            targetType.data())->casterLocator());
+    const AtomicCasterLocator::Ptr locator(qCast<AtomicType>(
+            targetType)->casterLocator());
     if(!locator)
     {
         if(issueError)
@@ -152,7 +152,7 @@ AtomicCaster::Ptr CastingPlatform<TSubClass, issueError>::locateCaster(const Ite
         return AtomicCaster::Ptr();
     }
 
-    const AtomicCaster::Ptr caster(static_cast<const AtomicType *>(sourceType.data())->accept(locator, location));
+    const AtomicCaster::Ptr caster(qCast<AtomicCaster>(qCast<AtomicType>(sourceType)->accept(locator, location)));
     if(!caster)
     {
         if(issueError)
@@ -179,7 +179,7 @@ void CastingPlatform<TSubClass, issueError>::checkTargetType(const ReportContext
     const ItemType::Ptr tType(targetType());
     Q_ASSERT(tType);
     Q_ASSERT(tType->isAtomicType());
-    const AtomicType::Ptr asAtomic(tType);
+    const AtomicType::Ptr asAtomic(qCast<AtomicType>(tType));
 
     /* This catches casting to xs:NOTATION and xs:anyAtomicType. */
     if(asAtomic->isAbstract())

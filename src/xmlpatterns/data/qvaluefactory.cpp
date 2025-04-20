@@ -58,7 +58,7 @@ class PerformValueConstruction : public CastingPlatform<PerformValueConstruction
 public:
     PerformValueConstruction(const SourceLocationReflection *const sourceLocationReflection,
                              const SchemaType::Ptr &toType) : m_sourceReflection(sourceLocationReflection)
-                                                            , m_targetType(AtomicType::Ptr(toType))
+        , m_targetType(qCast<ItemType>(qCast<AtomicType>(toType)))
     {
         Q_ASSERT(m_sourceReflection);
     }

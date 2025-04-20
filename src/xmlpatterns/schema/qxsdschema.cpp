@@ -142,7 +142,7 @@ XsdSimpleType::List XsdSchema::simpleTypes() const
     const SchemaType::List types = m_types.values();
     for (int i = 0; i < types.count(); ++i) {
         if (types.at(i)->isSimpleType() && types.at(i)->isDefinedBySchema())
-            retval.append(types.at(i));
+            retval.append(qCast<AnySimpleType>(types.at(i)));
     }
 
     return retval;

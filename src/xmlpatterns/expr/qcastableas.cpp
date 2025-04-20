@@ -88,7 +88,7 @@ Expression::Ptr CastableAs::compress(const StaticContext::Ptr &context)
     if(me != this) /* We already managed to const fold, how convenient. */
         return me;
 
-    const AtomicType::Ptr t(m_targetType->itemType());
+    const AtomicType::Ptr t(qCast<AtomicType>(m_targetType->itemType()));
 
     const SequenceType::Ptr opType(m_operand->staticType());
 

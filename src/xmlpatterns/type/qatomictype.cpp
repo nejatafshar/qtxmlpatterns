@@ -77,7 +77,7 @@ bool AtomicType::itemMatches(const Item &item) const
         return false;
     else
     {
-        const SchemaType::Ptr t(static_cast<AtomicType *>(item.type().data()));
+        const SchemaType::Ptr t(qCast<AtomicType>(item.type()));
         return wxsTypeMatches(t);
     }
 }

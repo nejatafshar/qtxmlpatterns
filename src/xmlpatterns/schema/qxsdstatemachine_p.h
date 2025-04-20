@@ -55,6 +55,7 @@
 #include <QtCore/QHash>
 #include <QtCore/QSet>
 #include <QtCore/QTextStream>
+#include <QtCore/QIODevice>
 
 QT_BEGIN_NAMESPACE
 

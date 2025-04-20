@@ -86,7 +86,7 @@ AnyURI::Ptr AnyURI::fromLexical(const QString &value)
     if(isValid)
         return fromValue(retval);
     else
-        return ValidationError::createError();
+        return qCast<AnyURI>(ValidationError::createError());
 }
 
 bool AnyURI::isValid(const QString &candidate)

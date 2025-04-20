@@ -95,7 +95,7 @@ XsdComplexType::OpenContent::Ptr XsdComplexType::ContentType::openContent() cons
 
 void XsdComplexType::ContentType::setSimpleType(const AnySimpleType::Ptr &type)
 {
-    m_simpleType = type;
+    m_simpleType = qCast<XsdSimpleType>(type);
 }
 
 AnySimpleType::Ptr XsdComplexType::ContentType::simpleType() const

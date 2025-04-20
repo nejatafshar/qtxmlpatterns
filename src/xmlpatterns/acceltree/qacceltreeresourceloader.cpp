@@ -78,7 +78,7 @@ bool AccelTreeResourceLoader::retrieveDocument(const QUrl &uri,
     bool success = false;
     success = streamToReceiver(reply.data(), &builder, m_namePool, context, uri);
 
-    m_loadedDocuments.insert(uri, builder.builtDocument());
+    m_loadedDocuments.insert(uri, qCast<AccelTree>(builder.builtDocument()));
     return success;
 }
 
@@ -93,7 +93,7 @@ bool AccelTreeResourceLoader::retrieveDocument(QIODevice *source, const QUrl &do
     bool success = false;
     success = streamToReceiver(source, &builder, m_namePool, context, documentUri);
 
-    m_loadedDocuments.insert(documentUri, builder.builtDocument());
+    m_loadedDocuments.insert(documentUri, qCast<AccelTree>(builder.builtDocument()));
 
     return success;
 }

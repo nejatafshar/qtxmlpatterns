@@ -124,7 +124,7 @@ static bool matchesType(const SchemaType::Ptr &myType, const SchemaType::Ptr &ot
         }
         // simple types can have different varieties, so we have to check each of them
         if (otherType->isSimpleType()) {
-            const XsdSimpleType::Ptr simpleType = otherType;
+            const XsdSimpleType::Ptr simpleType{qCast<XsdSimpleType>(otherType)};
             if (simpleType->category() == XsdSimpleType::SimpleTypeAtomic) {
                 // for atomic type we use the same test as in SchemaType::wxsTypeMatches
                 retval = (myType == static_cast<SchemaType::Ptr>(simpleType) ? true : matchesType(myType, simpleType->wxsSuperType(), visitedTypes));
@@ -159,7 +159,7 @@ static bool matchesType(const SchemaType::Ptr &myType, const SchemaType::Ptr &ot
  */
 static bool hasCircularUnionInheritance(const XsdSimpleType::Ptr &type, const SchemaType::Ptr &otherType, NamePool::Ptr &namePool)
 {
-    if (type == static_cast<XsdSimpleType::Ptr>(otherType)) {
+    if (type == qCast<XsdSimpleType>(otherType)) {
         return true;
     }
 
@@ -167,7 +167,7 @@ static bool hasCircularUnionInheritance(const XsdSimpleType::Ptr &type, const Sc
         return false;
     }
 
-    const XsdSimpleType::Ptr simpleOtherType = otherType;
+    const XsdSimpleType::Ptr simpleOtherType = qCast<XsdSimpleType>(otherType);
 
     if (simpleOtherType->category() == XsdSimpleType::SimpleTypeUnion) {
         const XsdSimpleType::List memberTypes = simpleOtherType->memberTypes();
@@ -257,7 +257,7 @@ void XsdSchemaChecker::checkCircularInheritances()
 
         // check union member inheritance
         if (type->isSimpleType() && type->isDefinedBySchema()) {
-            const XsdSimpleType::Ptr simpleType = type;
+            const XsdSimpleType::Ptr simpleType = qCast<XsdSimpleType>(type);
             if (simpleType->category() == XsdSimpleType::SimpleTypeUnion) {
                 const XsdSimpleType::List memberTypes = simpleType->memberTypes();
                 for (int j = 0; j < memberTypes.count(); ++j) {
@@ -315,7 +315,7 @@ void XsdSchemaChecker::checkBasicSimpleTypeConstraints()
         if (!type->isSimpleType())
             continue;
 
-        const XsdSimpleType::Ptr simpleType = type;
+        const XsdSimpleType::Ptr simpleType = qCast<XsdSimpleType>(type);
 
         const QSourceLocation location = sourceLocation(simpleType);
 
@@ -356,7 +356,7 @@ void XsdSchemaChecker::checkSimpleTypeConstraints()
         if (!type->isSimpleType())
             continue;
 
-        const XsdSimpleType::Ptr simpleType = type;
+        const XsdSimpleType::Ptr simpleType = qCast<XsdSimpleType>(type);
 
         const QSourceLocation location = sourceLocation(simpleType);
 
@@ -411,7 +411,7 @@ void XsdSchemaChecker::checkSimpleTypeConstraints()
 
             // 2.1 second part
             if (itemType->category() == SchemaType::SimpleTypeUnion && itemType->isDefinedBySchema()) {
-                const XsdSimpleType::Ptr simpleItemType = itemType;
+                const XsdSimpleType::Ptr simpleItemType{qCast<XsdSimpleType>(itemType)};
                 const AnySimpleType::List memberTypes = simpleItemType->memberTypes();
                 for (int j = 0; j < memberTypes.count(); ++j) {
                     if (memberTypes.at(j)->category() != SchemaType::SimpleTypeAtomic && memberTypes.at(j)->category() != SchemaType::SimpleTypeUnion) {
@@ -424,7 +424,7 @@ void XsdSchemaChecker::checkSimpleTypeConstraints()
             // 2.2.1
             if (simpleType->wxsSuperType()->name(m_namePool) == BuiltinTypes::xsAnySimpleType->name(m_namePool)) {
                 if (itemType->isSimpleType() && itemType->isDefinedBySchema()) {
-                    const XsdSimpleType::Ptr simpleItemType = itemType;
+                    const XsdSimpleType::Ptr simpleItemType = qCast<XsdSimpleType>(itemType);
 
                     // 2.2.1.1
                     if (simpleItemType->derivationConstraints() & XsdSimpleType::ListConstraint) {
@@ -467,7 +467,7 @@ void XsdSchemaChecker::checkSimpleTypeConstraints()
                 }
 
                 // 2.2.2.3
-                if (!XsdSchemaHelper::isSimpleDerivationOk(itemType, XsdSimpleType::Ptr(simpleType->wxsSuperType())->itemType(), SchemaType::DerivationConstraints())) {
+                if (!XsdSchemaHelper::isSimpleDerivationOk(itemType, qCast<XsdSimpleType>(simpleType->wxsSuperType())->itemType(), SchemaType::DerivationConstraints())) {
                     m_context->error(QtXmlPatterns::tr("Item type of base type does not match item type of %1.").arg(formatType(m_namePool, simpleType)), XsdSchemaContext::XSDError, location);
                     return;
                 }
@@ -549,7 +549,7 @@ void XsdSchemaChecker::checkSimpleTypeConstraints()
 
                 //3.1.2.3
                 if (simpleType->wxsSuperType()->isDefinedBySchema()) {
-                    const XsdSimpleType::Ptr simpleBaseType(simpleType->wxsSuperType());
+                    const XsdSimpleType::Ptr simpleBaseType(qCast<XsdSimpleType>(simpleType->wxsSuperType()));
 
                     AnySimpleType::List baseMemberTypes = simpleBaseType->memberTypes();
                     for (int i = 0; i < memberTypes.count(); ++i) {
@@ -611,7 +611,7 @@ void XsdSchemaChecker::checkBasicComplexTypeConstraints()
         if (!type->isComplexType() || !type->isDefinedBySchema())
             continue;
 
-        const XsdComplexType::Ptr complexType = type;
+        const XsdComplexType::Ptr complexType{qCast<XsdComplexType>(type)};
 
         const QSourceLocation location = sourceLocation(complexType);
 
@@ -643,7 +643,7 @@ void XsdSchemaChecker::checkComplexTypeConstraints()
         if (!type->isComplexType() || !type->isDefinedBySchema())
             continue;
 
-        const XsdComplexType::Ptr complexType = type;
+        const XsdComplexType::Ptr complexType = qCast<XsdComplexType>(type);
 
         const QSourceLocation location = sourceLocation(complexType);
 
@@ -671,7 +671,7 @@ void XsdSchemaChecker::checkComplexTypeConstraints()
         // @see http://www.w3.org/TR/xmlschema11-1/#cos-ct-extends
         if (complexType->derivationMethod() == XsdComplexType::DerivationExtension) {
             if (baseType->isComplexType() && baseType->isDefinedBySchema()) {
-                const XsdComplexType::Ptr complexBaseType = baseType;
+                const XsdComplexType::Ptr complexBaseType = qCast<XsdComplexType>(baseType);
 
                 // we can skip 1.1 here, as it is tested in checkInheritanceRestrictions() already
 
@@ -732,7 +732,7 @@ void XsdSchemaChecker::checkComplexTypeConstraints()
                     return;
                 }
 
-                if (complexType->contentType()->simpleType() != static_cast<AnySimpleType::Ptr>(baseType)) {
+                if (complexType->contentType()->simpleType() != AnySimpleType::Ptr(qCast<AnySimpleType>(baseType))) {
                     m_context->error(QtXmlPatterns::tr("Complex type %1 must have the same simple type as its base class %2.")
                                                       .arg(formatType(m_namePool, complexType))
                                                       .arg(formatType(m_namePool, baseType)),
@@ -758,7 +758,7 @@ void XsdSchemaChecker::checkComplexTypeConstraints()
                 }
 
                 if (baseType->isDefinedBySchema()) {
-                    const XsdComplexType::Ptr complexBaseType(baseType);
+                    const XsdComplexType::Ptr complexBaseType(qCast<XsdComplexType>(baseType));
 
                     // 2.2.1
                     if (complexType->contentType()->variety() == XsdComplexType::ContentType::Simple) {
@@ -809,7 +809,7 @@ void XsdSchemaChecker::checkComplexTypeConstraints()
             }
 
             if (baseType->isDefinedBySchema()) {
-                const XsdComplexType::Ptr complexBaseType(baseType);
+                const XsdComplexType::Ptr complexBaseType(qCast<XsdComplexType>(baseType));
 
                 QString errorMsg;
                 if (!XsdSchemaHelper::isValidAttributeUsesRestriction(complexType->attributeUses(), complexBaseType->attributeUses(),
@@ -855,7 +855,7 @@ void XsdSchemaChecker::checkSimpleDerivationRestrictions()
         if (type->category() != SchemaType::SimpleTypeList && type->category() != SchemaType::SimpleTypeUnion)
             continue;
 
-        const XsdSimpleType::Ptr simpleType = type;
+        const XsdSimpleType::Ptr simpleType = qCast<XsdSimpleType>(type);
         const QSourceLocation location = sourceLocation(simpleType);
 
         // check all simple types derived by list
@@ -871,7 +871,7 @@ void XsdSchemaChecker::checkSimpleDerivationRestrictions()
 
 
             if (itemType->isSimpleType() && itemType->isDefinedBySchema()) {
-                const XsdSimpleType::Ptr simpleItemType = itemType;
+                const XsdSimpleType::Ptr simpleItemType = qCast<XsdSimpleType>(itemType);
                 if (simpleItemType->derivationConstraints() & XsdSimpleType::ListConstraint) {
                     m_context->error(QtXmlPatterns::tr("%1 is not allowed to derive from %2 by list as the latter defines it as final.")
                                                       .arg(formatType(m_namePool, simpleType))
@@ -888,7 +888,7 @@ void XsdSchemaChecker::checkSimpleDerivationRestrictions()
             }
 
             if (itemType->category() == SchemaType::SimpleTypeUnion && itemType->isDefinedBySchema()) {
-                const XsdSimpleType::Ptr simpleItemType = itemType;
+                const XsdSimpleType::Ptr simpleItemType = qCast<XsdSimpleType>(itemType);
                 const AnySimpleType::List memberTypes = simpleItemType->memberTypes();
                 for (int j = 0; j < memberTypes.count(); ++j) {
                     if (memberTypes.at(j)->category() != SchemaType::SimpleTypeAtomic && memberTypes.at(j)->category() != SchemaType::SimpleTypeUnion) {
@@ -923,7 +923,7 @@ void XsdSchemaChecker::checkSimpleDerivationRestrictions()
                 }
 
                 if (memberType->isSimpleType() && memberType->isDefinedBySchema()) {
-                    const XsdSimpleType::Ptr simpleMemberType = memberType;
+                    const XsdSimpleType::Ptr simpleMemberType = qCast<XsdSimpleType>(memberType);
                     if (simpleMemberType->derivationConstraints() & XsdSimpleType::UnionConstraint) {
                         m_context->error(QtXmlPatterns::tr("%1 is not allowed to derive from %2 by union as the latter defines it as final.")
                                                           .arg(formatType(m_namePool, simpleType))
@@ -945,7 +945,7 @@ void XsdSchemaChecker::checkConstrainingFacets()
         if (!(types.at(i)->isSimpleType()) || !(types.at(i)->isDefinedBySchema()))
             continue;
 
-        const XsdSimpleType::Ptr simpleType = types.at(i);
+        const XsdSimpleType::Ptr simpleType = qCast<XsdSimpleType>(types.at(i));
         checkConstrainingFacets(simpleType->facets(), simpleType);
     }
 
@@ -955,7 +955,7 @@ void XsdSchemaChecker::checkConstrainingFacets()
         if (!(anonymousTypes.at(i)->isSimpleType()) || !(anonymousTypes.at(i)->isDefinedBySchema()))
             continue;
 
-        const XsdSimpleType::Ptr simpleType = anonymousTypes.at(i);
+        const XsdSimpleType::Ptr simpleType = qCast<XsdSimpleType>(anonymousTypes.at(i));
         checkConstrainingFacets(simpleType->facets(), simpleType);
     }
 }
@@ -976,19 +976,19 @@ void XsdSchemaChecker::checkConstrainingFacets(const XsdFacet::Hash &facets, con
     // start checks
     if (facets.contains(XsdFacet::Length)) {
         const XsdFacet::Ptr lengthFacet = facets.value(XsdFacet::Length);
-        const DerivedInteger<TypeNonNegativeInteger>::Ptr lengthValue = lengthFacet->value();
+        const DerivedInteger<TypeNonNegativeInteger>::Ptr lengthValue{qCast<DerivedInteger<TypeNonNegativeInteger>>(lengthFacet->value())};
 
         // @see http://www.w3.org/TR/xmlschema-2/#length-minLength-maxLength
         if (facets.contains(XsdFacet::MinimumLength)) {
             const XsdFacet::Ptr minLengthFacet = facets.value(XsdFacet::MinimumLength);
-            const DerivedInteger<TypeNonNegativeInteger>::Ptr minLengthValue = minLengthFacet->value();
+            const DerivedInteger<TypeNonNegativeInteger>::Ptr minLengthValue = qCast<DerivedInteger<TypeNonNegativeInteger>>(minLengthFacet->value());
 
             bool foundSuperMinimumLength = false;
             SchemaType::Ptr baseType = simpleType->wxsSuperType();
             while (baseType) {
-                const XsdFacet::Hash baseFacets = m_context->facetsForType(baseType);
+                const XsdFacet::Hash baseFacets = m_context->facetsForType(qCast<AnySimpleType>(baseType));
                 if (baseFacets.contains(XsdFacet::MinimumLength) && !baseFacets.contains(XsdFacet::Length)) {
-                    const DerivedInteger<TypeNonNegativeInteger>::Ptr superValue(baseFacets.value(XsdFacet::MinimumLength)->value());
+                    const DerivedInteger<TypeNonNegativeInteger>::Ptr superValue(qCast<Numeric>(baseFacets.value(XsdFacet::MinimumLength)->value()));
                     if (minLengthValue->toInteger() == superValue->toInteger()) {
                         foundSuperMinimumLength = true;
                         break;
@@ -1010,14 +1010,14 @@ void XsdSchemaChecker::checkConstrainingFacets(const XsdFacet::Hash &facets, con
         // @see http://www.w3.org/TR/xmlschema-2/#length-minLength-maxLength
         if (facets.contains(XsdFacet::MaximumLength)) {
             const XsdFacet::Ptr maxLengthFacet = facets.value(XsdFacet::MaximumLength);
-            const DerivedInteger<TypeNonNegativeInteger>::Ptr maxLengthValue = maxLengthFacet->value();
+            const DerivedInteger<TypeNonNegativeInteger>::Ptr maxLengthValue = qCast<DerivedInteger<TypeNonNegativeInteger>>(maxLengthFacet->value());
 
             bool foundSuperMaximumLength = false;
             SchemaType::Ptr baseType = simpleType->wxsSuperType();
             while (baseType) {
-                const XsdFacet::Hash baseFacets = m_context->facetsForType(baseType);
+                const XsdFacet::Hash baseFacets = m_context->facetsForType(qCast<AnySimpleType>(baseType));
                 if (baseFacets.contains(XsdFacet::MaximumLength) && !baseFacets.contains(XsdFacet::Length)) {
-                    const DerivedInteger<TypeNonNegativeInteger>::Ptr superValue(baseFacets.value(XsdFacet::MaximumLength)->value());
+                    const DerivedInteger<TypeNonNegativeInteger>::Ptr superValue(qCast<DerivedInteger<TypeNonNegativeInteger>>(baseFacets.value(XsdFacet::MaximumLength)->value()));
                     if (maxLengthValue->toInteger() == superValue->toInteger()) {
                         foundSuperMaximumLength = true;
                         break;
@@ -1038,9 +1038,9 @@ void XsdSchemaChecker::checkConstrainingFacets(const XsdFacet::Hash &facets, con
 
         // @see http://www.w3.org/TR/xmlschema-2/#length-valid-restriction
         if (simpleType->derivationMethod() == XsdSimpleType::DerivationRestriction) {
-            const XsdFacet::Hash baseFacets = m_context->facetsForType(simpleType->wxsSuperType());
+            const XsdFacet::Hash baseFacets = m_context->facetsForType(qCast<AnySimpleType>(simpleType->wxsSuperType()));
             if (baseFacets.contains(XsdFacet::Length)) {
-                const DerivedInteger<TypeNonNegativeInteger>::Ptr baseValue = baseFacets.value(XsdFacet::Length)->value();
+                const DerivedInteger<TypeNonNegativeInteger>::Ptr baseValue = qCast<DerivedInteger<TypeNonNegativeInteger>>(baseFacets.value(XsdFacet::Length)->value());
                 if (lengthValue->toInteger() != baseValue->toInteger()) {
                     m_context->error(QtXmlPatterns::tr("%1 facet must have the same value as %2 facet of base type.")
                                                       .arg(formatKeyword("length"))
@@ -1054,11 +1054,11 @@ void XsdSchemaChecker::checkConstrainingFacets(const XsdFacet::Hash &facets, con
 
     if (facets.contains(XsdFacet::MinimumLength)) {
         const XsdFacet::Ptr minLengthFacet = facets.value(XsdFacet::MinimumLength);
-        const DerivedInteger<TypeNonNegativeInteger>::Ptr minLengthValue = minLengthFacet->value();
+        const DerivedInteger<TypeNonNegativeInteger>::Ptr minLengthValue = qCast<DerivedInteger<TypeNonNegativeInteger>>(minLengthFacet->value());
 
         if (facets.contains(XsdFacet::MaximumLength)) {
             const XsdFacet::Ptr maxLengthFacet = facets.value(XsdFacet::MaximumLength);
-            const DerivedInteger<TypeNonNegativeInteger>::Ptr maxLengthValue = maxLengthFacet->value();
+            const DerivedInteger<TypeNonNegativeInteger>::Ptr maxLengthValue = qCast<DerivedInteger<TypeNonNegativeInteger>>(maxLengthFacet->value());
 
             // @see http://www.w3.org/TR/xmlschema-2/#minLength-less-than-equal-to-maxLength
             if (maxLengthValue->toInteger() < minLengthValue->toInteger()) {
@@ -1075,9 +1075,9 @@ void XsdSchemaChecker::checkConstrainingFacets(const XsdFacet::Hash &facets, con
 
         // @see http://www.w3.org/TR/xmlschema-2/#minLength-valid-restriction
         if (simpleType->derivationMethod() == XsdSimpleType::DerivationRestriction) {
-            const XsdFacet::Hash baseFacets = m_context->facetsForType(simpleType->wxsSuperType());
+            const XsdFacet::Hash baseFacets = m_context->facetsForType(qCast<AnySimpleType>(simpleType->wxsSuperType()));
             if (baseFacets.contains(XsdFacet::MinimumLength)) {
-                const DerivedInteger<TypeNonNegativeInteger>::Ptr baseValue = baseFacets.value(XsdFacet::MinimumLength)->value();
+                const DerivedInteger<TypeNonNegativeInteger>::Ptr baseValue = qCast<DerivedInteger<TypeNonNegativeInteger>>(baseFacets.value(XsdFacet::MinimumLength)->value());
                 if (minLengthValue->toInteger() < baseValue->toInteger()) {
                     m_context->error(QtXmlPatterns::tr("%1 facet must be equal or greater than %2 facet of base type.")
                                                       .arg(formatKeyword("minLength"))
@@ -1090,13 +1090,13 @@ void XsdSchemaChecker::checkConstrainingFacets(const XsdFacet::Hash &facets, con
     }
     if (facets.contains(XsdFacet::MaximumLength)) {
         const XsdFacet::Ptr maxLengthFacet = facets.value(XsdFacet::MaximumLength);
-        const DerivedInteger<TypeNonNegativeInteger>::Ptr maxLengthValue = maxLengthFacet->value();
+        const DerivedInteger<TypeNonNegativeInteger>::Ptr maxLengthValue = qCast<DerivedInteger<TypeNonNegativeInteger>>(maxLengthFacet->value());
 
         // @see http://www.w3.org/TR/xmlschema-2/#maxLength-valid-restriction
         if (simpleType->derivationMethod() == XsdSimpleType::DerivationRestriction) {
-            const XsdFacet::Hash baseFacets = m_context->facetsForType(simpleType->wxsSuperType());
+            const XsdFacet::Hash baseFacets = m_context->facetsForType(qCast<AnySimpleType>(simpleType->wxsSuperType()));
             if (baseFacets.contains(XsdFacet::MaximumLength)) {
-                const DerivedInteger<TypeNonNegativeInteger>::Ptr baseValue(baseFacets.value(XsdFacet::MaximumLength)->value());
+                const DerivedInteger<TypeNonNegativeInteger>::Ptr baseValue(qCast<DerivedInteger<TypeNonNegativeInteger>>(baseFacets.value(XsdFacet::MaximumLength)->value()));
                 if (maxLengthValue->toInteger() > baseValue->toInteger()) {
                     m_context->error(QtXmlPatterns::tr("%1 facet must be less than or equal to %2 facet of base type.")
                                                       .arg(formatKeyword("maxLength"))
@@ -1132,7 +1132,7 @@ void XsdSchemaChecker::checkConstrainingFacets(const XsdFacet::Hash &facets, con
         if (BuiltinTypes::xsNOTATION->wxsTypeMatches(simpleType)) {
             const AtomicValue::List notationNames = facet->multiValue();
             for (int k = 0; k < notationNames.count(); ++k) {
-                const QNameValue::Ptr notationName = notationNames.at(k);
+                const QNameValue::Ptr notationName(qCast<QNameValue>(notationNames.at(k)));
                 if (!m_schema->notation(notationName->qName())) {
                     m_context->error(QtXmlPatterns::tr("Unknown notation %1 used in %2 facet.")
                                                       .arg(formatKeyword(m_namePool, notationName->qName()))
@@ -1144,7 +1144,7 @@ void XsdSchemaChecker::checkConstrainingFacets(const XsdFacet::Hash &facets, con
         } else {
             const XsdTypeChecker checker(m_context, QVector<QXmlName>(), sourceLocation(simpleType));
 
-            const AnySimpleType::Ptr baseType = simpleType->wxsSuperType();
+            const AnySimpleType::Ptr baseType = qCast<AnySimpleType>(simpleType->wxsSuperType());
             const XsdFacet::Hash baseFacets = XsdTypeChecker::mergedFacetsForType(baseType, m_context);
 
             const AtomicValue::List multiValue = facet->multiValue();
@@ -1170,7 +1170,7 @@ void XsdSchemaChecker::checkConstrainingFacets(const XsdFacet::Hash &facets, con
 
         // @see http://www.w3.org/TR/xmlschema-2/#whiteSpace-valid-restriction
         if (simpleType->derivationMethod() == XsdSimpleType::DerivationRestriction) {
-            const XsdFacet::Hash baseFacets = m_context->facetsForType(simpleType->wxsSuperType());
+            const XsdFacet::Hash baseFacets = m_context->facetsForType(qCast<AnySimpleType>(simpleType->wxsSuperType()));
             if (baseFacets.contains(XsdFacet::WhiteSpace)) {
                 const QString value = whiteSpaceValue->stringValue();
                 const QString baseValue = DerivedString<TypeString>::Ptr(baseFacets.value(XsdFacet::WhiteSpace)->value())->stringValue();
@@ -1218,7 +1218,7 @@ void XsdSchemaChecker::checkConstrainingFacets(const XsdFacet::Hash &facets, con
 
         // @see http://www.w3.org/TR/xmlschema-2/#maxInclusive-valid-restriction
         if (simpleType->derivationMethod() == XsdSimpleType::DerivationRestriction) {
-            const XsdFacet::Hash baseFacets = m_context->facetsForType(simpleType->wxsSuperType());
+            const XsdFacet::Hash baseFacets = m_context->facetsForType(qCast<AnySimpleType>(simpleType->wxsSuperType()));
             if (baseFacets.contains(XsdFacet::MaximumInclusive)) {
                 const XsdFacet::Ptr baseFacet = baseFacets.value(XsdFacet::MaximumInclusive);
                 if (comparableBaseType) {
@@ -1273,7 +1273,7 @@ void XsdSchemaChecker::checkConstrainingFacets(const XsdFacet::Hash &facets, con
 
         // @see http://www.w3.org/TR/xmlschema-2/#maxExclusive-valid-restriction
         if (simpleType->derivationMethod() == XsdSimpleType::DerivationRestriction) {
-            const XsdFacet::Hash baseFacets = m_context->facetsForType(simpleType->wxsSuperType());
+            const XsdFacet::Hash baseFacets = m_context->facetsForType(qCast<AnySimpleType>(simpleType->wxsSuperType()));
             if (baseFacets.contains(XsdFacet::MaximumExclusive)) {
                 const XsdFacet::Ptr baseFacet = baseFacets.value(XsdFacet::MaximumExclusive);
                 if (comparableBaseType) {
@@ -1352,7 +1352,7 @@ void XsdSchemaChecker::checkConstrainingFacets(const XsdFacet::Hash &facets, con
 
         // @see http://www.w3.org/TR/xmlschema-2/#minExclusive-valid-restriction
         if (simpleType->derivationMethod() == XsdSimpleType::DerivationRestriction) {
-            const XsdFacet::Hash baseFacets = m_context->facetsForType(simpleType->wxsSuperType());
+            const XsdFacet::Hash baseFacets = m_context->facetsForType(qCast<AnySimpleType>(simpleType->wxsSuperType()));
             if (baseFacets.contains(XsdFacet::MinimumExclusive)) {
                 const XsdFacet::Ptr baseFacet = baseFacets.value(XsdFacet::MinimumExclusive);
                 if (comparableBaseType) {
@@ -1410,7 +1410,7 @@ void XsdSchemaChecker::checkConstrainingFacets(const XsdFacet::Hash &facets, con
 
         // @see http://www.w3.org/TR/xmlschema-2/#minInclusive-valid-restriction
         if (simpleType->derivationMethod() == XsdSimpleType::DerivationRestriction) {
-            const XsdFacet::Hash baseFacets = m_context->facetsForType(simpleType->wxsSuperType());
+            const XsdFacet::Hash baseFacets = m_context->facetsForType(qCast<AnySimpleType>(simpleType->wxsSuperType()));
             if (baseFacets.contains(XsdFacet::MinimumInclusive)) {
                 const XsdFacet::Ptr baseFacet = baseFacets.value(XsdFacet::MinimumInclusive);
                 if (comparableBaseType) {
@@ -1463,14 +1463,14 @@ void XsdSchemaChecker::checkConstrainingFacets(const XsdFacet::Hash &facets, con
     }
     if (facets.contains(XsdFacet::TotalDigits)) {
         const XsdFacet::Ptr totalDigitsFacet = facets.value(XsdFacet::TotalDigits);
-        const DerivedInteger<TypeNonNegativeInteger>::Ptr totalDigitsValue = totalDigitsFacet->value();
+        const DerivedInteger<TypeNonNegativeInteger>::Ptr totalDigitsValue = qCast<DerivedInteger<TypeNonNegativeInteger>>(totalDigitsFacet->value());
 
         // @see http://www.w3.org/TR/xmlschema-2/#totalDigits-valid-restriction
         if (simpleType->derivationMethod() == XsdSimpleType::DerivationRestriction) {
-            const XsdFacet::Hash baseFacets = m_context->facetsForType(simpleType->wxsSuperType());
+            const XsdFacet::Hash baseFacets = m_context->facetsForType(qCast<AnySimpleType>(simpleType->wxsSuperType()));
             if (baseFacets.contains(XsdFacet::TotalDigits)) {
                 const XsdFacet::Ptr baseFacet = baseFacets.value(XsdFacet::TotalDigits);
-                const DerivedInteger<TypeNonNegativeInteger>::Ptr baseValue = baseFacet->value();
+                const DerivedInteger<TypeNonNegativeInteger>::Ptr baseValue = qCast<DerivedInteger<TypeNonNegativeInteger>>(baseFacet->value());
 
                 if (totalDigitsValue->toInteger() > baseValue->toInteger()) {
                     m_context->error(QtXmlPatterns::tr("%1 facet must be less than or equal to %2 facet of base type.")
@@ -1484,12 +1484,12 @@ void XsdSchemaChecker::checkConstrainingFacets(const XsdFacet::Hash &facets, con
     }
     if (facets.contains(XsdFacet::FractionDigits)) {
         const XsdFacet::Ptr fractionDigitsFacet = facets.value(XsdFacet::FractionDigits);
-        const DerivedInteger<TypeNonNegativeInteger>::Ptr fractionDigitsValue = fractionDigitsFacet->value();
+        const DerivedInteger<TypeNonNegativeInteger>::Ptr fractionDigitsValue = qCast<DerivedInteger<TypeNonNegativeInteger>>(fractionDigitsFacet->value());
 
         // http://www.w3.org/TR/xmlschema-2/#fractionDigits-totalDigits
         if (facets.contains(XsdFacet::TotalDigits)) {
             const XsdFacet::Ptr totalDigitsFacet = facets.value(XsdFacet::TotalDigits);
-            const DerivedInteger<TypeNonNegativeInteger>::Ptr totalDigitsValue = totalDigitsFacet->value();
+            const DerivedInteger<TypeNonNegativeInteger>::Ptr totalDigitsValue = qCast<DerivedInteger<TypeNonNegativeInteger>>(totalDigitsFacet->value());
 
             if (fractionDigitsValue->toInteger() > totalDigitsValue->toInteger()) {
                 m_context->error(QtXmlPatterns::tr("%1 facet must be less than or equal to %2 facet.")
@@ -1502,10 +1502,10 @@ void XsdSchemaChecker::checkConstrainingFacets(const XsdFacet::Hash &facets, con
 
         // @see http://www.w3.org/TR/xmlschema-2/#fractionDigits-valid-restriction
         if (simpleType->derivationMethod() == XsdSimpleType::DerivationRestriction) {
-            const XsdFacet::Hash baseFacets = m_context->facetsForType(simpleType->wxsSuperType());
+            const XsdFacet::Hash baseFacets = m_context->facetsForType(qCast<AnySimpleType>(simpleType->wxsSuperType()));
             if (baseFacets.contains(XsdFacet::FractionDigits)) {
                 const XsdFacet::Ptr baseFacet = baseFacets.value(XsdFacet::FractionDigits);
-                const DerivedInteger<TypeNonNegativeInteger>::Ptr baseValue = baseFacet->value();
+                const DerivedInteger<TypeNonNegativeInteger>::Ptr baseValue = qCast<DerivedInteger<TypeNonNegativeInteger>>(baseFacet->value());
 
                 if (fractionDigitsValue->toInteger() > baseValue->toInteger()) {
                     m_context->error(QtXmlPatterns::tr("%1 facet must be less than or equal to %2 facet of base type.")
@@ -1654,7 +1654,7 @@ void XsdSchemaChecker::checkDuplicatedAttributeUses()
         if (!(types.at(i)->isComplexType()) || !types.at(i)->isDefinedBySchema())
             continue;
 
-        const XsdComplexType::Ptr complexType = types.at(i);
+        const XsdComplexType::Ptr complexType = qCast<XsdComplexType>(types.at(i));
         const XsdAttributeUse::List attributeUses = complexType->attributeUses();
 
         // @see http://www.w3.org/TR/xmlschema11-1/#ct-props-correct 4)
@@ -1701,14 +1701,14 @@ void XsdSchemaChecker::checkElementConstraints()
 
             AnySimpleType::Ptr targetType;
             if (type->isSimpleType() && type->category() == SchemaType::SimpleTypeAtomic) {
-                targetType = type;
+                targetType = qCast<AnySimpleType>(type);
 
                 // if it is a XsdSimpleType, use its primitive type as target type
                 if (type->isDefinedBySchema())
-                    targetType = XsdSimpleType::Ptr(type)->primitiveType();
+                    targetType = qCast<XsdSimpleType>(type)->primitiveType();
 
             } else if (type->isComplexType() && type->isDefinedBySchema()) {
-                const XsdComplexType::Ptr complexType(type);
+                const XsdComplexType::Ptr complexType(qCast<XsdComplexType>(type));
 
                 if (complexType->contentType()->variety() == XsdComplexType::ContentType::Simple) {
                     const AnySimpleType::Ptr simpleType = complexType->contentType()->simpleType();
@@ -1716,7 +1716,7 @@ void XsdSchemaChecker::checkElementConstraints()
                         targetType = simpleType;
 
                         if (simpleType->isDefinedBySchema())
-                            targetType = XsdSimpleType::Ptr(simpleType)->primitiveType();
+                            targetType = qCast<XsdSimpleType>(simpleType)->primitiveType();
                     }
                 } else if (complexType->contentType()->variety() != XsdComplexType::ContentType::Mixed) {
                     m_context->error(QtXmlPatterns::tr("Element %1 is not allowed to have a value constraint if its base type is complex.")
@@ -1735,7 +1735,7 @@ void XsdSchemaChecker::checkElementConstraints()
 
             if (type->isSimpleType()) {
                 QString errorMsg;
-                if (!isValidValue(element->valueConstraint()->value(), type, errorMsg)) {
+                if (!isValidValue(element->valueConstraint()->value(), qCast<AnySimpleType>(type), errorMsg)) {
                     m_context->error(QtXmlPatterns::tr("Value constraint of element %1 is not of elements type: %2.")
                                                       .arg(formatKeyword(element->displayName(m_namePool)))
                                                       .arg(errorMsg),
@@ -1743,7 +1743,7 @@ void XsdSchemaChecker::checkElementConstraints()
                     return;
                 }
             } else if (type->isComplexType() && type->isDefinedBySchema()) {
-                const XsdComplexType::Ptr complexType(type);
+                const XsdComplexType::Ptr complexType(qCast<XsdComplexType>(type));
                 if (complexType->contentType()->variety() == XsdComplexType::ContentType::Simple) {
                     QString errorMsg;
                     if (!isValidValue(element->valueConstraint()->value(), complexType->contentType()->simpleType(), errorMsg)) {
@@ -1812,7 +1812,7 @@ void XsdSchemaChecker::checkAttributeConstraints()
         if (!types.at(i)->isComplexType() || !types.at(i)->isDefinedBySchema())
             continue;
 
-        const XsdComplexType::Ptr complexType(types.at(i));
+        const XsdComplexType::Ptr complexType(qCast<XsdComplexType>(types.at(i)));
         const XsdAttributeUse::List uses = complexType->attributeUses();
         for (int j = 0; j < uses.count(); ++j)
             attributes.append(uses.at(j)->attribute());
@@ -1869,16 +1869,16 @@ void XsdSchemaChecker::checkAttributeUseConstraints()
     for (int i = 0; i < types.count(); ++i) {
         const SchemaType::Ptr type = types.at(i);
         if (type->isComplexType() && type->isDefinedBySchema())
-            complexTypes.append(XsdComplexType::Ptr(type));
+            complexTypes.append(qCast<XsdComplexType>(type));
     }
 
     for (int i = 0; i < complexTypes.count(); ++i) {
-        const XsdComplexType::Ptr complexType(complexTypes.at(i));
+        const XsdComplexType::Ptr complexType(qCast<XsdComplexType>(complexTypes.at(i)));
         const SchemaType::Ptr baseType = complexType->wxsSuperType();
         if (!baseType || !baseType->isComplexType() || !baseType->isDefinedBySchema())
             continue;
 
-        const XsdComplexType::Ptr complexBaseType(baseType);
+        const XsdComplexType::Ptr complexBaseType(qCast<XsdComplexType>(baseType));
 
         const XsdAttributeUse::List attributeUses = complexType->attributeUses();
         QHash<QXmlName, XsdAttributeUse::Ptr> lookupHash;
@@ -1960,7 +1960,7 @@ void XsdSchemaChecker::checkElementDuplicates()
         if (!type->isComplexType() || !type->isDefinedBySchema())
             continue;
 
-        const XsdComplexType::Ptr complexType(type);
+        const XsdComplexType::Ptr complexType(qCast<XsdComplexType>(type));
 
         if ((complexType->contentType()->variety() == XsdComplexType::ContentType::ElementOnly) || (complexType->contentType()->variety() == XsdComplexType::ContentType::Mixed)) {
             DuplicatedElementMap elementMap;
@@ -1974,7 +1974,7 @@ void XsdSchemaChecker::checkElementDuplicates()
 void XsdSchemaChecker::checkElementDuplicates(const XsdParticle::Ptr &particle, DuplicatedElementMap &elementMap, DuplicatedWildcardMap &wildcardMap)
 {
     if (particle->term()->isElement()) {
-        const XsdElement::Ptr element(particle->term());
+        const XsdElement::Ptr element(qCast<XsdElement>(particle->term()));
 
         if (elementMap.contains(element->name(m_namePool))) {
             if (element->type() != elementMap.value(element->name(m_namePool))) {
@@ -2003,12 +2003,12 @@ void XsdSchemaChecker::checkElementDuplicates(const XsdParticle::Ptr &particle, 
             }
         }
     } else if (particle->term()->isModelGroup()) {
-        const XsdModelGroup::Ptr group(particle->term());
+        const XsdModelGroup::Ptr group(qCast<XsdModelGroup>(particle->term()));
         const XsdParticle::List particles = group->particles();
         for (int i = 0; i < particles.count(); ++i)
             checkElementDuplicates(particles.at(i), elementMap, wildcardMap);
     } else if (particle->term()->isWildcard()) {
-        const XsdWildcard::Ptr wildcard(particle->term());
+        const XsdWildcard::Ptr wildcard(qCast<XsdWildcard>(particle->term()));
 
         bool error = false;
         if (!wildcardMap.contains(wildcard->namespaceConstraint()->variety())) {
@@ -2046,9 +2046,9 @@ QSourceLocation XsdSchemaChecker::sourceLocation(const NamedSchemaComponent::Ptr
 QSourceLocation XsdSchemaChecker::sourceLocationForType(const SchemaType::Ptr &type) const
 {
     if (type->isSimpleType())
-        return sourceLocation(XsdSimpleType::Ptr(type));
+        return sourceLocation(qCast<XsdSimpleType>(type));
     else
-        return sourceLocation(XsdComplexType::Ptr(type));
+        return sourceLocation(qCast<XsdComplexType>(type));
 }
 
 QT_END_NAMESPACE

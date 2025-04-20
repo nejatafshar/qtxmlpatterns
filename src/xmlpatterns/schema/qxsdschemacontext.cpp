@@ -108,7 +108,7 @@ const QAbstractUriResolver* XsdSchemaContext::uriResolver() const
 XsdFacet::Hash XsdSchemaContext::facetsForType(const AnySimpleType::Ptr &type) const
 {
     if (type->isDefinedBySchema())
-        return XsdSimpleType::Ptr(type)->facets();
+        return qCast<XsdSimpleType>(type)->facets();
     else {
         if (m_builtinTypesFacetList.isEmpty())
             m_builtinTypesFacetList = setupBuiltinTypesFacetList();

@@ -121,8 +121,8 @@ bool XsdSchemaChecker::particleEqualsRecursively(const XsdParticle::Ptr &particl
         return false;
 
     if (term->isElement()) {
-        const XsdElement::Ptr element = term;
-        const XsdElement::Ptr otherElement = otherTerm;
+        const XsdElement::Ptr element{qCast<XsdElement>(term)};
+        const XsdElement::Ptr otherElement{qCast<XsdElement>(otherTerm)};
 
         if (element->name(m_namePool) != otherElement->name(m_namePool))
             return false;
@@ -132,8 +132,8 @@ bool XsdSchemaChecker::particleEqualsRecursively(const XsdParticle::Ptr &particl
     }
 
     if (term->isModelGroup()) {
-        const XsdModelGroup::Ptr group = term;
-        const XsdModelGroup::Ptr otherGroup = otherTerm;
+        const XsdModelGroup::Ptr group{qCast<XsdModelGroup>(term)};
+        const XsdModelGroup::Ptr otherGroup{qCast<XsdModelGroup>(otherTerm)};
 
         if (group->particles().count() != otherGroup->particles().count())
             return false;
@@ -161,7 +161,7 @@ bool XsdSchemaChecker::isValidParticleExtension(const XsdParticle::Ptr &extensio
     // 2
     if (extension->minimumOccurs() == 1 && extension->maximumOccurs() == 1 && extension->maximumOccursUnbounded() == false) {
         if (extension->term()->isModelGroup()) {
-            const XsdModelGroup::Ptr modelGroup = extension->term();
+            const XsdModelGroup::Ptr modelGroup = qCast<XsdModelGroup>(extension->term());
             if (modelGroup->compositor() == XsdModelGroup::SequenceCompositor) {
                 if (particleEqualsRecursively(modelGroup->particles().first(), base))
                     return true;
@@ -172,8 +172,8 @@ bool XsdSchemaChecker::isValidParticleExtension(const XsdParticle::Ptr &extensio
     // 3
     if (extension->minimumOccurs() == base->minimumOccurs()) { // 3.1
         if (extension->term()->isModelGroup() && base->term()->isModelGroup()) {
-            const XsdModelGroup::Ptr extensionGroup(extension->term());
-            const XsdModelGroup::Ptr baseGroup(base->term());
+            const XsdModelGroup::Ptr extensionGroup(qCast<XsdModelGroup>(extension->term()));
+            const XsdModelGroup::Ptr baseGroup(qCast<XsdModelGroup>(base->term()));
 
             if (extensionGroup->compositor() == XsdModelGroup::AllCompositor && baseGroup->compositor() == XsdModelGroup::AllCompositor) {
                 const XsdParticle::List extensionParticles = extensionGroup->particles();
@@ -195,9 +195,9 @@ QSet<XsdElement::Ptr> collectAllElements(const XsdParticle::Ptr &particle)
 
     const XsdTerm::Ptr term(particle->term());
     if (term->isElement()) {
-        elements.insert(XsdElement::Ptr(term));
+        elements.insert(qCast<XsdElement>(term));
     } else if (term->isModelGroup()) {
-        const XsdModelGroup::Ptr group(term);
+        const XsdModelGroup::Ptr group(qCast<XsdModelGroup>(term));
 
         for (int i = 0; i < group->particles().count(); ++i)
             elements.unite(collectAllElements(group->particles().at(i)));
@@ -230,7 +230,7 @@ QSet<XsdElement::Ptr> collectAllElements(const XsdSchema::Ptr &schema)
 
     for (int i = 0; i < types.count(); ++i) {
         if (types.at(i)->isComplexType() && types.at(i)->isDefinedBySchema()) {
-            const XsdComplexType::Ptr complexType(types.at(i));
+            const XsdComplexType::Ptr complexType(qCast<XsdComplexType>(types.at(i)));
             if (complexType->contentType()->particle())
                 elements.unite(collectAllElements(complexType->contentType()->particle()));
         }
@@ -244,7 +244,7 @@ bool XsdSchemaChecker::elementSequenceAccepted(const XsdModelGroup::Ptr &sequenc
     // @see http://www.w3.org/TR/xmlschema11-1/#cvc-accept
 
     if (particle->term()->isWildcard()) { // 1
-        const XsdWildcard::Ptr wildcard(particle->term());
+        const XsdWildcard::Ptr wildcard(qCast<XsdWildcard>(particle->term()));
 
         // 1.1
         if ((unsigned int)sequence->particles().count() < particle->minimumOccurs())
@@ -260,12 +260,12 @@ bool XsdSchemaChecker::elementSequenceAccepted(const XsdModelGroup::Ptr &sequenc
         const XsdParticle::List particles(sequence->particles());
         for (int i = 0; i < particles.count(); ++i) {
             if (particles.at(i)->term()->isElement()) {
-                if (!XsdSchemaHelper::wildcardAllowsExpandedName(XsdElement::Ptr(particles.at(i)->term())->name(m_namePool), wildcard, m_namePool))
+                if (!XsdSchemaHelper::wildcardAllowsExpandedName(qCast<XsdElement>(particles.at(i)->term())->name(m_namePool), wildcard, m_namePool))
                     return false;
             }
         }
     } else if (particle->term()->isElement()) { // 2
-        const XsdElement::Ptr element(particle->term());
+        const XsdElement::Ptr element(qCast<XsdElement>(particle->term()));
 
         // 2.1
         if ((unsigned int)sequence->particles().count() < particle->minimumOccurs())
@@ -283,7 +283,7 @@ bool XsdSchemaChecker::elementSequenceAccepted(const XsdModelGroup::Ptr &sequenc
             bool isValid = false;
             Q_UNUSED(isValid)
             if (particles.at(i)->term()->isElement()) {
-                const XsdElement::Ptr seqElement(particles.at(i)->term());
+                const XsdElement::Ptr seqElement(qCast<XsdElement>(particles.at(i)->term()));
 
                 // 2.3.1
                 if (element->name(m_namePool) == seqElement->name(m_namePool))

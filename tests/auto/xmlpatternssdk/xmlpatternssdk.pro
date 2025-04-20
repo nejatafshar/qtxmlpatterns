@@ -2,7 +2,6 @@ include (../xmlpatterns.pri)
 
 TARGET   = $$XMLPATTERNS_SDK
 TEMPLATE = lib
-DEFINES += QT_ENABLE_QEXPLICITLYSHAREDDATAPOINTER_STATICCAST
 
 CONFIG += exceptions static
 

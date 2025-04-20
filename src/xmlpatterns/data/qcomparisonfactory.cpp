@@ -70,7 +70,7 @@ public:
                     const SchemaType::Ptr &type,
                     const ReportContext::Ptr &context)
     {
-        const ItemType::Ptr asItemType((AtomicType::Ptr(type)));
+        const ItemType::Ptr asItemType((qCast<AtomicType>(type)));
 
         /* One area where the Query Transform world differs from the Schema
          * world is that @c xs:duration is not considedered comparable, because
@@ -92,7 +92,7 @@ public:
         else
             prepareComparison(fetchComparator(asItemType, asItemType, context));
 
-        return flexibleCompare(operand1, operand2, context);
+        return flexibleCompare(operand1, operand2, qCast<DynamicContext>(context));
     }
 
     const SourceLocationReflection *actualReflection() const override

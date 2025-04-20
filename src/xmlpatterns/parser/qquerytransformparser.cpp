@@ -896,8 +896,8 @@ static void checkVariableCircularity(const VariableDeclaration::Ptr &var,
     }
     else if(id == Expression::IDUserFunctionCallsite)
     {
-        const UserFunctionCallsite::Ptr callsite(checkee);
-        const FunctionSignature::Ptr sign(callsite->callTargetDescription());
+        const UserFunctionCallsite::Ptr callsite(qCast<UserFunctionCallsite>(checkee));
+        const FunctionSignature::Ptr sign(qCast<FunctionSignature>(callsite->callTargetDescription()));
         const FunctionSignature::List::const_iterator end(signList.constEnd());
         FunctionSignature::List::const_iterator it(signList.constBegin());
         bool noMatch = true;
@@ -1127,7 +1127,7 @@ static Expression::Ptr resolveVariable(const QXmlName &name,
                 ;
         }
         Q_ASSERT(retval);
-        var->references.append(retval);
+        var->references.append(qCast<VariableReference>(retval));
     }
     else
     {
@@ -6539,7 +6539,7 @@ yyreduce:
             (yyval.expr) = create(new UserFunctionCallsite((yyvsp[-3].qName), (yyvsp[-1].expressionList).count()), (yyloc), parseInfo);
 
             (yyval.expr)->setOperands((yyvsp[-1].expressionList));
-            parseInfo->userFunctionCallsites.append((yyval.expr));
+            parseInfo->userFunctionCallsites.append(qCast<UserFunctionCallsite>(yyval.expr));
         }
     }
 #line 6497 "qquerytransformparser.cpp" /* yacc.c:1652  */
@@ -7302,7 +7302,7 @@ yyreduce:
                                                .arg(formatKeyword(parseInfo->staticContext->namePool(), (yyvsp[0].qName))), ReportContext::XPST0051, fromYYLTYPE((yyloc), parseInfo));
         }
         else if(BuiltinTypes::xsAnyAtomicType->wxsTypeMatches(t))
-            (yyval.itemType) = AtomicType::Ptr(t);
+            (yyval.itemType) = qCast<AtomicType>(t);
         else
         {
             /* Try to give an intelligent message. */

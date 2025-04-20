@@ -56,7 +56,7 @@ using namespace QPatternist;
  */
 static inline unsigned int effectiveTotalRangeMinimum(const XsdParticle::Ptr &particle)
 {
-    const XsdModelGroup::Ptr group = particle->term();
+    const XsdModelGroup::Ptr group = qCast<XsdModelGroup>(particle->term());
 
     if (group->compositor() == XsdModelGroup::ChoiceCompositor) {
         // @see http://www.w3.org/TR/xmlschema11-1/# cos-choice-range
@@ -406,7 +406,7 @@ bool XsdSchemaHelper::isValidlySubstitutable(const SchemaType::Ptr &type, const 
     if (type->isComplexType() && otherType->isComplexType()) {
         SchemaType::DerivationConstraints keywords = constraints;
         if (otherType->isDefinedBySchema())
-            keywords |= convertBlockingConstraints(XsdComplexType::Ptr(otherType)->prohibitedSubstitutions());
+            keywords |= convertBlockingConstraints(qCast<XsdComplexType>(otherType)->prohibitedSubstitutions());
 
         return isComplexDerivationOk(type, otherType, keywords);
     }
@@ -455,10 +455,10 @@ bool XsdSchemaHelper::isSimpleDerivationOk(const SchemaType::Ptr &derivedType, c
 
     // 2.2.4
     if (baseType->category() == SchemaType::SimpleTypeUnion && baseType->isDefinedBySchema()) { // 2.2.4.1
-        const AnySimpleType::List memberTypes = XsdSimpleType::Ptr(baseType)->memberTypes();
+        const AnySimpleType::List memberTypes = qCast<XsdSimpleType>(baseType)->memberTypes();
         for (int i = 0; i < memberTypes.count(); ++i) {
             if (isSimpleDerivationOk(derivedType, memberTypes.at(i), constraints)) { // 2.2.4.2
-                if (XsdSimpleType::Ptr(baseType)->facets().isEmpty()) { // 2.2.4.3
+                if (qCast<XsdSimpleType>(baseType)->facets().isEmpty()) { // 2.2.4.3
                     return true;
                 }
             }
@@ -585,7 +585,7 @@ void XsdSchemaHelper::foundSubstitutionGroupTypeInheritance(const SchemaType::Pt
     derivationSet.insert(memberType->derivationMethod());
 
     if (memberType->isComplexType()) {
-        const XsdComplexType::Ptr complexType(memberType);
+        const XsdComplexType::Ptr complexType(qCast<XsdComplexType>(memberType));
         blockSet |= complexType->prohibitedSubstitutions();
     }
 
@@ -621,7 +621,7 @@ bool XsdSchemaHelper::substitutionGroupOkTransitive(const XsdElement::Ptr &head,
         NamedSchemaComponent::BlockingConstraints checkSet(blockSet);
         checkSet |= head->disallowedSubstitutions();
         if (head->type()->isComplexType() && head->type()->isDefinedBySchema()) {
-            const XsdComplexType::Ptr complexType(head->type());
+            const XsdComplexType::Ptr complexType(qCast<XsdComplexType>(head->type()));
             checkSet |= complexType->prohibitedSubstitutions();
         }
 

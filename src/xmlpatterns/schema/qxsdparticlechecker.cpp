@@ -65,9 +65,9 @@ namespace QPatternist
             return QLatin1StringView("(empty)");
 
         if (term->isElement()) {
-            return XsdElement::Ptr(term)->displayName(m_namePool);
+            return qCast<XsdElement>(term)->displayName(m_namePool);
         } else if (term->isWildcard()) {
-            const XsdWildcard::Ptr wildcard(term);
+            const XsdWildcard::Ptr wildcard(qCast<XsdWildcard>(term));
             return QLatin1StringView("(wildcard)");
         } else {
             return QString();
@@ -82,12 +82,12 @@ namespace QPatternist
 static bool termMatches(const XsdTerm::Ptr &term, const XsdTerm::Ptr &otherTerm, const NamePool::Ptr &namePool)
 {
     if (term->isElement()) {
-        const XsdElement::Ptr element(term);
+        const XsdElement::Ptr element(qCast<XsdElement>(term));
 
         if (otherTerm->isElement()) {
             // both, the term and the other term are elements
 
-            const XsdElement::Ptr otherElement(otherTerm);
+            const XsdElement::Ptr otherElement(qCast<XsdElement>(otherTerm));
 
             // if they have the same name they match
             if (element->name(namePool) == otherElement->name(namePool))
@@ -96,7 +96,7 @@ static bool termMatches(const XsdTerm::Ptr &term, const XsdTerm::Ptr &otherTerm,
         } else if (otherTerm->isWildcard()) {
             // the term is an element and the other term a wildcard
 
-            const XsdWildcard::Ptr wildcard(otherTerm);
+            const XsdWildcard::Ptr wildcard(qCast<XsdWildcard>(otherTerm));
 
             // wildcards using XsdWildcard::absentNamespace, so we have to fix that here
             QXmlName name = element->name(namePool);
@@ -108,12 +108,12 @@ static bool termMatches(const XsdTerm::Ptr &term, const XsdTerm::Ptr &otherTerm,
                 return true;
         }
     } else if (term->isWildcard()) {
-        const XsdWildcard::Ptr wildcard(term);
+        const XsdWildcard::Ptr wildcard(qCast<XsdWildcard>(term));
 
         if (otherTerm->isElement()) {
             // the term is a wildcard and the other term an element
 
-            const XsdElement::Ptr otherElement(otherTerm);
+            const XsdElement::Ptr otherElement(qCast<XsdElement>(otherTerm));
 
             // wildcards using XsdWildcard::absentNamespace, so we have to fix that here
             QXmlName name = otherElement->name(namePool);
@@ -127,7 +127,7 @@ static bool termMatches(const XsdTerm::Ptr &term, const XsdTerm::Ptr &otherTerm,
         } else if (otherTerm->isWildcard()) {
             // both, the term and the other term are wildcards
 
-            const XsdWildcard::Ptr otherWildcard(otherTerm);
+            const XsdWildcard::Ptr otherWildcard(qCast<XsdWildcard>(otherTerm));
 
             // check if the range of the wildcard overlaps.
             const XsdWildcard::Ptr intersectionWildcard = XsdSchemaHelper::wildcardIntersection(wildcard, otherWildcard);
@@ -166,12 +166,12 @@ static bool derivedTermValid(const XsdTerm::Ptr &baseTerm, const XsdTerm::Ptr &d
     }
 
     if (baseTerm->isElement()) {
-        const XsdElement::Ptr element(baseTerm);
+        const XsdElement::Ptr element(qCast<XsdElement>(baseTerm));
 
         if (derivedTerm->isElement()) {
             // if both terms are elements
 
-            const XsdElement::Ptr derivedElement(derivedTerm);
+            const XsdElement::Ptr derivedElement(qCast<XsdElement>(derivedTerm));
 
             // check names are equal
             if (element->name(namePool) != derivedElement->name(namePool)) {
@@ -193,7 +193,7 @@ static bool derivedTermValid(const XsdTerm::Ptr &baseTerm, const XsdTerm::Ptr &d
 
                 const QSourceLocation dummyLocation(QUrl(QLatin1StringView("http://dummy.org")), 1, 1);
                 const XsdTypeChecker checker(context, QVector<QXmlName>(), dummyLocation);
-                if (!checker.valuesAreEqual(element->valueConstraint()->value(), derivedElement->valueConstraint()->value(), derivedElement->type())) {
+                if (!checker.valuesAreEqual(element->valueConstraint()->value(), derivedElement->valueConstraint()->value(), qCast<AnySimpleType>(derivedElement->type()))) {
                     errorMsg = QtXmlPatterns::tr("Fixed value constraint of element %1 differs from value constraint in base particle.").arg(formatKeyword(derivedElement->displayName(namePool)));
                     return false;
                 }
@@ -236,8 +236,8 @@ static bool derivedTermValid(const XsdTerm::Ptr &baseTerm, const XsdTerm::Ptr &d
             // recursive on their particles
             if (element->type()->isComplexType() && derivedElement->type()->isComplexType()) {
                 if (element->type()->isDefinedBySchema() && derivedElement->type()->isDefinedBySchema()) {
-                    const XsdComplexType::Ptr baseType(element->type());
-                    const XsdComplexType::Ptr derivedType(derivedElement->type());
+                    const XsdComplexType::Ptr baseType(qCast<XsdComplexType>(element->type()));
+                    const XsdComplexType::Ptr derivedType(qCast<XsdComplexType>(derivedElement->type()));
                     if ((baseType->contentType()->variety() == XsdComplexType::ContentType::ElementOnly ||
                         baseType->contentType()->variety() == XsdComplexType::ContentType::Mixed) &&
                         (derivedType->contentType()->variety() == XsdComplexType::ContentType::ElementOnly ||
@@ -255,12 +255,12 @@ static bool derivedTermValid(const XsdTerm::Ptr &baseTerm, const XsdTerm::Ptr &d
             return false;
         }
     } else if (baseTerm->isWildcard()) {
-        const XsdWildcard::Ptr wildcard(baseTerm);
+        const XsdWildcard::Ptr wildcard(qCast<XsdWildcard>(baseTerm));
 
         if (derivedTerm->isElement()) {
             // the base term is a wildcard and derived term an element
 
-            const XsdElement::Ptr derivedElement(derivedTerm);
+            const XsdElement::Ptr derivedElement(qCast<XsdElement>(derivedTerm));
 
             // wildcards using XsdWildcard::absentNamespace, so we have to fix that here
             QXmlName name = derivedElement->name(namePool);
@@ -276,7 +276,7 @@ static bool derivedTermValid(const XsdTerm::Ptr &baseTerm, const XsdTerm::Ptr &d
         } else if (derivedTerm->isWildcard()) {
             // both, derived and base term are wildcards
 
-            const XsdWildcard::Ptr derivedWildcard(derivedTerm);
+            const XsdWildcard::Ptr derivedWildcard(qCast<XsdWildcard>(derivedTerm));
 
             // check that the derived wildcard is a valid subset of the base wildcard
             if (!XsdSchemaHelper::isWildcardSubset(derivedWildcard, wildcard)) {
@@ -306,7 +306,7 @@ static bool hasDuplicatedElementsInternal(const XsdParticle::Ptr &particle, cons
 {
     const XsdTerm::Ptr term = particle->term();
     if (term->isElement()) {
-        const XsdElement::Ptr mainElement(term);
+        const XsdElement::Ptr mainElement(qCast<XsdElement>(term));
         XsdElement::List substGroups = mainElement->substitutionGroups();
         if (substGroups.isEmpty())
             substGroups << mainElement;
@@ -323,7 +323,7 @@ static bool hasDuplicatedElementsInternal(const XsdParticle::Ptr &particle, cons
             }
         }
     } else if (term->isModelGroup()) {
-        const XsdModelGroup::Ptr group(term);
+        const XsdModelGroup::Ptr group(qCast<XsdModelGroup>(term));
         const XsdParticle::List particles = group->particles();
         for (int i = 0; i < particles.count(); ++i) {
             if (hasDuplicatedElementsInternal(particles.at(i), namePool, hash, conflictingElement))
@@ -350,7 +350,7 @@ bool XsdParticleChecker::isUPAConform(const XsdParticle::Ptr &particle, const Na
      * constructs n! states in the DFA, which does not scale.
      */
     if (particle->term()->isModelGroup()) {
-        const XsdModelGroup::Ptr group(particle->term());
+        const XsdModelGroup::Ptr group(qCast<XsdModelGroup>(particle->term()));
         if (group->compositor() == XsdModelGroup::AllCompositor)
             return isUPAConformXsdAll(particle, namePool);
     }
@@ -422,7 +422,7 @@ bool XsdParticleChecker::isUPAConformXsdAll(const XsdParticle::Ptr &particle, co
     /**
      * see http://www.w3.org/TR/xmlschema-1/#non-ambig
      */
-    const XsdModelGroup::Ptr group(particle->term());
+    const XsdModelGroup::Ptr group(qCast<XsdModelGroup>(particle->term()));
     const XsdParticle::List particles = group->particles();
     const int count = particles.count();
     for (int left = 0; left < count; ++left) {

@@ -81,7 +81,7 @@ ConstructorFunctionsFactory::ConstructorFunctionsFactory(const NamePool::Ptr &np
 
         const QXmlName name((*it)->name(np));
         FunctionSignature::Ptr s(new FunctionSignature(name, 1, 1,
-                                                       makeGenericSequenceType(AtomicType::Ptr(*it),
+                                                       makeGenericSequenceType(qCast<AtomicType>(*it),
                                                                                Cardinality::zeroOrOne())));
         s->setArguments(args);
         m_signatures.insert(name, s);

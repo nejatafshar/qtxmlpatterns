@@ -314,12 +314,12 @@ void XsdSchemaResolver::copyDataTo(const XsdSchemaResolver::Ptr &other) const
 QXmlName XsdSchemaResolver::baseTypeNameOfType(const SchemaType::Ptr &type) const
 {
     for (int i = 0; i < m_simpleRestrictionBases.count(); ++i) {
-        if (m_simpleRestrictionBases.at(i).simpleType == static_cast<XsdSimpleType::Ptr>(type))
+        if (m_simpleRestrictionBases.at(i).simpleType == qCast<XsdSimpleType>(type))
             return m_simpleRestrictionBases.at(i).baseName;
     }
 
     for (int i = 0; i < m_complexBaseTypes.count(); ++i) {
-        if (m_complexBaseTypes.at(i).complexType == static_cast<XsdComplexType::Ptr>(type))
+        if (m_complexBaseTypes.at(i).complexType == qCast<XsdComplexType>(type))
             return m_complexBaseTypes.at(i).baseName;
     }
 
@@ -412,19 +412,19 @@ void XsdSchemaResolver::resolveSimpleRestrictions()
     const SchemaType::List types = m_schema->types();
     for (int i = 0; i < types.count(); ++i) {
         if (types.at(i)->isSimpleType() && (types.at(i)->derivationMethod() == SchemaType::DerivationRestriction))
-            simpleTypes.append(types.at(i));
+            simpleTypes.append(qCast<AnySimpleType>(types.at(i)));
     }
 
     // then collect all anonymous simple types
     const SchemaType::List anonymousTypes = m_schema->anonymousTypes();
     for (int i = 0; i < anonymousTypes.count(); ++i) {
         if (anonymousTypes.at(i)->isSimpleType() && (anonymousTypes.at(i)->derivationMethod() == SchemaType::DerivationRestriction))
-            simpleTypes.append(anonymousTypes.at(i));
+            simpleTypes.append(qCast<AnySimpleType>(anonymousTypes.at(i)));
     }
 
     QSet<XsdSimpleType::Ptr> visitedTypes;
     for (int i = 0; i < simpleTypes.count(); ++i) {
-        resolveSimpleRestrictions(simpleTypes.at(i), visitedTypes);
+        resolveSimpleRestrictions(qCast<XsdSimpleType>(simpleTypes.at(i)), visitedTypes);
     }
 }
 
@@ -447,19 +447,19 @@ void XsdSchemaResolver::resolveSimpleRestrictions(const XsdSimpleType::Ptr &simp
     Q_ASSERT(baseType);
 
     if (baseType->isDefinedBySchema())
-        resolveSimpleRestrictions(XsdSimpleType::Ptr(baseType), visitedTypes);
+        resolveSimpleRestrictions(qCast<XsdSimpleType>(baseType), visitedTypes);
 
     simpleType->setCategory(baseType->category());
 
     if (simpleType->category() == XsdSimpleType::SimpleTypeAtomic) {
         QSet<AnySimpleType::Ptr> visitedPrimitiveTypes;
-        const AnySimpleType::Ptr primitiveType = findPrimitiveType(baseType, visitedPrimitiveTypes);
+        const AnySimpleType::Ptr primitiveType = findPrimitiveType(qCast<AnySimpleType>(baseType), visitedPrimitiveTypes);
         simpleType->setPrimitiveType(primitiveType);
     } else if (simpleType->category() == XsdSimpleType::SimpleTypeList) {
-        const XsdSimpleType::Ptr simpleBaseType = baseType;
+        const XsdSimpleType::Ptr simpleBaseType = qCast<XsdSimpleType>(baseType);
         simpleType->setItemType(simpleBaseType->itemType());
     } else if (simpleType->category() == XsdSimpleType::SimpleTypeUnion) {
-        const XsdSimpleType::Ptr simpleBaseType = baseType;
+        const XsdSimpleType::Ptr simpleBaseType = qCast<XsdSimpleType>(baseType);
         simpleType->setMemberTypes(simpleBaseType->memberTypes());
     }
 }
@@ -484,7 +484,7 @@ void XsdSchemaResolver::resolveSimpleListType()
             }
         }
 
-        item.simpleType->setItemType(type);
+        item.simpleType->setItemType(qCast<AnySimpleType>(type));
     }
 }
 
@@ -515,7 +515,7 @@ void XsdSchemaResolver::resolveSimpleUnionTypes()
                 }
             }
 
-            memberTypes.append(type);
+            memberTypes.append(qCast<AnySimpleType>(type));
         }
 
         // append the types that have been defined as <simpleType> children
@@ -564,7 +564,7 @@ void XsdSchemaResolver::resolveComplexBaseTypes()
 
         if (item.complexType->contentType()->variety() == XsdComplexType::ContentType::Simple) {
             if (type->isComplexType() && type->isDefinedBySchema()) {
-                const XsdComplexType::Ptr baseType = type;
+                const XsdComplexType::Ptr baseType = qCast<XsdComplexType>(type);
                 if (baseType->contentType()->variety() != XsdComplexType::ContentType::Simple) {
                     m_context->error(QtXmlPatterns::tr("%1 cannot have complex base type that has a %2.")
                                                       .arg(formatElement("simpleContent"))
@@ -587,20 +587,20 @@ void XsdSchemaResolver::resolveSimpleContentComplexTypes()
     const SchemaType::List types = m_schema->types();
     for (int i = 0; i < types.count(); ++i) {
         if (types.at(i)->isComplexType() && types.at(i)->isDefinedBySchema())
-            complexTypes.append(types.at(i));
+            complexTypes.append(qCast<XsdComplexType>(types.at(i)));
     }
 
     // then collect all anonymous simple types
     const SchemaType::List anonymousTypes = m_schema->anonymousTypes();
     for (int i = 0; i < anonymousTypes.count(); ++i) {
         if (anonymousTypes.at(i)->isComplexType() && anonymousTypes.at(i)->isDefinedBySchema())
-            complexTypes.append(anonymousTypes.at(i));
+            complexTypes.append(qCast<XsdComplexType>(anonymousTypes.at(i)));
     }
 
     QSet<XsdComplexType::Ptr> visitedTypes;
     for (int i = 0; i < complexTypes.count(); ++i) {
-        if (XsdComplexType::Ptr(complexTypes.at(i))->contentType()->variety() == XsdComplexType::ContentType::Simple)
-            resolveSimpleContentComplexTypes(complexTypes.at(i), visitedTypes);
+        if (qCast<XsdComplexType>(complexTypes.at(i))->contentType()->variety() == XsdComplexType::ContentType::Simple)
+            resolveSimpleContentComplexTypes(qCast<XsdComplexType>(complexTypes.at(i)), visitedTypes);
     }
 }
 
@@ -619,7 +619,7 @@ void XsdSchemaResolver::resolveSimpleContentComplexTypes(const XsdComplexType::P
     // http://www.w3.org/TR/xmlschema11-1/#dcl.ctd.ctsc
     // 1
     if (baseType->isComplexType() && baseType->isDefinedBySchema()) {
-        const XsdComplexType::Ptr complexBaseType = baseType;
+        const XsdComplexType::Ptr complexBaseType = qCast<XsdComplexType>(baseType);
 
         resolveSimpleContentComplexTypes(complexBaseType, visitedTypes);
 
@@ -634,7 +634,7 @@ void XsdSchemaResolver::resolveSimpleContentComplexTypes(const XsdComplexType::P
                     anonType->setCategory(baseCategory);
 
                     if (baseCategory == XsdSimpleType::SimpleTypeList) {
-                        const XsdSimpleType::Ptr baseSimpleType = complexBaseType->contentType()->simpleType();
+                        const XsdSimpleType::Ptr baseSimpleType = qCast<XsdSimpleType>(complexBaseType->contentType()->simpleType());
                         anonType->setItemType(baseSimpleType->itemType());
                     }
 
@@ -643,7 +643,7 @@ void XsdSchemaResolver::resolveSimpleContentComplexTypes(const XsdComplexType::P
                     anonType->setFacets(complexTypeFacets(complexType));
 
                     QSet<AnySimpleType::Ptr> visitedPrimitiveTypes;
-                    const AnySimpleType::Ptr primitiveType = findPrimitiveType(anonType->wxsSuperType(), visitedPrimitiveTypes);
+                    const AnySimpleType::Ptr primitiveType = findPrimitiveType(qCast<AnySimpleType>(anonType->wxsSuperType()), visitedPrimitiveTypes);
                     anonType->setPrimitiveType(primitiveType);
 
                     complexType->contentType()->setSimpleType(anonType);
@@ -666,20 +666,20 @@ void XsdSchemaResolver::resolveSimpleContentComplexTypes(const XsdComplexType::P
             anonType->setFacets(complexTypeFacets(complexType));
 
             QSet<AnySimpleType::Ptr> visitedPrimitiveTypes;
-            const AnySimpleType::Ptr primitiveType = findPrimitiveType(anonType->wxsSuperType(), visitedPrimitiveTypes);
+            const AnySimpleType::Ptr primitiveType = findPrimitiveType(qCast<AnySimpleType>(anonType->wxsSuperType()), visitedPrimitiveTypes);
             anonType->setPrimitiveType(primitiveType);
 
-            complexType->contentType()->setSimpleType(anonType);
+            complexType->contentType()->setSimpleType(qCast<AnySimpleType>(anonType));
 
             m_schema->addAnonymousType(anonType);
             m_componentLocationHash.insert(anonType, m_componentLocationHash.value(complexType));
         } else {
-            complexType->contentType()->setSimpleType(BuiltinTypes::xsAnySimpleType);
+            complexType->contentType()->setSimpleType(qCast<AnySimpleType>(BuiltinTypes::xsAnySimpleType));
         }
     } else if (baseType->isSimpleType()) { // 4
-        complexType->contentType()->setSimpleType(baseType);
+        complexType->contentType()->setSimpleType(qCast<AnySimpleType>(baseType));
     } else { // 5
-        complexType->contentType()->setSimpleType(BuiltinTypes::xsAnySimpleType);
+        complexType->contentType()->setSimpleType(qCast<AnySimpleType>(BuiltinTypes::xsAnySimpleType));
     }
 }
 
@@ -691,20 +691,20 @@ void XsdSchemaResolver::resolveComplexContentComplexTypes()
     const SchemaType::List types = m_schema->types();
     for (int i = 0; i < types.count(); ++i) {
         if (types.at(i)->isComplexType() && types.at(i)->isDefinedBySchema())
-            complexTypes.append(types.at(i));
+            complexTypes.append(qCast<XsdComplexType>(types.at(i)));
     }
 
     // then collect all anonymous simple types
     const SchemaType::List anonymousTypes = m_schema->anonymousTypes();
     for (int i = 0; i < anonymousTypes.count(); ++i) {
         if (anonymousTypes.at(i)->isComplexType() && anonymousTypes.at(i)->isDefinedBySchema())
-            complexTypes.append(anonymousTypes.at(i));
+            complexTypes.append(qCast<XsdComplexType>(anonymousTypes.at(i)));
     }
 
     QSet<XsdComplexType::Ptr> visitedTypes;
     for (int i = 0; i < complexTypes.count(); ++i) {
-        if (XsdComplexType::Ptr(complexTypes.at(i))->contentType()->variety() != XsdComplexType::ContentType::Simple)
-            resolveComplexContentComplexTypes(complexTypes.at(i), visitedTypes);
+        if (qCast<XsdComplexType>(complexTypes.at(i))->contentType()->variety() != XsdComplexType::ContentType::Simple)
+            resolveComplexContentComplexTypes(qCast<XsdComplexType>(complexTypes.at(i)), visitedTypes);
     }
 }
 
@@ -733,7 +733,7 @@ void XsdSchemaResolver::resolveComplexContentComplexTypes(const XsdComplexType::
     // at this point simple types have been resolved already, so we care about
     // complex types here only
     if (baseType->isComplexType() && baseType->isDefinedBySchema())
-        resolveComplexContentComplexTypes(XsdComplexType::Ptr(baseType), visitedTypes);
+        resolveComplexContentComplexTypes(qCast<XsdComplexType>(baseType), visitedTypes);
 
 
     // @see http://www.w3.org/TR/xmlschema11-1/#dcl.ctd.ctcc.common
@@ -774,8 +774,8 @@ void XsdSchemaResolver::resolveComplexContentComplexTypes(const XsdComplexType::
         }
     } else if (item.complexType->derivationMethod() == XsdComplexType::DerivationExtension) { // 4.2
         const SchemaType::Ptr baseType = item.complexType->wxsSuperType();
-        if (baseType->isSimpleType() || (baseType->isComplexType() && baseType->isDefinedBySchema() && (XsdComplexType::Ptr(baseType)->contentType()->variety() == XsdComplexType::ContentType::Empty ||
-                                                                                                        XsdComplexType::Ptr(baseType)->contentType()->variety() == XsdComplexType::ContentType::Simple))) { // 4.2.1
+        if (baseType->isSimpleType() || (baseType->isComplexType() && baseType->isDefinedBySchema() && (qCast<XsdComplexType>(baseType)->contentType()->variety() == XsdComplexType::ContentType::Empty ||
+                                                                                                        qCast<XsdComplexType>(baseType)->contentType()->variety() == XsdComplexType::ContentType::Simple))) { // 4.2.1
             if (!effectiveContent) {
                 explicitContentType->setVariety(XsdComplexType::ContentType::Empty);
             } else {
@@ -786,9 +786,9 @@ void XsdSchemaResolver::resolveComplexContentComplexTypes(const XsdComplexType::
 
                 explicitContentType->setParticle(effectiveContent);
             }
-        } else if (baseType->isComplexType() && baseType->isDefinedBySchema() && (XsdComplexType::Ptr(baseType)->contentType()->variety() == XsdComplexType::ContentType::ElementOnly ||
-                                                 XsdComplexType::Ptr(baseType)->contentType()->variety() == XsdComplexType::ContentType::Mixed) && !effectiveContent) { // 4.2.2
-            const XsdComplexType::Ptr complexBaseType(baseType);
+        } else if (baseType->isComplexType() && baseType->isDefinedBySchema() && (qCast<XsdComplexType>(baseType)->contentType()->variety() == XsdComplexType::ContentType::ElementOnly ||
+                                                 qCast<XsdComplexType>(baseType)->contentType()->variety() == XsdComplexType::ContentType::Mixed) && !effectiveContent) { // 4.2.2
+            const XsdComplexType::Ptr complexBaseType(qCast<XsdComplexType>(baseType));
 
             explicitContentType = complexBaseType->contentType();
         } else { // 4.2.3
@@ -820,15 +820,15 @@ void XsdSchemaResolver::resolveComplexContentComplexTypes(const XsdComplexType::
                 group->setParticles(particles);
                 baseParticle->setTerm(group);
             } else {
-                const XsdComplexType::Ptr complexBaseType(baseType);
+                const XsdComplexType::Ptr complexBaseType(qCast<XsdComplexType>(baseType));
                 baseParticle = complexBaseType->contentType()->particle();
             }
-            if (baseParticle && baseParticle->term()->isModelGroup() && (XsdModelGroup::Ptr(baseParticle->term())->compositor() == XsdModelGroup::AllCompositor) &&
+            if (baseParticle && baseParticle->term()->isModelGroup() && (qCast<XsdModelGroup>(baseParticle->term())->compositor() == XsdModelGroup::AllCompositor) &&
                 (!item.explicitContent)) { // 4.2.3.1
 
                 explicitContentType->setParticle(baseParticle);
-            } else if (baseParticle && baseParticle->term()->isModelGroup() && (XsdModelGroup::Ptr(baseParticle->term())->compositor() == XsdModelGroup::AllCompositor) &&
-                       (effectiveContent->term()->isModelGroup() && (XsdModelGroup::Ptr(effectiveContent->term())->compositor() == XsdModelGroup::AllCompositor))) { // 4.2.3.2
+            } else if (baseParticle && baseParticle->term()->isModelGroup() && (qCast<XsdModelGroup>(baseParticle->term())->compositor() == XsdModelGroup::AllCompositor) &&
+                       (effectiveContent->term()->isModelGroup() && (qCast<XsdModelGroup>(effectiveContent->term())->compositor() == XsdModelGroup::AllCompositor))) { // 4.2.3.2
                 const XsdParticle::Ptr particle(new XsdParticle());
                 particle->setMinimumOccurs(effectiveContent->minimumOccurs());
                 particle->setMaximumOccurs(1);
@@ -836,8 +836,8 @@ void XsdSchemaResolver::resolveComplexContentComplexTypes(const XsdComplexType::
 
                 const XsdModelGroup::Ptr group(new XsdModelGroup());
                 group->setCompositor(XsdModelGroup::AllCompositor);
-                XsdParticle::List particles = XsdModelGroup::Ptr(baseParticle->term())->particles();
-                particles << XsdModelGroup::Ptr(effectiveContent->term())->particles();
+                XsdParticle::List particles = qCast<XsdModelGroup>(baseParticle->term())->particles();
+                particles << qCast<XsdModelGroup>(effectiveContent->term())->particles();
                 group->setParticles(particles);
                 particle->setTerm(group);
 
@@ -851,13 +851,13 @@ void XsdSchemaResolver::resolveComplexContentComplexTypes(const XsdComplexType::
                 const XsdModelGroup::Ptr group(new XsdModelGroup());
                 group->setCompositor(XsdModelGroup::SequenceCompositor);
 
-                if (effectiveContent && effectiveContent->term()->isModelGroup() && XsdModelGroup::Ptr(effectiveContent->term())->compositor() == XsdModelGroup::AllCompositor) {
+                if (effectiveContent && effectiveContent->term()->isModelGroup() && qCast<XsdModelGroup>(effectiveContent->term())->compositor() == XsdModelGroup::AllCompositor) {
                     m_context->error(QtXmlPatterns::tr("Content model of complex type %1 contains %2 element so it cannot be derived by extension from a non-empty type.")
                                                       .arg(formatType(m_namePool, complexType)).arg(formatKeyword("all")), XsdSchemaContext::XSDError, sourceLocation(complexType));
                     return;
                 }
 
-                if (baseParticle && baseParticle->term()->isModelGroup() && XsdModelGroup::Ptr(baseParticle->term())->compositor() == XsdModelGroup::AllCompositor) {
+                if (baseParticle && baseParticle->term()->isModelGroup() && qCast<XsdModelGroup>(baseParticle->term())->compositor() == XsdModelGroup::AllCompositor) {
                     m_context->error(QtXmlPatterns::tr("Complex type %1 cannot be derived by extension from %2 as the latter contains %3 element in its content model.")
                                                       .arg(formatType(m_namePool, complexType))
                                                       .arg(formatType(m_namePool, baseType))
@@ -877,7 +877,7 @@ void XsdSchemaResolver::resolveComplexContentComplexTypes(const XsdComplexType::
             }
 
             if (baseType->isDefinedBySchema()) { // xs:anyType has no open content
-                const XsdComplexType::Ptr complexBaseType(baseType);
+                const XsdComplexType::Ptr complexBaseType(qCast<XsdComplexType>(baseType));
                 explicitContentType->setOpenContent(complexBaseType->contentType()->openContent());
             }
         }
@@ -966,7 +966,7 @@ void XsdSchemaResolver::resolveAttributeTypes()
             return;
         }
 
-        item.attribute->setType(type);
+        item.attribute->setType(qCast<AnySimpleType>(type));
     }
 }
 
@@ -1087,7 +1087,7 @@ void XsdSchemaResolver::resolveTermReferences()
         if (!(types.at(i)->isComplexType()) || !types.at(i)->isDefinedBySchema())
             continue;
 
-        const XsdComplexType::Ptr complexType = types.at(i);
+        const XsdComplexType::Ptr complexType = qCast<XsdComplexType>(types.at(i));
         if (complexType->contentType()->variety() != XsdComplexType::ContentType::ElementOnly && complexType->contentType()->variety() != XsdComplexType::ContentType::Mixed)
             continue;
 
@@ -1100,7 +1100,7 @@ void XsdSchemaResolver::resolveTermReferences()
         if (!(anonymousTypes.at(i)->isComplexType()) || !anonymousTypes.at(i)->isDefinedBySchema())
             continue;
 
-        const XsdComplexType::Ptr complexType = anonymousTypes.at(i);
+        const XsdComplexType::Ptr complexType = qCast<XsdComplexType>(anonymousTypes.at(i));
         if (complexType->contentType()->variety() != XsdComplexType::ContentType::ElementOnly && complexType->contentType()->variety() != XsdComplexType::ContentType::Mixed)
             continue;
 
@@ -1124,7 +1124,7 @@ void XsdSchemaResolver::resolveTermReference(const XsdParticle::Ptr &particle, Q
 
     // if it is a model group, we iterate over it recursive...
     if (term->isModelGroup()) {
-        const XsdModelGroup::Ptr modelGroup = term;
+        const XsdModelGroup::Ptr modelGroup = qCast<XsdModelGroup>(term);
         const XsdParticle::List particles = modelGroup->particles();
 
         for (int i = 0; i < particles.count(); ++i) {
@@ -1145,8 +1145,8 @@ void XsdSchemaResolver::resolveTermReference(const XsdParticle::Ptr &particle, Q
                     const XsdTerm::Ptr otherTerm = otherParticle->term();
 
                     if (otherTerm->isElement() && i != j) {
-                        const XsdElement::Ptr element = term;
-                        const XsdElement::Ptr otherElement = otherTerm;
+                        const XsdElement::Ptr element = qCast<XsdElement>(term);
+                        const XsdElement::Ptr otherElement = qCast<XsdElement>(otherTerm);
 
                         if (element->name(m_namePool) == otherElement->name(m_namePool)) {
                             if (modelGroup->compositor() == XsdModelGroup::AllCompositor) {
@@ -1178,7 +1178,7 @@ void XsdSchemaResolver::resolveTermReference(const XsdParticle::Ptr &particle, Q
         return;
 
     // ...or we have reached a reference term that must be resolved
-    const XsdReference::Ptr reference = term;
+    const XsdReference::Ptr reference = qCast<XsdReference>(term);
     switch (reference->type()) {
         case XsdReference::Element:
                 {
@@ -1266,7 +1266,7 @@ void XsdSchemaResolver::resolveAttributeTermReferences()
         if (!(types.at(i)->isComplexType()) || !types.at(i)->isDefinedBySchema())
             continue;
 
-        const XsdComplexType::Ptr complexType = types.at(i);
+        const XsdComplexType::Ptr complexType = qCast<XsdComplexType>(types.at(i));
         const XsdAttributeUse::List attributeUses = complexType->attributeUses();
 
         XsdWildcard::Ptr wildcard = complexType->attributeWildcard();
@@ -1281,7 +1281,7 @@ void XsdSchemaResolver::resolveAttributeTermReferences()
         if (!(anonymousTypes.at(i)->isComplexType()) || !anonymousTypes.at(i)->isDefinedBySchema())
             continue;
 
-        const XsdComplexType::Ptr complexType = anonymousTypes.at(i);
+        const XsdComplexType::Ptr complexType = qCast<XsdComplexType>(anonymousTypes.at(i));
         const XsdAttributeUse::List attributeUses = complexType->attributeUses();
 
         XsdWildcard::Ptr wildcard = complexType->attributeWildcard();
@@ -1303,7 +1303,7 @@ XsdAttributeUse::List XsdSchemaResolver::resolveAttributeTermReferences(const Xs
         } else if (attributeUse->isReference()) {
             // it is just a reference, so resolve it to the real attribute use
 
-            const XsdAttributeReference::Ptr reference = attributeUse;
+            const XsdAttributeReference::Ptr reference = qCast<XsdAttributeReference>(attributeUse);
             if (reference->type() == XsdAttributeReference::AttributeUse) {
 
                 // lookup the real attribute
@@ -1400,7 +1400,7 @@ void XsdSchemaResolver::resolveAttributeInheritance()
         if (!(types.at(i)->isComplexType()) || !types.at(i)->isDefinedBySchema())
             continue;
 
-        const XsdComplexType::Ptr complexType = types.at(i);
+        const XsdComplexType::Ptr complexType = qCast<XsdComplexType>(types.at(i));
 
         resolveAttributeInheritance(complexType, visitedTypes);
     }
@@ -1448,7 +1448,7 @@ void XsdSchemaResolver::resolveAttributeInheritance(const XsdComplexType::Ptr &c
     if (!(baseType->isComplexType()) || !baseType->isDefinedBySchema())
         return;
 
-    const XsdComplexType::Ptr complexBaseType = baseType;
+    const XsdComplexType::Ptr complexBaseType = qCast<XsdComplexType>(baseType);
 
     resolveAttributeInheritance(complexBaseType, visitedTypes);
 
@@ -1523,7 +1523,7 @@ void XsdSchemaResolver::resolveAttributeInheritance(const XsdComplexType::Ptr &c
 
     if (complexType->derivationMethod() == XsdComplexType::DerivationRestriction) {
         if (complexType->wxsSuperType()->isComplexType() && complexType->wxsSuperType()->isDefinedBySchema()) {
-            const XsdComplexType::Ptr complexBaseType(complexType->wxsSuperType());
+            const XsdComplexType::Ptr complexBaseType(qCast<XsdComplexType>(complexType->wxsSuperType()));
             if (complexType->attributeWildcard()) {
                 if (complexBaseType->attributeWildcard()) {
                     if (!isValidWildcardRestriction(complexType->attributeWildcard(), complexBaseType->attributeWildcard())) {
@@ -1546,7 +1546,7 @@ void XsdSchemaResolver::resolveAttributeInheritance(const XsdComplexType::Ptr &c
     } else if (complexType->derivationMethod() == XsdComplexType::DerivationExtension) {
         XsdWildcard::Ptr baseWildcard; // 2.2.1
         if (complexType->wxsSuperType()->isComplexType() && complexType->wxsSuperType()->isDefinedBySchema())
-            baseWildcard = XsdComplexType::Ptr(complexType->wxsSuperType())->attributeWildcard(); // 2.2.1.1
+            baseWildcard = qCast<XsdComplexType>(complexType->wxsSuperType())->attributeWildcard(); // 2.2.1.1
         else
             baseWildcard = XsdWildcard::Ptr(); // 2.2.1.2
 
@@ -1578,18 +1578,18 @@ void XsdSchemaResolver::resolveEnumerationFacetValues()
     const SchemaType::List types = m_schema->types();
     for (int i = 0; i < types.count(); ++i) {
         if (types.at(i)->isSimpleType())
-            simpleTypes.append(types.at(i));
+            simpleTypes.append(qCast<AnySimpleType>(types.at(i)));
     }
 
     // then collect all anonymous simple types
     const SchemaType::List anonymousTypes = m_schema->anonymousTypes();
     for (int i = 0; i < anonymousTypes.count(); ++i) {
         if (anonymousTypes.at(i)->isSimpleType())
-            simpleTypes.append(anonymousTypes.at(i));
+            simpleTypes.append(qCast<AnySimpleType>(anonymousTypes.at(i)));
     }
     // process all simple types
     for (int i = 0; i < simpleTypes.count(); ++i) {
-        const XsdSimpleType::Ptr simpleType = simpleTypes.at(i);
+        const XsdSimpleType::Ptr simpleType = qCast<XsdSimpleType>(simpleTypes.at(i));
 
         // we resolve the enumeration values only for xs:QName and xs:NOTATION based types
         if (BuiltinTypes::xsQName->wxsTypeMatches(simpleType) ||
@@ -1731,7 +1731,7 @@ AnySimpleType::Ptr XsdSchemaResolver::findPrimitiveType(const AnySimpleType::Ptr
         return type;
     else {
         if (type->wxsSuperType())
-            return findPrimitiveType(type->wxsSuperType(), visitedTypes);
+            return findPrimitiveType(qCast<AnySimpleType>(type->wxsSuperType()), visitedTypes);
         else {
             return AnySimpleType::Ptr();
         }

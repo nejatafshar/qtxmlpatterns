@@ -77,7 +77,7 @@ namespace QPatternist
                           const ResourceLoader::Ptr &parentLoader,
                           const ResourceLoader::Ptr &forDeviceLoader) : m_needsOverride(needsOverride)
                                                                       , m_parentLoader(parentLoader)
-                                                                      , m_forDeviceLoader(forDeviceLoader)
+                                                                      , m_forDeviceLoader(qCast<DeviceResourceLoader>(forDeviceLoader))
 
         {
             Q_ASSERT(m_parentLoader);

@@ -162,7 +162,7 @@ XsdStateMachine<XsdTerm::Ptr>::StateId XsdStateMachineBuilder::buildTerm(const X
         const XsdStateMachine<XsdTerm::Ptr>::StateId b = m_stateMachine->addState(XsdStateMachine<XsdTerm::Ptr>::InternalState);
         m_stateMachine->addTransition(b, term, endState);
 
-        const XsdElement::Ptr element(term);
+        const XsdElement::Ptr element(qCast<XsdElement>(term));
         if (m_mode == CheckingMode) {
             const XsdElement::List substGroups = element->substitutionGroups();
             for (int i = 0; i < substGroups.count(); ++i)
@@ -177,7 +177,7 @@ XsdStateMachine<XsdTerm::Ptr>::StateId XsdStateMachineBuilder::buildTerm(const X
 
         return b;
     } else if (term->isModelGroup()) {
-        const XsdModelGroup::Ptr group(term);
+        const XsdModelGroup::Ptr group(qCast<XsdModelGroup>(term));
 
         if (group->compositor() == XsdModelGroup::ChoiceCompositor) { // 3
             const XsdStateMachine<XsdTerm::Ptr>::StateId b = m_stateMachine->addState(XsdStateMachine<XsdTerm::Ptr>::InternalState);
@@ -240,7 +240,7 @@ static void internalParticleLookupMap(const XsdParticle::Ptr &particle, QHash<Xs
     hash.insert(particle->term(), particle);
 
     if (particle->term()->isModelGroup()) {
-        const XsdModelGroup::Ptr group(particle->term());
+        const XsdModelGroup::Ptr group(qCast<XsdModelGroup>(particle->term()));
         const XsdParticle::List particles = group->particles();
         for (int i = 0; i < particles.count(); ++i)
             internalParticleLookupMap(particles.at(i), hash);

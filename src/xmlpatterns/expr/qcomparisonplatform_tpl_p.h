@@ -179,8 +179,8 @@ fetchComparator(const ItemType::Ptr &t1,
         return AtomicComparator::Ptr();
     }
 
-    const AtomicComparator::Ptr comp(static_cast<const AtomicType *>(t2.data())->accept(locator, operatorID(),
-                                                                                       static_cast<const TSubClass *>(this)->actualReflection()));
+    const AtomicComparator::Ptr comp(qCast<AtomicComparator>(static_cast<const AtomicType *>(t2.data())->accept(locator, operatorID(),
+                                                                                       static_cast<const TSubClass *>(this)->actualReflection())));
 
     if(comp)
         return comp;

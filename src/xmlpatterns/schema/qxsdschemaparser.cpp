@@ -217,12 +217,12 @@ static XsdParticle::List collectGroupRef(const XsdModelGroup::Ptr &group)
     XsdParticle::List particles = group->particles();
     for (int i = 0; i < particles.count(); ++i) {
         if (particles.at(i)->term()->isReference()) {
-            const XsdReference::Ptr reference(particles.at(i)->term());
+            const XsdReference::Ptr reference(qCast<XsdReference>(particles.at(i)->term()));
             if (reference->type() == XsdReference::ModelGroup)
                 refParticles.append(particles.at(i));
         }
         if (particles.at(i)->term()->isModelGroup()) {
-            refParticles << collectGroupRef(XsdModelGroup::Ptr(particles.at(i)->term()));
+            refParticles << collectGroupRef(XsdModelGroup::Ptr(qCast<XsdModelGroup>(particles.at(i)->term())));
         }
     }
 
@@ -894,14 +894,14 @@ void XsdSchemaParser::parseRedefine()
 
     // iterate over all redefined simple types
     for (int i = 0; i < redefinedSimpleTypes.count(); ++i) {
-        XsdSimpleType::Ptr redefinedType = redefinedSimpleTypes.at(i);
+        XsdSimpleType::Ptr redefinedType = qCast<XsdSimpleType>(redefinedSimpleTypes.at(i));
 
         //TODONEXT: validation
 
         // search the definition they override in the context types
         bool found = false;
         for (int j = 0; j < contextSimpleTypes.count(); ++j) {
-            XsdSimpleType::Ptr contextType = contextSimpleTypes.at(j);
+            XsdSimpleType::Ptr contextType = qCast<XsdSimpleType>(contextSimpleTypes.at(j));
 
             if (redefinedType->name(m_namePool) == contextType->name(m_namePool)) { // we found the right type
                 found = true;
@@ -943,14 +943,14 @@ void XsdSchemaParser::parseRedefine()
 
     // iterate over all redefined complex types
     for (int i = 0; i < redefinedComplexTypes.count(); ++i) {
-        XsdComplexType::Ptr redefinedType = redefinedComplexTypes.at(i);
+        XsdComplexType::Ptr redefinedType = qCast<XsdComplexType>(redefinedComplexTypes.at(i));
 
         //TODONEXT: validation
 
         // search the definition they override in the context types
         bool found = false;
         for (int j = 0; j < contextComplexTypes.count(); ++j) {
-            XsdComplexType::Ptr contextType = contextComplexTypes.at(j);
+            XsdComplexType::Ptr contextType = qCast<XsdComplexType>(contextComplexTypes.at(j));
 
             if (redefinedType->name(m_namePool) == contextType->name(m_namePool)) { // we found the right type
                 found = true;
@@ -996,7 +996,7 @@ void XsdSchemaParser::parseRedefine()
         XsdParticle::Ptr referencedParticle;
         int sameNameCounter = 0;
         for (int i = 0; i < particles.count(); ++i) {
-            const XsdReference::Ptr ref(particles.at(i)->term());
+            const XsdReference::Ptr ref(qCast<XsdReference>(particles.at(i)->term()));
             if (ref->referenceName() == group->name(m_namePool)) {
                 referencedParticle = particles.at(i);
 
@@ -1072,7 +1072,7 @@ void XsdSchemaParser::parseRedefine()
         for (int j = 0; j < group->attributeUses().count(); ++j) {
             const XsdAttributeUse::Ptr attributeUse(group->attributeUses().at(j));
             if (attributeUse->isReference()) {
-                const XsdAttributeReference::Ptr reference(attributeUse);
+                const XsdAttributeReference::Ptr reference(qCast<XsdAttributeReference>(attributeUse));
                 if (reference->type() == XsdAttributeReference::AttributeGroup) {
                     if (group->name(m_namePool) == reference->referenceName())
                         sameNameCounter++;
@@ -1111,7 +1111,7 @@ void XsdSchemaParser::parseRedefine()
             for (int j = 0; j < group->attributeUses().count(); ++j) {
                 const XsdAttributeUse::Ptr attributeUse(group->attributeUses().at(j));
                 if (attributeUse->isReference()) {
-                    const XsdAttributeReference::Ptr reference(attributeUse);
+                    const XsdAttributeReference::Ptr reference(qCast<XsdAttributeReference>(attributeUse));
                     if (reference->type() == XsdAttributeReference::AttributeGroup) {
                         if (group->name(m_namePool) == reference->referenceName()) {
                             reference->setReferenceName(baseGroup->name(m_namePool));
@@ -2078,7 +2078,7 @@ XsdFacet::Ptr XsdSchemaParser::parseTotalDigitsFacet()
     }
 
     const QString value = readAttribute(QString::fromLatin1("value"));
-    DerivedInteger<TypePositiveInteger>::Ptr integer = DerivedInteger<TypePositiveInteger>::fromLexical(m_namePool, value);
+    DerivedInteger<TypePositiveInteger>::Ptr integer = qCast<DerivedInteger<TypePositiveInteger>>(DerivedInteger<TypePositiveInteger>::fromLexical(m_namePool, value));
     if (integer->hasError()) {
         attributeContentError("value", "totalDigits", value, BuiltinTypes::xsPositiveInteger);
         return facet;
@@ -2140,7 +2140,7 @@ XsdFacet::Ptr XsdSchemaParser::parseFractionDigitsFacet()
     }
 
     const QString value = readAttribute(QString::fromLatin1("value"));
-    DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical(m_namePool, value);
+    DerivedInteger<TypeNonNegativeInteger>::Ptr integer = qCast<DerivedInteger<TypeNonNegativeInteger>>(DerivedInteger<TypeNonNegativeInteger>::fromLexical(m_namePool, value));
     if (integer->hasError()) {
         attributeContentError("value", "fractionDigits", value, BuiltinTypes::xsNonNegativeInteger);
         return facet;
@@ -2202,7 +2202,7 @@ XsdFacet::Ptr XsdSchemaParser::parseLengthFacet()
     }
 
     const QString value = readAttribute(QString::fromLatin1("value"));
-    DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical(m_namePool, value);
+    DerivedInteger<TypeNonNegativeInteger>::Ptr integer = qCast<DerivedInteger<TypeNonNegativeInteger>>(DerivedInteger<TypeNonNegativeInteger>::fromLexical(m_namePool, value));
     if (integer->hasError()) {
         attributeContentError("value", "length", value, BuiltinTypes::xsNonNegativeInteger);
         return facet;
@@ -2264,7 +2264,7 @@ XsdFacet::Ptr XsdSchemaParser::parseMinLengthFacet()
     }
 
     const QString value = readAttribute(QString::fromLatin1("value"));
-    DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical(m_namePool, value);
+    DerivedInteger<TypeNonNegativeInteger>::Ptr integer = qCast<DerivedInteger<TypeNonNegativeInteger>>(DerivedInteger<TypeNonNegativeInteger>::fromLexical(m_namePool, value));
     if (integer->hasError()) {
         attributeContentError("value", "minLength", value, BuiltinTypes::xsNonNegativeInteger);
         return facet;
@@ -2326,7 +2326,7 @@ XsdFacet::Ptr XsdSchemaParser::parseMaxLengthFacet()
     }
 
     const QString value = readAttribute(QString::fromLatin1("value"));
-    DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical(m_namePool, value);
+    DerivedInteger<TypeNonNegativeInteger>::Ptr integer = qCast<DerivedInteger<TypeNonNegativeInteger>>(DerivedInteger<TypeNonNegativeInteger>::fromLexical(m_namePool, value));
     if (integer->hasError()) {
         attributeContentError("value", "maxLength", value, BuiltinTypes::xsNonNegativeInteger);
         return facet;
@@ -2891,7 +2891,7 @@ void XsdSchemaParser::resolveComplexContentType(const XsdComplexType::Ptr &compl
         hasEmptyContent = true; // 2.1.1
     } else {
         if (complexType->contentType()->particle()->term()->isModelGroup()) {
-            const XsdModelGroup::Ptr group = complexType->contentType()->particle()->term();
+            const XsdModelGroup::Ptr group = qCast<XsdModelGroup>(complexType->contentType()->particle()->term());
             if (group->compositor() == XsdModelGroup::SequenceCompositor || group->compositor() == XsdModelGroup::AllCompositor) {
                 if (group->particles().isEmpty())
                     hasEmptyContent = true; // 2.1.2
@@ -3762,7 +3762,7 @@ XsdModelGroup::Ptr XsdSchemaParser::parseChoice(const NamedSchemaComponent::Ptr 
             } else if (isSchemaTag(XsdSchemaToken::Group, token, namespaceToken)) {
                 const XsdParticle::Ptr particle(new XsdParticle());
                 const XsdTerm::Ptr term = parseReferredGroup(particle);
-                m_schemaResolver->addAllGroupCheck(term);
+                m_schemaResolver->addAllGroupCheck(qCast<XsdReference>(term));
                 particle->setTerm(term);
                 particles.append(particle);
             } else if (isSchemaTag(XsdSchemaToken::Choice, token, namespaceToken)) {
@@ -3836,7 +3836,7 @@ XsdModelGroup::Ptr XsdSchemaParser::parseLocalChoice(const XsdParticle::Ptr &par
             } else if (isSchemaTag(XsdSchemaToken::Group, token, namespaceToken)) {
                 const XsdParticle::Ptr particle(new XsdParticle());
                 const XsdTerm::Ptr term = parseReferredGroup(particle);
-                m_schemaResolver->addAllGroupCheck(term);
+                m_schemaResolver->addAllGroupCheck(qCast<XsdReference>(term));
                 particle->setTerm(term);
                 particles.append(particle);
             } else if (isSchemaTag(XsdSchemaToken::Choice, token, namespaceToken)) {
@@ -3905,7 +3905,7 @@ XsdModelGroup::Ptr XsdSchemaParser::parseSequence(const NamedSchemaComponent::Pt
             } else if (isSchemaTag(XsdSchemaToken::Group, token, namespaceToken)) {
                 const XsdParticle::Ptr particle(new XsdParticle());
                 const XsdTerm::Ptr term = parseReferredGroup(particle);
-                m_schemaResolver->addAllGroupCheck(term);
+                m_schemaResolver->addAllGroupCheck(qCast<XsdReference>(term));
                 particle->setTerm(term);
                 particles.append(particle);
             } else if (isSchemaTag(XsdSchemaToken::Choice, token, namespaceToken)) {
@@ -3979,7 +3979,7 @@ XsdModelGroup::Ptr XsdSchemaParser::parseLocalSequence(const XsdParticle::Ptr &p
             } else if (isSchemaTag(XsdSchemaToken::Group, token, namespaceToken)) {
                 const XsdParticle::Ptr particle(new XsdParticle());
                 const XsdTerm::Ptr term = parseReferredGroup(particle);
-                m_schemaResolver->addAllGroupCheck(term);
+                m_schemaResolver->addAllGroupCheck(qCast<XsdReference>(term));
                 particle->setTerm(term);
                 particles.append(particle);
             } else if (isSchemaTag(XsdSchemaToken::Choice, token, namespaceToken)) {
@@ -4118,7 +4118,7 @@ XsdAttribute::Ptr XsdSchemaParser::parseGlobalAttribute()
     }
 
     if (!hasTypeSpecified) {
-        attribute->setType(BuiltinTypes::xsAnySimpleType); // default value
+        attribute->setType(qCast<AnySimpleType>(BuiltinTypes::xsAnySimpleType)); // default value
         return attribute;
     }
 
@@ -4237,7 +4237,7 @@ XsdAttributeUse::Ptr XsdSchemaParser::parseLocalAttribute(const NamedSchemaCompo
         QXmlName referenceName;
         convertName(reference, NamespaceSupport::ElementName, referenceName);   // translate qualified name into QXmlName
 
-        const XsdAttributeReference::Ptr attributeReference = attributeUse;
+        const XsdAttributeReference::Ptr attributeReference = qCast<XsdAttributeReference>(attributeUse);
         attributeReference->setReferenceName(referenceName);
     } else {
         if (hasAttribute(QString::fromLatin1("name"))) {
@@ -4357,7 +4357,7 @@ XsdAttributeUse::Ptr XsdSchemaParser::parseLocalAttribute(const NamedSchemaCompo
     }
 
     if (!hasTypeSpecified) {
-        attribute->setType(BuiltinTypes::xsAnySimpleType); // default value
+        attribute->setType(qCast<AnySimpleType>(BuiltinTypes::xsAnySimpleType)); // default value
     }
 
     tagValidator.finalize();
@@ -4698,7 +4698,7 @@ XsdTerm::Ptr XsdSchemaParser::parseLocalElement(const XsdParticle::Ptr &particle
         hasRefAttribute = true;
     } else {
         term = XsdElement::Ptr(new XsdElement());
-        element = term;
+        element = qCast<XsdElement>(term);
     }
 
     if (hasRefAttribute) {
@@ -4765,7 +4765,7 @@ XsdTerm::Ptr XsdSchemaParser::parseLocalElement(const XsdParticle::Ptr &particle
         QXmlName referenceName;
         convertName(ref, NamespaceSupport::ElementName, referenceName); // translate qualified name into QXmlName
 
-        const XsdReference::Ptr reference = term;
+        const XsdReference::Ptr reference = qCast<XsdReference>(term);
         reference->setReferenceName(referenceName);
         reference->setType(XsdReference::Element);
         reference->setSourceLocation(currentSourceLocation());
@@ -5682,7 +5682,7 @@ bool XsdSchemaParser::parseMinMaxConstraint(const XsdParticle::Ptr &particle, co
     if (hasAttribute(QString::fromLatin1("minOccurs"))) {
         const QString value = readAttribute(QString::fromLatin1("minOccurs"));
 
-        DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical(m_namePool, value);
+        DerivedInteger<TypeNonNegativeInteger>::Ptr integer = qCast<DerivedInteger<TypeNonNegativeInteger>>(DerivedInteger<TypeNonNegativeInteger>::fromLexical(m_namePool, value));
         if (integer->hasError()) {
             attributeContentError("minOccurs", elementName, value, BuiltinTypes::xsNonNegativeInteger);
             return false;
@@ -5700,7 +5700,7 @@ bool XsdSchemaParser::parseMinMaxConstraint(const XsdParticle::Ptr &particle, co
             particle->setMaximumOccursUnbounded(true);
         } else {
             particle->setMaximumOccursUnbounded(false);
-            DerivedInteger<TypeNonNegativeInteger>::Ptr integer = DerivedInteger<TypeNonNegativeInteger>::fromLexical(m_namePool, value);
+            DerivedInteger<TypeNonNegativeInteger>::Ptr integer = qCast<DerivedInteger<TypeNonNegativeInteger>>(DerivedInteger<TypeNonNegativeInteger>::fromLexical(m_namePool, value));
             if (integer->hasError()) {
                 attributeContentError("maxOccurs", elementName, value, BuiltinTypes::xsNonNegativeInteger);
                 return false;
@@ -6046,9 +6046,9 @@ void XsdSchemaParser::addType(const SchemaType::Ptr &type)
     } else {
         m_schema->addType(type);
         if (type->isSimpleType())
-            m_componentLocationHash.insert(XsdSimpleType::Ptr(type), currentSourceLocation());
+            m_componentLocationHash.insert(qCast<XsdSimpleType>(type), currentSourceLocation());
         else
-            m_componentLocationHash.insert(XsdComplexType::Ptr(type), currentSourceLocation());
+            m_componentLocationHash.insert(qCast<XsdSimpleType>(type), currentSourceLocation());
     }
 }
 
@@ -6056,9 +6056,9 @@ void XsdSchemaParser::addAnonymousType(const SchemaType::Ptr &type)
 {
     m_schema->addAnonymousType(type);
     if (type->isSimpleType())
-        m_componentLocationHash.insert(XsdSimpleType::Ptr(type), currentSourceLocation());
+        m_componentLocationHash.insert(qCast<XsdSimpleType>(type), currentSourceLocation());
     else
-        m_componentLocationHash.insert(XsdComplexType::Ptr(type), currentSourceLocation());
+        m_componentLocationHash.insert(qCast<XsdComplexType>(type), currentSourceLocation());
 }
 
 void XsdSchemaParser::addAttributeGroup(const XsdAttributeGroup::Ptr &group)
